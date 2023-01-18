@@ -17,5 +17,9 @@
 		"svelte": "^3.54.0",
 		"vite": "^4.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"crypto-browserify": "^3.12.0",
+		"dotenv": "^16.0.3"
+	}
 }

@@ -1,7 +1,16 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import path from 'path';
 
 const config = {
-	plugins: [sveltekit()]
+	plugins: [sveltekit()],
+	resolve: {
+		alias: {
+			// these are the aliases and paths to them
+			$functions: path.resolve('src', 'functions'),
+			$: path.resolve('src', 'store'),
+			$editor: path.resolve('src', 'routes', 'editor')
+		}
+	}
 };
 
 export default config;
