@@ -8,7 +8,7 @@ const config = {
 			// these are the aliases and paths to them
 			$functions: path.resolve('src', 'functions'),
 			$: path.resolve('src', 'store'),
-			$editor: path.resolve('src', 'routes', 'editor')
+			$lib: path.resolve('src', 'lib')
 		}
 	}
 };
