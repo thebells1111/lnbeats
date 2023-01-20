@@ -10,8 +10,6 @@ const { API_KEY, API_SECRET1, API_SECRET2 } = process.env;
 const API_SECRET = API_SECRET1 + '#' + API_SECRET2; //this is a work around because teh secret has a '#' in it, and ENV sees that as a comment
 
 export async function GET({ url }) {
-	console.log(API_KEY);
-	console.log(API_SECRET);
 	try {
 		// ======== Hash them to get the Authorization token ========
 
