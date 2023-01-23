@@ -1,6 +1,6 @@
 <script>
 	import gotoNextSong from '$functions/gotoNextSong';
-	import { player, playingSong, playingAlbum } from '$/stores';
+	import { player, playingSong, playingAlbum, posterSwiper } from '$/stores';
 	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -18,19 +18,22 @@
 	}
 
 	onMount(setupPlayer);
+
+	function openPoster() {
+		document.getElementById('poster-swiper').style.visibility = 'initial';
+		$posterSwiper.slideTo(1);
+		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+	}
 </script>
 
 <audio playsinline preload="metadata" bind:this={$player} />
 
 <playbar class:hide={!$playingSong.enclosureUrl || [`/poster`].find((r) => r === $page.route.id)}>
-	<a href="/poster">
-		<img
-			src={$playingSong.image ||
-				$playingSong.artwork ||
-				$playingAlbum.image ||
-				$playingAlbum.artwork}
-		/>
-	</a>
+	<img
+		on:click={openPoster}
+		src={$playingSong.image || $playingSong.artwork || $playingAlbum.image || $playingAlbum.artwork}
+	/>
+
 	<p>{$playingSong.title}</p>
 	<PlayPauseButton song={$playingSong} />
 </playbar>

@@ -1,5 +1,5 @@
 <script>
-	import { player, swiper, playerSaveTime } from '$/stores';
+	import { player, posterSwiper, playerSaveTime } from '$/stores';
 
 	let progress;
 	let handle;
@@ -32,8 +32,8 @@
 		$player.ontimeupdate = () => null;
 		trackMouse = true;
 		trackPosition = touch.clientX;
-		// $swiper.allowSlideNext = false;
-		// $swiper.allowSlidePrev = false;
+		// $posterSwiper.allowSlideNext = false;
+		// $posterSwiper.allowSlidePrev = false;
 
 		if (e.target !== handle) {
 			$player.currentTime = (touch.clientX / progress.clientWidth) * $player.duration;
@@ -57,8 +57,8 @@
 			$player.currentTime = $player.currentTime;
 			$playerSaveTime = 0;
 			$player.ontimeupdate = storedTimeUpdate;
-			// $swiper.allowSlideNext = true;
-			// $swiper.allowSlidePrev = true;
+			// $posterSwiper.allowSlideNext = true;
+			// $posterSwiper.allowSlidePrev = true;
 		}
 	}
 

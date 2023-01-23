@@ -10,4 +10,4 @@ export const player = writable();
 export const playerTime = writable(0);
 export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
-export const swiper = writable();
+export const posterSwiper = writable();
