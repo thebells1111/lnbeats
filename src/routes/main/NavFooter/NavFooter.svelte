@@ -1,5 +1,5 @@
 <nav>
-	<a href="/search">Search</a>
+	<a href="/library">Library</a>
 	<a href="/">Home</a>
 	<a href="/main">Main</a>
 </nav>

@@ -45,10 +45,10 @@ export async function connectToDatabase() {
 	return cached.conn;
 }
 
-export async function getCollection(collection) {
+export async function getLibrary(library) {
 	const dbConnection = await connectToDatabase();
 	const db = dbConnection.db;
-	return db.collection(collection);
+	return db.library(library);
 }
 
 export async function getDB() {

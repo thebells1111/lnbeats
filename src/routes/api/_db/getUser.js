@@ -1,4 +1,4 @@
-import { getCollection } from './connect';
+import { getLibrary } from './connect';
 
 import { validPassword } from '$functions/apiFunctions/validateEmail';
 import { encrypt } from '$functions/apiFunctions/ciphers';
@@ -6,9 +6,9 @@ import { encrypt } from '$functions/apiFunctions/ciphers';
 export default async function getUser(request) {
 	const body = typeof request.body === 'object' ? request.body : JSON.parse(request.body);
 	let fail = false;
-	const collection = await getCollection('users');
+	const library = await getLibrary('users');
 	let email = body.email;
-	let user = await collection.find({ email: email }).toArray();
+	let user = await library.find({ email: email }).toArray();
 	user = user[0];
 	if (user) {
 		let hash = await validPassword(body.pw, `${user.salt}`);

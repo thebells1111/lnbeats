@@ -1,16 +1,12 @@
 <script>
 	import { indexSearchResults } from '$/stores';
-	let searchQuery = 'able';
+	let searchQuery = '';
 	let searchInput;
 
 	async function searchIndex() {
-		console.log(searchQuery);
-
 		let url = `api/queryindex?q=${encodeURIComponent(
 			`/search/music/byterm?q=${searchQuery}&val=lightning`
 		)}`;
-
-		console.log(url);
 
 		const res = await fetch(url);
 		let data = await res.json();
@@ -19,11 +15,9 @@
 			data = JSON.parse(data);
 
 			if (data.status) {
-				$indexSearchResults = data.feeds;
+				$indexSearchResults = data.feeds.filter((feed) => !feed.title.includes('3Speak'));
 			}
 		} catch (error) {}
-
-		console.log($indexSearchResults);
 	}
 
 	function checkEnter(e) {
