@@ -4,6 +4,7 @@
 	import NextSong from '$buttons/player/NextSong.svelte';
 	import Rewind from '$buttons/player/Rewind.svelte';
 	import FastForward from '$buttons/player/FastForward.svelte';
+	import BoostButton from '$buttons/BoostButton.svelte';
 </script>
 
 <controls>
@@ -12,6 +13,7 @@
 	<PlayPauseButton size={50} />
 	<NextSong size={50} />
 	<!-- <FastForward size={50} /> -->
+	<BoostButton />
 </controls>
 
 <style>

@@ -66,6 +66,7 @@
 	img {
 		width: calc(100% - 16px);
 		border-radius: 8px;
+		max-width: 360px;
 	}
 
 	audio-progress {
