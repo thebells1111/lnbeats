@@ -2,23 +2,28 @@
 	import { playingSong, playingAlbum, player } from '$/stores';
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
+	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
 	$: console.log($playingAlbum);
 </script>
 
 <poster-container>
 	<poster>
+		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<img
 			src={$playingSong.image ||
 				$playingSong.artwork ||
 				$playingAlbum.image ||
 				$playingAlbum.artwork}
 		/>
-		<h3>{$playingSong.title}</h3>
-		<album-info>
-			<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
-			<band-name>{$playingAlbum.author}</band-name>
-		</album-info>
+
+		<below-poster-container>
+			<album-info>
+				<song-title>{$playingSong.title}</song-title>
+				<band-name>{$playingAlbum.author}</band-name>
+			</album-info>
+			<BoostButton />
+		</below-poster-container>
 		{#if $player?.src}
 			<audio-progress>
 				<time-display>
@@ -76,26 +81,34 @@
 		position: relative;
 	}
 
-	h3 {
-		margin: 8px 0;
+	album-title {
+		display: block;
+		margin: 8px;
+		font-weight: 600;
+	}
+
+	below-poster-container {
+		display: flex;
+		flex-grow: 1;
+		justify-content: space-between;
+		width: 100%;
 	}
 
 	album-info {
 		display: flex;
+		flex-direction: column;
 		width: 100%;
 		align-items: flex-start;
-		justify-content: space-between;
-		flex-grow: 1;
 	}
 
-	album-title {
-		display: block;
-		width: 50%;
+	song-title {
+		margin: 8px 0;
+		font-size: 1.33em;
+		font-weight: 650;
 	}
 
 	band-name {
 		display: block;
-		width: 50%;
-		text-align: right;
+		margin: 0 8px;
 	}
 </style>

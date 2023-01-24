@@ -1,10 +1,17 @@
 <script>
+	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import { requestProvider } from 'webln';
 	import confetti from 'canvas-confetti';
 	import { playingAlbum, playingSong, player } from '$/stores';
+	import { onMount } from 'svelte';
+	let _window;
 
-	let senderName = 'StevenB';
-	let boostagram = 'MSP Test Boost';
+	onMount(() => {
+		_window = window;
+	});
+
+	let senderName = 'The Dude';
+	let boostagram = 'The Dude Abides';
 	let satAmount = 100;
 	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
 
@@ -70,7 +77,7 @@
 
 			for (const dest of splitsDestinations) {
 				let record = getBaseRecord();
-				let amount = Math.round((dest.split / 100) * runningTotal);
+				let amount = Math.round((dest.split || 100 / 100) * runningTotal);
 				record.name = dest.name;
 				record.value_msat = amount * 1000;
 				if (amount >= 1) {
@@ -121,8 +128,24 @@
 	}
 </script>
 
-{#if window?.webln}
-	<button on:click={showBoost}>Boost</button>
+{#if _window?.webln}
+	<button on:click={showBoost}><RocketLaunch size={35} /></button>
 {:else}
 	Alby
 {/if}
+
+<style>
+	button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		padding: 0;
+		margin: 8px 0 0 0;
+		background-color: pink;
+		width: 60px;
+		height: 60px;
+		border-radius: 50px;
+		flex-shrink: 0;
+	}
+</style>

@@ -30,9 +30,14 @@
 
 <style>
 	button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border: none;
 		padding: 0;
 		margin: 0;
 		background-color: transparent;
+		width: 45px;
+		height: 45px;
 	}
 </style>

@@ -4,16 +4,14 @@
 	import NextSong from '$buttons/player/NextSong.svelte';
 	import Rewind from '$buttons/player/Rewind.svelte';
 	import FastForward from '$buttons/player/FastForward.svelte';
-	import BoostButton from '$buttons/BoostButton.svelte';
 </script>
 
 <controls>
-	<!-- <Rewind size={50} /> -->
-	<PreviousSong size={50} />
+	<Rewind size={30} />
+	<PreviousSong size={40} />
 	<PlayPauseButton size={50} />
-	<NextSong size={50} />
-	<!-- <FastForward size={50} /> -->
-	<BoostButton />
+	<NextSong size={40} />
+	<FastForward size={30} />
 </controls>
 
 <style>
@@ -23,5 +21,11 @@
 		justify-content: space-around;
 		width: 100%;
 		margin-top: 12px;
+	}
+
+	spacer {
+		display: block;
+		width: 45px;
+		height: 45px;
 	}
 </style>

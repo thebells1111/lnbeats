@@ -3,10 +3,21 @@
 	console.log(album);
 </script>
 
-<img src={album.art} />
+<album>
+	<img src={album.art} />
+	<album-info>
+		<p>{album.title}</p>
+	</album-info>
+</album>
 
 <style>
+	album {
+		display: flex;
+	}
 	img {
-		width: 100px;
+		min-width: 60px;
+		max-width: 60px;
+		max-height: 60px;
+		margin-right: 8px;
 	}
 </style>

@@ -1,4 +1,6 @@
 <script>
+	import BackArrowIcon from '$icons/BackArrow.svelte';
+	import SearchIcon from '$icons/Search.svelte';
 	import { page } from '$app/stores';
 
 	import { goto, afterNavigate } from '$app/navigation';
@@ -19,7 +21,7 @@
 
 <header>
 	{#if ![`/`, `/library`].find((r) => r === $page.route.id)}
-		<button on:click={navigateBack}>Back</button>
+		<button class="back-button" on:click={navigateBack}><BackArrowIcon size={30} /></button>
 	{/if}
 
 	{#if $page.route.id === '/search'}
@@ -27,13 +29,37 @@
 	{/if}
 
 	{#if $page.route.id === '/library'}
-		<a href="/search">Search</a>
+		<a href="/search"><SearchIcon size={30} /></a>
 	{/if}
 </header>
 
 <style>
 	header {
-		height: 50px;
-		background-color: var(--color-nav-bg-0);
+		min-height: 50px;
+		max-height: 50px;
+		display: flex;
+		align-items: center;
+	}
+
+	.back-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+		min-width: 45px;
+		height: 45px;
+		color: white;
+	}
+
+	a[href='/search'] {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--color-playbar-text-0);
+		height: 45px;
+		width: 45px;
 	}
 </style>

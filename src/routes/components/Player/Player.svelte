@@ -2,6 +2,7 @@
 	import gotoNextSong from '$functions/gotoNextSong';
 	import { player, playingSong, playingAlbum, posterSwiper } from '$/stores';
 	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
+	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
@@ -28,41 +29,7 @@
 
 <audio playsinline preload="metadata" bind:this={$player} />
 
-<playbar class:hide={!$playingSong.enclosureUrl || [`/poster`].find((r) => r === $page.route.id)}>
-	<img
-		on:click={openPoster}
-		src={$playingSong.image || $playingSong.artwork || $playingAlbum.image || $playingAlbum.artwork}
-	/>
-
-	<p>{$playingSong.title}</p>
-	<PlayPauseButton song={$playingSong} />
-</playbar>
+<PlayBar />
 
 <style>
-	playbar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 4px;
-		background-color: pink;
-	}
-
-	.hide {
-		display: none;
-	}
-
-	a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	p {
-		width: 100%;
-		padding: 0 8px;
-	}
-
-	img {
-		width: 50px;
-	}
 </style>

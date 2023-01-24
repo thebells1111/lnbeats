@@ -22,3 +22,16 @@
 		</li>
 	{/each}
 </ul>
+
+<style>
+	ul {
+		padding: 0;
+		margin: 4px 0;
+	}
+	li {
+		list-style-type: none;
+		padding: 4px;
+		margin: 0 4px;
+		border-bottom: 1px solid red;
+	}
+</style>
