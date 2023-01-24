@@ -32,9 +32,7 @@
 
 	<Player />
 
-	<footer>
-		<NavFooter />
-	</footer>
+	<NavFooter />
 
 	<poster id="poster-swiper">
 		<Swiper
@@ -67,6 +65,14 @@
 		flex-direction: column;
 	}
 
+	main {
+		max-width: 720px;
+		width: 100%;
+		overflow: auto;
+		margin: 0 auto;
+		flex-grow: 1;
+	}
+
 	poster {
 		position: absolute;
 		top: 0;
@@ -79,20 +85,5 @@
 	.hidden-slide {
 		background-color: transparent;
 		height: 100vh;
-	}
-
-	.poster-container {
-		background-color: white;
-		height: 100vh;
-	}
-
-	footer {
-		height: 50px;
-		background-color: var(--color-nav-bg-0);
-	}
-
-	main {
-		flex-grow: 1;
-		overflow: scroll;
 	}
 </style>
