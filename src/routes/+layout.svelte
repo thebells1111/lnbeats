@@ -55,6 +55,8 @@
 			<SwiperSlide><Poster /></SwiperSlide>
 		</Swiper>
 	</poster>
+	<div class="header-background" />
+	<div class="footer-background" />
 </app>
 
 <style>
@@ -63,6 +65,7 @@
 		width: 100vw;
 		display: flex;
 		flex-direction: column;
+		position: relative;
 	}
 
 	main {
@@ -85,5 +88,35 @@
 	.hidden-slide {
 		background-color: transparent;
 		height: 100vh;
+	}
+
+	.header-background {
+		position: absolute;
+		top: 0;
+		height: 100px;
+		width: 100%;
+		background-color: var(--color-bg-2);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-bg-0) 0%,
+			var(--color-bg-1) 40%,
+			var(--color-bg-2) 100%
+		);
+		z-index: -1;
+	}
+
+	.footer-background {
+		position: absolute;
+		bottom: 0;
+		height: 70px;
+		width: 100%;
+		background-color: var(--color-bg-2);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-bg-2) 0%,
+			var(--color-bg-0) 25%,
+			var(--color-bg-1) 100%
+		);
+		z-index: -1;
 	}
 </style>

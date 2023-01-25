@@ -7,26 +7,40 @@
 	--color-bg-2: hsl(0, 0%, 11%);
 	--color-theme-1: hsl(0, 0%, 84%);
 	--color-theme-2: #4075a6;
-	--color-text: rgba(0, 0, 0, 0.7);
 	--color-playbar-text-0: hsl(0, 0%, 84%);
+	--color-text-0: hsl(0, 0%, 100%);
+	--color-text-1: hsl(0, 0%, 75%);
+	--color-text-2: hsl(0, 0%, 50%);
+	--color-text-2: hsl(0, 0%, 25%);
 	--color-nav-bg-0: hsl(0, 0%, 17%);
-	--color-playbar-bg-0: hsl(0, 0%, 25%);
-	--color-nav-icon-1: hsl(0, 0%, 97%);
+	--color-playbar-bg-0: hsl(208, 100%, 22%);
+	--color-nav-icon-1: hsl(0, 0%, 92%);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
-	color: var(--color-text);
+	color: var(--color-text-0);
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
 }
 
 body {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
-	background-color: var(--color-bg-1);
+	background-color: var(--color-bg-2);
 	background-size: 100vw 100vh;
-	background-image: 
-		
-		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 5%, var(--color-bg-2) 15%);
+	
 }
 
 h1,
@@ -40,7 +54,7 @@ p {
 }
 
 a {
-	color: var(--color-theme-1);
+	color: var(--color-text-0);
 	text-decoration: none;
 }
 
@@ -48,14 +62,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-h1 {
-	font-size: 2rem;
-	text-align: center;
-}
 
-h2 {
-	font-size: 1rem;
-}
 
 pre {
 	font-size: 16px;
@@ -65,7 +72,7 @@ pre {
 	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
 	padding: 0.5em;
 	overflow-x: auto;
-	color: var(--color-text);
+	color: var(--color-text-0);
 }
 
 .text-column {

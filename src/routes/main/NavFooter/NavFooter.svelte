@@ -20,11 +20,11 @@
 	}
 
 	footer {
-		background-color: var(--color-nav-bg-0);
+		background-color: transparent;
 	}
 
 	a {
-		color: var(--color-playbar-text-0);
+		color: var(--color-text-0);
 		display: flex;
 		flex-direction: column;
 		align-items: center;

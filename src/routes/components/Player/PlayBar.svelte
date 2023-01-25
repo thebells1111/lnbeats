@@ -37,7 +37,6 @@
 		align-items: center;
 		background-color: var(--color-playbar-bg-0);
 		width: 100vw;
-		color: var(--color-playbar-text-0);
 		height: 60px;
 	}
 
@@ -65,10 +64,13 @@
 
 	song-title {
 		font-weight: 600;
+		color: var(--color-text-0);
 	}
 	album-title {
 		font-size: 0.9em;
 		padding-left: 4px;
+
+		color: var(--color-text-1);
 	}
 
 	img {

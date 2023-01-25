@@ -32,6 +32,6 @@
 		list-style-type: none;
 		padding: 4px;
 		margin: 0 4px;
-		border-bottom: 1px solid red;
+		border-bottom: 1px solid var(--color-text-2);
 	}
 </style>
