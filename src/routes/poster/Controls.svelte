@@ -4,14 +4,15 @@
 	import NextSong from '$buttons/player/NextSong.svelte';
 	import Rewind from '$buttons/player/Rewind.svelte';
 	import FastForward from '$buttons/player/FastForward.svelte';
+	let style = 'color:var(--color-player-icon-0)';
 </script>
 
 <controls>
-	<Rewind size={30} />
-	<PreviousSong size={40} />
-	<PlayPauseButton size={50} />
-	<NextSong size={40} />
-	<FastForward size={30} />
+	<Rewind size={30} {style} />
+	<PreviousSong size={40} {style} />
+	<PlayPauseButton size={50} {style} />
+	<NextSong size={40} {style} />
+	<FastForward size={30} {style} />
 </controls>
 
 <style>

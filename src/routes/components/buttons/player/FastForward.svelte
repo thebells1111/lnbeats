@@ -2,6 +2,7 @@
 	import { player } from '$/stores';
 	import NextSongIcon from '$icons/NextSong.svelte';
 	export let size = 30;
+	export let style;
 
 	function seekForward(event) {
 		event.preventDefault();
@@ -19,6 +20,7 @@
 	on:touchstart={seekForward}
 	on:touchend={stopSeekForward}
 	aria-label="Fast Forward"
+	{style}
 >
 	<NextSongIcon {size} />
 </button>

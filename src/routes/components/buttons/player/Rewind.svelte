@@ -2,6 +2,7 @@
 	import { player } from '$/stores';
 	import PreviousSongIcon from '$icons/PreviousSong.svelte';
 	export let size = 30;
+	export let style;
 	let rewindInterval;
 
 	function seekBackwards(event) {
@@ -24,6 +25,7 @@
 	on:touchstart={seekBackwards}
 	on:touchend={stopSeekBackwards}
 	aria-label="Rewind"
+	{style}
 >
 	<PreviousSongIcon {size} />
 </button>

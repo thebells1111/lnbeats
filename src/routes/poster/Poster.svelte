@@ -1,5 +1,5 @@
 <script>
-	import { playingSong, playingAlbum, player } from '$/stores';
+	import { playingSong, playingAlbum, player, posterSwiper } from '$/stores';
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
@@ -9,6 +9,14 @@
 
 <poster-container>
 	<poster>
+		<button
+			on:click={() => {
+				$posterSwiper.slideTo(0);
+				setTimeout(() => {
+					document.getElementById('poster-swiper').style.visibility = 'hidden';
+				}, 500);
+			}}>X</button
+		>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<img
 			src={$playingSong.image ||
@@ -32,7 +40,11 @@
 						<p>{convertTime($player.duration)}</p>
 					{/if}
 				</time-display>
-				<AudioProgressBar />
+				<AudioProgressBar
+					handleColor={'var(--color-progressbar-0)'}
+					elapsedColor={'var(--color-progressbar-0)'}
+					trackerColor={'var(--color-progressbar-1)'}
+				/>
 			</audio-progress>
 			<Controls />
 		{/if}
@@ -47,17 +59,22 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: flex-end;
+		position: relative;
 	}
 	poster {
 		width: calc(100% - 16px);
-		height: calc(100% - 32px);
+		height: calc(100%);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		padding: 16px 8px 8px 8px;
-		border-top: 1px solid black;
-		border-radius: 8px 8px 0 0;
-		background-color: white;
+		background-color: var(--color-poster-bg-0);
+		background-size: 100vw 100vh;
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
 	}
 
 	time-display {
@@ -83,7 +100,7 @@
 
 	album-title {
 		display: block;
-		margin: 8px;
+		margin: 0 8px 8px 8px;
 		font-weight: 600;
 	}
 
@@ -110,5 +127,16 @@
 	band-name {
 		display: block;
 		margin: 0 8px;
+	}
+
+	button {
+		align-self: flex-start;
+		margin: 0;
+		position: relative;
+		bottom: 8px;
+		font-weight: 700;
+		color: var(--color-text-0);
+		background-color: transparent;
+		border: none;
 	}
 </style>
