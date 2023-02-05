@@ -19,5 +19,6 @@
 		max-width: 60px;
 		max-height: 60px;
 		margin-right: 8px;
+		border-radius: 4px;
 	}
 </style>

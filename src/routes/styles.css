@@ -11,6 +11,10 @@
 	--color-progressbar-1: hsl(0, 0%, 97%);
 	--color-text-0: hsl(0, 0%, 97%);
 	--color-playbar-text-0: hsl(0, 0%, 84%);
+	--color-text-0: hsl(0, 0%, 100%);
+	--color-text-1: hsl(0, 0%, 75%);
+	--color-text-2: hsl(0, 0%, 50%);
+	--color-text-2: hsl(0, 0%, 25%);
 	--color-nav-bg-0: hsl(0, 0%, 17%);
 	--color-playbar-bg-0: hsl(0, 0%, 25%);
 	--color-nav-icon-0: hsl(0, 0%, 97%);	
@@ -21,16 +25,29 @@
 	--color-list-divider: rgba(255, 255, 255, 0.2);
 	font-family: var(--font-body);
 	color: var(--color-text-0);
+	color: var(--color-text-0);
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
 }
 
 body {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
-	background-color: var(--color-bg-1);
+	background-color: var(--color-bg-2);
 	background-size: 100vw 100vh;
-	background-image:		
-		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 5%, var(--color-bg-2) 15%);
+	
 }
 
 
@@ -46,7 +63,7 @@ p {
 }
 
 a {
-	color: var(--color-text-color-0);
+	color: var(--color-text-0);
 	text-decoration: none;
 }
 
@@ -54,17 +71,19 @@ a:hover {
 	text-decoration: underline;
 }
 
-h1 {
-	font-size: 2rem;
-	text-align: center;
-}
 
-h2 {
-	font-size: 1rem;
-}
 
 li{
 	cursor: pointer;
+pre {
+	font-size: 16px;
+	font-family: var(--font-mono);
+	background-color: rgba(255, 255, 255, 0.45);
+	border-radius: 3px;
+	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+	padding: 0.5em;
+	overflow-x: auto;
+	color: var(--color-text-0);
 }
 
 

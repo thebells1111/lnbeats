@@ -8,19 +8,6 @@
 	export let album;
 
 	function handlePlayButton() {
-		if (album) {
-			$playingAlbum = album;
-			$playingAlbum.title = $playingAlbum.title;
-			$playingAlbum.author = $playingAlbum.author;
-		}
-		console.log(album);
-		console.log($playingAlbum);
-		if ($player.src !== song.enclosureUrl) {
-			$player.pause();
-			$player.src = song.enclosureUrl;
-			$playingSong = song;
-		}
-
 		if ($player && $player.paused) {
 			$player.play();
 		} else if ($player && $player.src) {
