@@ -47,7 +47,8 @@ body {
 	background-attachment: fixed;
 	background-color: var(--color-bg-2);
 	background-size: 100vw 100vh;
-	
+	-webkit-tap-highlight-color: transparent !important;
+	outline: none !important;
 }
 
 
@@ -64,7 +65,6 @@ p {
 
 a {
 	color: var(--color-text-0);
-	text-decoration: none;
 }
 
 a:hover {
@@ -75,17 +75,7 @@ a:hover {
 
 li{
 	cursor: pointer;
-pre {
-	font-size: 16px;
-	font-family: var(--font-mono);
-	background-color: rgba(255, 255, 255, 0.45);
-	border-radius: 3px;
-	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-	padding: 0.5em;
-	overflow-x: auto;
-	color: var(--color-text-0);
 }
-
 
 
 

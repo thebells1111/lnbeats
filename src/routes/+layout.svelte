@@ -15,9 +15,9 @@
 		const albumDB = localforage.createInstance({
 			name: 'albumDB'
 		});
-		$playingAlbum = (await albumDB.getItem('1529389')) || {};
-		$playingSong = $playingAlbum.songs[0];
-		$player.src = $playingSong.enclosureUrl;
+		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
+		// $playingSong = $playingAlbum.songs[0];
+		// $player.src = $playingSong.enclosureUrl;
 	});
 </script>
 
@@ -108,13 +108,13 @@
 	.footer-background {
 		position: absolute;
 		bottom: 0;
-		height: 70px;
+		height: 60px;
 		width: 100%;
 		background-color: var(--color-bg-2);
 		background-image: linear-gradient(
 			180deg,
 			var(--color-bg-2) 0%,
-			var(--color-bg-0) 25%,
+			var(--color-bg-0) 10%,
 			var(--color-bg-1) 100%
 		);
 		z-index: -1;

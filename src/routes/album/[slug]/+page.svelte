@@ -1,9 +1,18 @@
 <script>
 	export let data = {};
-	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
-	import { selectedAlbum, playingAlbum, player, playingSong, posterSwiper } from '$/stores';
+	import {
+		selectedAlbum,
+		playingAlbum,
+		player,
+		playingSong,
+		posterSwiper,
+		library
+	} from '$/stores';
 	$selectedAlbum = data.album;
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
+
+	$: console.log($library);
+	$: console.log($selectedAlbum);
 
 	function playSong(song) {
 		$playingAlbum = $selectedAlbum;
@@ -33,9 +42,11 @@
 	<header>
 		<img src={$selectedAlbum.image || $selectedAlbum.artwork} />
 		<h2>{$selectedAlbum.title}</h2>
+		{#if !$library[$selectedAlbum.id]}
+			<AddToLibraryButton />
+		{/if}
 	</header>
 
-	<AddToLibraryButton />
 	{#each $selectedAlbum.songs as song}
 		<li on:click={playSong.bind(this, song)}>
 			<p>{song.title}</p>
@@ -46,6 +57,7 @@
 <style>
 	header {
 		display: flex;
+		position: relative;
 	}
 	ul {
 		margin: 0;

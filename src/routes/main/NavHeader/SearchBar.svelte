@@ -1,7 +1,12 @@
 <script>
 	import { indexSearchResults } from '$/stores';
+	import { afterNavigate } from '$app/navigation';
 	let searchQuery = '';
 	let searchInput;
+
+	afterNavigate(({ from }) => {
+		setTimeout(() => searchInput.select(), 100);
+	});
 
 	async function searchIndex() {
 		let url = `api/queryindex?q=${encodeURIComponent(
@@ -37,6 +42,7 @@
 		on:focus={() => {
 			searchInput.select();
 		}}
+		placeholder="find new music"
 	/>
 </div>
 
@@ -52,6 +58,25 @@
 		width: calc(100% - 32px);
 		height: calc(100% - 24px);
 		border-radius: 4px;
-		margin-left: 8px;
+		margin: 0 16px;
+		outline: 0;
+		border: none;
+		font-size: 1.1em;
+	}
+
+	input::placeholder {
+		text-align: center;
+		font-style: italic;
+	}
+
+	input:focus {
+		border-color: #66afe9;
+		outline: 0;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	}
+
+	::selection {
+		background: rgba(102, 175, 233, 0.6);
 	}
 </style>

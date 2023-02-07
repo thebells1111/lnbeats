@@ -10,7 +10,7 @@
 	function navigateBack() {
 		if (previousPage) {
 			goto(previousPage);
-		} else goto('/library');
+		} else goto('/discover');
 	}
 
 	afterNavigate(({ from }) => {
@@ -20,7 +20,7 @@
 </script>
 
 <header>
-	{#if ![`/`, `/library`].find((r) => r === $page.route.id)}
+	{#if ![`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}
 		<button class="back-button" on:click={navigateBack}><BackArrowIcon size={30} /></button>
 	{/if}
 
@@ -28,7 +28,7 @@
 		<SearchBar />
 	{/if}
 
-	{#if $page.route.id === '/library'}
+	{#if $page.route.id === '/discover'}
 		<a href="/search"><SearchIcon size={30} /></a>
 	{/if}
 </header>

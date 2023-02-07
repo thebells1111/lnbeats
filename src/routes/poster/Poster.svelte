@@ -4,6 +4,7 @@
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
+	import Close from '$icons/Close.svelte';
 	$: console.log($playingAlbum);
 </script>
 
@@ -15,8 +16,10 @@
 				setTimeout(() => {
 					document.getElementById('poster-swiper').style.visibility = 'hidden';
 				}, 500);
-			}}>X</button
+			}}
 		>
+			<Close size={24} />
+		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<img
 			src={$playingSong.image ||
@@ -138,5 +141,6 @@
 		color: var(--color-text-0);
 		background-color: transparent;
 		border: none;
+		padding: 0;
 	}
 </style>

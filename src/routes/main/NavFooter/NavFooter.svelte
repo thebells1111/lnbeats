@@ -1,12 +1,14 @@
 <script>
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
+	import HomeIcon from '$icons/Home.svelte';
+	import SearchIcon from '$icons/Search.svelte';
 </script>
 
 <footer>
 	<nav>
 		<a href="/library"> <LibraryMusic size={27} />Library</a>
-		<a href="/">Home</a>
-		<a href="/main">Main</a>
+		<a href="/"><HomeIcon size={27} />Home</a>
+		<a href="/search"><SearchIcon size={27} />Search</a>
 	</nav>
 </footer>
 
