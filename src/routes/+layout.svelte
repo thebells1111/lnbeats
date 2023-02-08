@@ -57,11 +57,13 @@
 	</poster>
 	<div class="header-background" />
 	<div class="footer-background" />
+	<div class="main-background" />
 </app>
 
 <style>
 	app {
 		height: 100vh;
+		max-width: 720px;
 		width: 100vw;
 		display: flex;
 		flex-direction: column;
@@ -118,5 +120,28 @@
 			var(--color-bg-1) 100%
 		);
 		z-index: -1;
+	}
+
+	.main-background {
+		background-attachment: fixed;
+		background-color: var(--color-bg-2);
+		z-index: -2;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+	}
+
+	@media (min-width: 722px) {
+		app {
+			height: calc(100vh - 16px);
+		}
+
+		.header-background {
+			border-radius: 8px 8px 0 0;
+		}
+
+		.footer-background {
+			border-radius: 0 0 8px 8px;
+		}
 	}
 </style>

@@ -36,8 +36,9 @@
 		justify-content: center;
 		align-items: center;
 		background-color: var(--color-playbar-bg-0);
-		width: 100vw;
+		width: 100%;
 		height: 60px;
+		cursor: pointer;
 	}
 
 	playbar-controls {

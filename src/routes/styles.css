@@ -5,6 +5,7 @@
 	--color-bg-0: hsl(208, 100%, 32%);
 	--color-bg-1: hsl(208, 100%, 22%);
 	--color-bg-2: hsl(0, 0%, 11%);
+	--color-bg-3: hsl(0, 0%, 15%);
 	--color-poster-bg-0: hsl(208, 100%, 15%);
 	--color-poster-bg-1: hsl(208, 100%, 6%);
 	--color-progressbar-0: hsl(208, 100%, 42%);
@@ -41,14 +42,20 @@
   }
 }
 
+
+
 body {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
-	background-color: var(--color-bg-2);
-	background-size: 100vw 100vh;
+	background-color: var(--color-bg-3);
 	-webkit-tap-highlight-color: transparent !important;
 	outline: none !important;
+	margin:0 auto;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	overflow:hidden
 }
 
 
@@ -83,6 +90,10 @@ input,
 button {
 	font-size: inherit;
 	font-family: inherit;
+}
+
+button{
+	cursor: pointer;
 }
 
 button:focus:not(:focus-visible) {

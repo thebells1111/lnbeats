@@ -5,6 +5,8 @@
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
 	import Close from '$icons/Close.svelte';
+	import BoostScreen from '../components/BoostScreen/BoostScreen.svelte';
+	let showBoost = false;
 	$: console.log($playingAlbum);
 </script>
 
