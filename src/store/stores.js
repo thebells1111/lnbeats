@@ -11,3 +11,4 @@ export const playerTime = writable(0);
 export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
 export const posterSwiper = writable();
+export const satsPerSong = writable(0);

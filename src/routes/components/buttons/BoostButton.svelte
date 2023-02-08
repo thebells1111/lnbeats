@@ -1,7 +1,7 @@
 <script>
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import BoostScreen from '../BoostScreen/BoostScreen.svelte';
-	import { requestProvider } from 'webln';
+	import { posterSwiper } from '$/stores';
 	import { onMount } from 'svelte';
 	let _window;
 	let showBoostScreen = false;
@@ -15,6 +15,7 @@
 	<button
 		on:click={() => {
 			showBoostScreen = true;
+			$posterSwiper.enabled = false;
 		}}
 	>
 		<RocketLaunch size={35} />

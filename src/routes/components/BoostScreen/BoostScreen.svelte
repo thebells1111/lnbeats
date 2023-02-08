@@ -1,15 +1,8 @@
 <script>
-	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import { requestProvider } from 'webln';
 	import confetti from 'canvas-confetti';
-	import { playingAlbum, playingSong, player } from '$/stores';
-	import { onMount } from 'svelte';
-	let _window;
+	import { playingAlbum, playingSong, player, posterSwiper, satsPerSong } from '$/stores';
 	export let showBoostScreen;
-
-	onMount(() => {
-		_window = window;
-	});
 
 	let senderName = 'The Dude';
 	let boostagram = 'The Dude Abides';
@@ -33,7 +26,7 @@
 		};
 	};
 
-	async function showBoost() {
+	async function sendBoost() {
 		try {
 			webln = await requestProvider();
 		} catch (err) {
@@ -65,11 +58,13 @@
 					}
 
 					try {
-						await webln.keysend({
+						let record = {
 							destination: dest.address,
 							amount: amount,
 							customRecords: customRecords
-						});
+						};
+						console.log(record);
+						// await webln.keysend(record);
 					} catch (err) {
 						alert(`error with  ${dest.name}:  ${err.message}`);
 					}
@@ -88,11 +83,13 @@
 					}
 
 					try {
-						await webln.keysend({
+						let record = {
 							destination: dest.address,
 							amount: amount,
 							customRecords: customRecords
-						});
+						};
+						console.log(record);
+						// await webln.keysend(record);
 					} catch (err) {
 						alert(`error with  ${dest.name}:  ${err.message}`);
 					}
@@ -131,8 +128,30 @@
 
 <blurred-background on:click|self={() => (showBoostScreen = false)}>
 	<card>
-		<h1>Boost Screen</h1>
-		<button on:click={() => (showBoostScreen = false)}>Clear</button>
+		<boostagram>
+			<input type="text" name="sender-name" placeholder="sender name" bind:value={senderName} />
+			<input type="number" name="boost-amount" placeholder="boost amount" bind:value={satAmount} />
+			<textarea placeholder="message" bind:value={boostagram} />
+			<boost-actions>
+				<button on:click={sendBoost}>Send</button>
+				<button
+					on:click={() => {
+						showBoostScreen = false;
+						$posterSwiper.enabled = true;
+					}}>Close</button
+				>
+			</boost-actions>
+		</boostagram>
+		<sats-per-song>
+			<input
+				type="number"
+				name="sats-per-song"
+				placeholder="send sats per song"
+				bind:value={$satsPerSong}
+			/>
+			<button>Save</button>
+			<p>Send this many sats whenever a song ends.</p>
+		</sats-per-song>
 	</card>
 </blurred-background>
 
@@ -150,13 +169,29 @@
 		backdrop-filter: blur(5px);
 	}
 
+	boost-actions {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	boostagram {
+		flex-grow: 1;
+	}
+
+	sats-per-song {
+	}
+
 	card {
 		height: calc(100% - 48px);
-		width: calc(100% - 24px);
+		width: calc(100% - 36px);
 		max-width: 380px;
 		max-height: 660px;
 		border-radius: 8px;
+		padding: 8px;
 		background-color: aliceblue;
 		color: red;
+		display: flex;
+		flex-direction: column;
 	}
 </style>
