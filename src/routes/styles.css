@@ -6,6 +6,7 @@
 	--color-bg-1: hsl(208, 100%, 22%);
 	--color-bg-2: hsl(0, 0%, 11%);
 	--color-bg-3: hsl(0, 0%, 15%);
+	--color-bg-boostagram-1:  hsl(0, 0%, 19%);
 	--color-poster-bg-0: hsl(208, 100%, 15%);
 	--color-poster-bg-1: hsl(208, 100%, 6%);
 	--color-progressbar-0: hsl(208, 100%, 42%);
@@ -16,11 +17,16 @@
 	--color-text-1: hsl(0, 0%, 75%);
 	--color-text-2: hsl(0, 0%, 50%);
 	--color-text-2: hsl(0, 0%, 25%);
+	--color-text-boost-cancel-0: hsla(0, 0%, 75%, .4);
 	--color-nav-bg-0: hsl(0, 0%, 17%);
 	--color-playbar-bg-0: hsl(0, 0%, 25%);
 	--color-nav-icon-0: hsl(0, 0%, 97%);	
 	--color-player-icon-0: var(--color-nav-icon-0);
-	--color-boost-icon-0: hsl(0, 0%, 4%);
+	--color-text-boost-button: hsl(0, 0%, 4%);
+	--color-bg-boost-button: pink;
+	--color-input-bg-0: hsla(208, 14%, 49%, .5);	
+	--color-input-text-0: hsl(0, 0%, 95%);
+	--color-input-text-1: hsl(0, 0%, 81%);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	--color-list-divider: rgba(255, 255, 255, 0.2);
@@ -94,6 +100,8 @@ button {
 
 button{
 	cursor: pointer;
+	border: none;
+	padding: 0;
 }
 
 button:focus:not(:focus-visible) {
@@ -111,4 +119,29 @@ button:focus:not(:focus-visible) {
 	position: absolute;
 	width: 1px;
 	white-space: nowrap;
+}
+
+input, textarea{	
+	color: var(--color-input-text-0);
+	border-radius: 4px;
+	outline: 0;
+	border: none;
+}
+
+input::placeholder {
+	color: var(--color-input-text-1)
+}
+
+
+
+input:focus, textarea:focus {
+	border-color: #66afe9;
+	border: 1px solid #66afe9;;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.8);
+}
+
+::selection {
+	background: #66afe9;
 }

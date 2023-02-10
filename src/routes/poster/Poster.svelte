@@ -113,7 +113,8 @@
 		display: flex;
 		flex-grow: 1;
 		justify-content: space-between;
-		width: 100%;
+		width: calc(100% - 4px);
+		padding-right: 16px;
 	}
 
 	album-info {

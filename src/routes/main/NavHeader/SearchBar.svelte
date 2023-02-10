@@ -62,21 +62,13 @@
 		outline: 0;
 		border: none;
 		font-size: 1.1em;
+		background-color: var(--color-input-bg-0);
 	}
 
 	input::placeholder {
 		text-align: center;
 		font-style: italic;
-	}
-
-	input:focus {
-		border-color: #66afe9;
-		outline: 0;
-		-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-	}
-
-	::selection {
-		background: rgba(102, 175, 233, 0.6);
+		font-weight: 300;
+		font-size: 0.8em;
 	}
 </style>

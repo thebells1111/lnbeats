@@ -4,7 +4,14 @@
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
-	import { playingSong, playingAlbum, player, posterSwiper } from '$/stores';
+	import {
+		playingSong,
+		playingAlbum,
+		player,
+		posterSwiper,
+		senderName,
+		satsPerBoost
+	} from '$/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
@@ -15,6 +22,12 @@
 		const albumDB = localforage.createInstance({
 			name: 'albumDB'
 		});
+		const boostDB = localforage.createInstance({
+			name: 'boostDB'
+		});
+
+		$senderName = await boostDB.getItem('senderName');
+		$satsPerBoost = (await boostDB.getItem('satsPerBoost')) || $satsPerBoost || 1000;
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosureUrl;

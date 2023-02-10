@@ -36,8 +36,8 @@
 		border: none;
 		padding: 0;
 		margin: 8px 0 0 0;
-		background-color: pink;
-		color: var(--color-boost-icon-0);
+		background-color: var(--color-bg-boost-button);
+		color: var(--color-text-boost-button);
 		width: 60px;
 		height: 60px;
 		border-radius: 50px;

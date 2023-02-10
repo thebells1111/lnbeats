@@ -6,7 +6,7 @@
 
 <button on:click={saveAlbum.bind(this, $selectedAlbum)}>
 	<Add
-		style={'color:var(--color-progressbar-0); z-index:2; filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.4))'}
+		style={'color:var(--color-progressbar-0); filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.4))'}
 		size={50}
 	/>
 </button>
@@ -26,14 +26,5 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	background {
-		position: absolute;
-		background-color: var(--color-bg-2);
-		display: block;
-		height: 30px;
-		width: 30px;
-		border-radius: 30px;
 	}
 </style>

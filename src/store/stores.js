@@ -12,3 +12,5 @@ export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
 export const posterSwiper = writable();
 export const satsPerSong = writable(0);
+export const satsPerBoost = writable(1000);
+export const senderName = writable('');
