@@ -24,6 +24,7 @@
 		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<img
+			id="poster-image"
 			src={$playingSong.image ||
 				$playingSong.artwork ||
 				$playingAlbum.image ||
