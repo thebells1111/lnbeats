@@ -1,10 +1,10 @@
 <script>
+	import { requestProvider } from 'webln';
 	import gotoNextSong from '$functions/gotoNextSong';
-	import { player, playingSong, playingAlbum, posterSwiper } from '$/stores';
-	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
+	import sendBoost from '$functions/sendBoost';
+	import { player, playingSong, playingAlbum, posterSwiper, satsPerSong } from '$/stores';
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 
 	function setupPlayer() {
 		$player.ontimeupdate = () => {
@@ -13,8 +13,21 @@
 		$player.onloadedmetadata = () => {
 			$player.duration = $player.duration;
 		};
-		$player.onended = () => {
+		$player.onended = async () => {
 			gotoNextSong();
+			if ($satsPerSong > 0) {
+				try {
+					webln = await requestProvider();
+					sendBoost({
+						webln: webln,
+						destinations: $playingSong?.value?.destinations || $playingAlbum?.value?.destinations,
+						satAmount: $satsPerSong
+					});
+				} catch (err) {
+					// Tell the user what went wrong
+					$satsPerSong = 0;
+				}
+			}
 		};
 	}
 

@@ -1,7 +1,9 @@
 <script>
 	import { requestProvider } from 'webln';
 	import localforage from 'localforage';
-	import confetti from 'canvas-confetti';
+	import throwConfetti from '$functions/throwConfetti';
+	import sendBoost from '$functions/sendBoost';
+
 	import {
 		playingAlbum,
 		playingSong,
@@ -19,122 +21,24 @@
 	let satAmount = $satsPerBoost;
 	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
 
-	const getBaseRecord = () => {
-		return {
-			podcast: $playingAlbum?.title,
-			feedID: $playingAlbum?.id,
-			itemID: $playingSong?.id,
-			episode: $playingSong?.title,
-			ts: Math.trunc($player.currentTime),
-			action: 'boost',
-			app_name: 'Podcast Index',
-			value_msat: 0,
-			value_msat_total: satAmount * 1000,
-			name: undefined,
-			message: boostagram,
-			sender_name: $senderName
-		};
-	};
-
-	async function sendBoost() {
+	async function handleBoost() {
 		try {
 			webln = await requestProvider();
+			throwConfetti();
+			sendBoost({
+				webln: webln,
+				destinations: destinations,
+				satAmount: satAmount,
+				boostagram: boostagram
+			});
+			await saveBoostData();
+			showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(
-				`${err.message} \r\n Try using Alby ( https://getalby.com/ ) on the Desktop \r\n or installing Blue Wallet ( https://bluewallet.io/ ) \r\n or Blixt Wallet ( https://blixtwallet.github.io/ )  \r\n on your mobile device.`
+				`${err.message} \r\n\r\nTry using \r\n  Alby ( https://getalby.com/ )\r\n    on the Desktop \r\nor\r\n  Kiwi Browser ( https://kiwibrowser.com/ )\r\n    on your mobile device. Then you can install Alby on Kiwi. \r\n \r\nYou can also install Blue Wallet ( https://bluewallet.io/ ) \r\n or Blixt Wallet ( https://blixtwallet.github.io/ )  \r\n on your mobile device.`
 			);
 		}
-
-		let feesDestinations = destinations.filter((v) => v.fee);
-		let splitsDestinations = destinations.filter((v) => !v.fee);
-		let runningTotal = satAmount;
-
-		if (webln) {
-			throwConfetti();
-			for (const dest of feesDestinations) {
-				let feeRecord = getBaseRecord();
-
-				let amount = Math.round((dest.split / 100) * satAmount);
-				if (amount) {
-					runningTotal -= amount;
-					feeRecord.name = dest.name;
-					feeRecord.value_msat = amount * 1000;
-
-					let customRecords = { '7629169': JSON.stringify(feeRecord) };
-
-					if (dest.customKey) {
-						customRecords[dest.customKey] = dest.customValue;
-					}
-
-					try {
-						let record = {
-							destination: dest.address,
-							amount: amount,
-							customRecords: customRecords
-						};
-						console.log(record);
-						// await webln.keysend(record);
-					} catch (err) {
-						alert(`error with  ${dest.name}:  ${err.message}`);
-					}
-				}
-			}
-
-			for (const dest of splitsDestinations) {
-				let record = getBaseRecord();
-				let amount = Math.round((dest.split || 100 / 100) * runningTotal);
-				record.name = dest.name;
-				record.value_msat = amount * 1000;
-				if (amount >= 1) {
-					let customRecords = { '7629169': JSON.stringify(record) };
-					if (dest.customKey) {
-						customRecords[dest.customKey] = dest.customValue;
-					}
-
-					try {
-						let record = {
-							destination: dest.address,
-							amount: amount,
-							customRecords: customRecords
-						};
-						console.log(record);
-						// await webln.keysend(record);
-					} catch (err) {
-						alert(`error with  ${dest.name}:  ${err.message}`);
-					}
-				}
-			}
-		}
-		await saveBoostData();
-		showBoostScreen = false;
-	}
-
-	function throwConfetti() {
-		let end = Date.now() + 0.1 * 1000;
-
-		let colors = ['#fa6060', '#faa560', '#faf760', '#b2fa60', '#60c1fa', '#7260fa', '#fa60f2'];
-
-		(function frame() {
-			confetti({
-				particleCount: 12,
-				angle: 60,
-				spread: 75,
-				origin: { x: 0, y: 0.9 },
-				colors: colors
-			});
-			confetti({
-				particleCount: 12,
-				angle: 120,
-				spread: 75,
-				origin: { x: 1, y: 0.9 },
-				colors: colors
-			});
-
-			if (Date.now() < end) {
-				requestAnimationFrame(frame);
-			}
-		})();
 	}
 
 	async function saveBoostData() {
@@ -143,6 +47,7 @@
 		});
 		boostDB.setItem('senderName', $senderName);
 		boostDB.setItem('satsPerBoost', satAmount);
+		boostDB.setItem('satsPerSong', $satsPerSong);
 	}
 </script>
 
@@ -176,7 +81,7 @@
 				<textarea placeholder="message" bind:value={boostagram} />
 			</label>
 			<boost-actions>
-				<button class="send" on:click={sendBoost}> <RocketLaunch size={35} /></button>
+				<button class="send" on:click={handleBoost}> <RocketLaunch size={35} /></button>
 			</boost-actions>
 		</boostagram>
 		<sats-per-song>
@@ -212,6 +117,19 @@
 		left: 0;
 		z-index: 99;
 		backdrop-filter: blur(5px);
+	}
+
+	card {
+		height: calc(100% - 48px);
+		width: calc(100% - 36px);
+		max-width: 380px;
+		max-height: 660px;
+		border-radius: 8px;
+		padding: 8px;
+		background-color: var(--color-bg-boostagram-1);
+		color: var(--color-text-0);
+		display: flex;
+		flex-direction: column;
 	}
 
 	boost-actions {
@@ -276,19 +194,6 @@
 		border-radius: 50px;
 	}
 
-	card {
-		height: calc(100% - 48px);
-		width: calc(100% - 36px);
-		max-width: 380px;
-		max-height: 660px;
-		border-radius: 8px;
-		padding: 8px;
-		background-color: var(--color-bg-boostagram-1);
-		color: var(--color-text-0);
-		display: flex;
-		flex-direction: column;
-	}
-
 	input {
 		background-color: var(--color-input-bg-0);
 		padding: 4px;
@@ -302,6 +207,7 @@
 		width: calc(100% - 16px);
 		margin-left: 4px;
 		background-color: var(--color-input-bg-0);
+		font-size: 1.3em;
 	}
 
 	p {

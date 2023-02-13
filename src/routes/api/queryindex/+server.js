@@ -2,12 +2,11 @@ import { json, error } from '@sveltejs/kit';
 import dotenv from 'dotenv';
 import crypto from 'crypto-browserify';
 
-if (!process.env.API_KEY) {
+if (!process.env.PI_API_KEY) {
 	dotenv.config();
 }
 
-const { API_KEY, API_SECRET1, API_SECRET2 } = process.env;
-const API_SECRET = API_SECRET1 + '#' + API_SECRET2; //this is a work around because teh secret has a '#' in it, and ENV sees that as a comment
+const { PI_API_KEY, PI_API_SECRET } = process.env;
 
 export async function GET({ url }) {
 	try {
@@ -16,7 +15,7 @@ export async function GET({ url }) {
 		var apiHeaderTime = Math.floor(Date.now() / 1000);
 		var sha1Algorithm = 'sha1';
 		var sha1Hash = crypto.createHash(sha1Algorithm);
-		var data4Hash = API_KEY + API_SECRET + apiHeaderTime;
+		var data4Hash = PI_API_KEY + PI_API_SECRET + apiHeaderTime;
 		sha1Hash.update(data4Hash);
 		var hash4Header = sha1Hash.digest('hex');
 
@@ -25,7 +24,7 @@ export async function GET({ url }) {
 			headers: {
 				// not needed right now, maybe in future:  "Content-Type": "application/json",
 				'X-Auth-Date': '' + apiHeaderTime,
-				'X-Auth-Key': API_KEY,
+				'X-Auth-Key': PI_API_KEY,
 				Authorization: hash4Header,
 				'User-Agent': 'CurioCaster'
 			}
@@ -34,7 +33,6 @@ export async function GET({ url }) {
 		let baseUrl = 'https://api.podcastindex.org/api/1.0/';
 		let q = url.searchParams.get('q') ?? '';
 		var url = baseUrl + q;
-		console.log(url);
 		const res = await fetch(url, options);
 
 		let response = await res.text();

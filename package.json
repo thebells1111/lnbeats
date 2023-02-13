@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^2.0.2",
 		"canvas-confetti": "^1.6.0",
 		"crypto-browserify": "^3.12.0",
 		"dotenv": "^16.0.3",
