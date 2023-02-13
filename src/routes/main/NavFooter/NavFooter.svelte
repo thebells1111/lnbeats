@@ -2,6 +2,13 @@
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
 	import HomeIcon from '$icons/Home.svelte';
 	import SearchIcon from '$icons/Search.svelte';
+	import { goto } from '$app/navigation';
+
+	async function handleAlby() {
+		let res = await fetch('/api/alby');
+		let data = await res.json();
+		console.log(data);
+	}
 </script>
 
 <footer>
@@ -9,6 +16,11 @@
 		<a href="/library"> <LibraryMusic size={27} />Library</a>
 		<a href="/"><HomeIcon size={27} />Home</a>
 		<a href="/search"><SearchIcon size={27} />Search</a>
+		<button on:click={handleAlby}>Alby</button>
+		<a
+			href="https://getalby.com/oauth?client_id=32dVOIuGiA&response_type=code&redirect_uri=http://localhost:3000/api/alby/auth&scope=account:read%20balance:read%20payments:send"
+			>Alby 2</a
+		>
 	</nav>
 </footer>
 
