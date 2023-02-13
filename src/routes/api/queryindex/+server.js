@@ -26,13 +26,14 @@ export async function GET({ url }) {
 				'X-Auth-Date': '' + apiHeaderTime,
 				'X-Auth-Key': PI_API_KEY,
 				Authorization: hash4Header,
-				'User-Agent': 'CurioCaster'
+				'User-Agent': 'MusicSideProject'
 			}
 		};
 
 		let baseUrl = 'https://api.podcastindex.org/api/1.0/';
 		let q = url.searchParams.get('q') ?? '';
 		var url = baseUrl + q;
+		console.log(url);
 		const res = await fetch(url, options);
 
 		let response = await res.text();
