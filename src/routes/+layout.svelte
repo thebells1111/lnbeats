@@ -25,6 +25,15 @@
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosureUrl;
+
+		let res = await fetch('/api/alby/refresh');
+		let data = await res.json();
+		console.log(data);
+		if (data.loggedIn) {
+			let res = await fetch('/api/alby/balance');
+			let data = await res.json();
+			console.log(data);
+		}
 	});
 </script>
 
