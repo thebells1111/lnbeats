@@ -71,7 +71,7 @@ export async function GET({ url, cookies }) {
 			throw redirect(302, '/');
 		}
 
-		console.error('alby err: ', err.response);
+		console.error('alby err: ', err);
 		throw error(500, { message: err.response?.data?.error_description });
 	}
 }

@@ -2,12 +2,22 @@
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
 	import HomeIcon from '$icons/Home.svelte';
 	import SearchIcon from '$icons/Search.svelte';
-	import { goto } from '$app/navigation';
+
+	import sendBoost from '$functions/sendBoost';
+	import { playingAlbum, playingSong } from '$/stores';
+	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
+
+	let satAmount = 100;
+	let boostagram = 'Music Side Project Alby Integration Test Boost';
 
 	async function handleAlby() {
-		let res = await fetch('/api/alby');
-		let data = await res.json();
-		console.log(data);
+		sendBoost({
+			webln: false,
+			destinations: destinations,
+			satAmount: satAmount,
+			boostagram: boostagram,
+			albyAPI: true
+		});
 	}
 </script>
 

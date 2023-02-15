@@ -1,7 +1,7 @@
 import { playingAlbum, playingSong, player, senderName } from '$/stores';
 import { get } from 'svelte/store';
 
-export default async function sendBoost({ webln, destinations, satAmount, boostagram }) {
+export default async function sendBoost({ webln, destinations, satAmount, boostagram, albyAPI }) {
 	console.log(satAmount);
 	let feesDestinations = destinations.filter((v) => v.fee);
 	let splitsDestinations = destinations.filter((v) => !v.fee);
@@ -29,7 +29,21 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					customRecords: customRecords
 				};
 				console.log(record);
-				await webln.keysend(record);
+				if (albyAPI) {
+					let res = await fetch('/api/alby/boost', {
+						method: 'POST',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(record)
+					});
+
+					let data = await res.json();
+					console.log(data);
+				} else {
+					await webln.keysend(record);
+				}
 			} catch (err) {
 				alert(`error with  ${dest.name}:  ${err.message}`);
 			}
@@ -54,7 +68,21 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					customRecords: customRecords
 				};
 				console.log(record);
-				await webln.keysend(record);
+				if (albyAPI) {
+					let res = await fetch('/api/alby/boost', {
+						method: 'POST',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(record)
+					});
+
+					let data = await res.json();
+					console.log(data);
+				} else {
+					await webln.keysend(record);
+				}
 			} catch (err) {
 				alert(`error with  ${dest.name}:  ${err.message}`);
 			}
