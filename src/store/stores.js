@@ -14,3 +14,9 @@ export const posterSwiper = writable();
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);
 export const senderName = writable('');
+export const user = writable({
+	name: '',
+	balance: 0,
+	loggedIn: false,
+	preferences: { wallet: 'albyApi' }
+});
