@@ -11,7 +11,8 @@
 		posterSwiper,
 		satsPerSong,
 		senderName,
-		satsPerBoost
+		satsPerBoost,
+		user
 	} from '$/stores';
 	export let showBoostScreen;
 	import Close from '$icons/CancelFilled.svelte';
@@ -23,13 +24,17 @@
 
 	async function handleBoost() {
 		try {
-			webln = await requestProvider();
+			let webln;
+			if (window?.webln) {
+				webln = await requestProvider();
+			}
 			throwConfetti();
 			sendBoost({
 				webln: webln,
 				destinations: destinations,
 				satAmount: satAmount,
-				boostagram: boostagram
+				boostagram: boostagram,
+				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
 			showBoostScreen = false;
@@ -45,8 +50,9 @@
 		const boostDB = localforage.createInstance({
 			name: 'boostDB'
 		});
+		$satsPerBoost = satAmount;
 		boostDB.setItem('senderName', $senderName);
-		boostDB.setItem('satsPerBoost', satAmount);
+		boostDB.setItem('satsPerBoost', $satsPerBoost);
 		boostDB.setItem('satsPerSong', $satsPerSong);
 	}
 </script>

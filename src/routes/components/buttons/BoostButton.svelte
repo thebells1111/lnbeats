@@ -4,20 +4,15 @@
 	import InstructionScreen from '../BoostScreen/InstructionScreen.svelte';
 	import { posterSwiper, user } from '$/stores';
 	import { onMount } from 'svelte';
-	let _window;
 	let showBoostScreen = false;
 	let showInstructionScreen = false;
-
-	onMount(() => {
-		_window = window;
-	});
 </script>
 
 <button
 	on:click={() => {
 		if (
-			(_window?.webln && $user.preferences.wallet === 'webln') ||
-			($user.loggedIn && $user.preferences.wallet === 'ablyApi')
+			(window?.webln && $user.preferences.wallet === 'webln') ||
+			($user.loggedIn && $user.preferences.wallet === 'albyApi')
 		) {
 			showBoostScreen = true;
 			$posterSwiper.enabled = false;

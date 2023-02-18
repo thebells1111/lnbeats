@@ -4,7 +4,7 @@
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
-	import { posterSwiper, senderName, satsPerBoost, satsPerSong } from '$/stores';
+	import { posterSwiper, senderName, satsPerBoost, satsPerSong, user } from '$/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
@@ -28,11 +28,15 @@
 
 		let res = await fetch('/api/alby/refresh');
 		let data = await res.json();
-		console.log(data);
 		if (data.loggedIn) {
 			let res = await fetch('/api/alby/balance');
 			let data = await res.json();
-			console.log(data);
+			$user.loggedIn = true;
+			$user.balance = data.balance.balance;
+			console.log($user);
+		} else {
+			$user.loggedIn = false;
+			$user.preferences.wallet = 'webln';
 		}
 	});
 </script>

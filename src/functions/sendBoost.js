@@ -1,8 +1,7 @@
 import { playingAlbum, playingSong, player, senderName } from '$/stores';
 import { get } from 'svelte/store';
 
-export default async function sendBoost({ webln, destinations, satAmount, boostagram, albyAPI }) {
-	console.log(satAmount);
+export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
 	let feesDestinations = destinations.filter((v) => v.fee);
 	let splitsDestinations = destinations.filter((v) => !v.fee);
 	let runningTotal = satAmount;
@@ -29,7 +28,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					customRecords: customRecords
 				};
 				console.log(record);
-				if (albyAPI) {
+				if (wallet === 'albyApi') {
 					let res = await fetch('/api/alby/boost', {
 						method: 'POST',
 						credentials: 'include',
@@ -41,7 +40,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 					let data = await res.json();
 					console.log(data);
-				} else {
+				} else if ((wallet = 'webln')) {
 					await webln.keysend(record);
 				}
 			} catch (err) {
@@ -68,7 +67,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					customRecords: customRecords
 				};
 				console.log(record);
-				if (albyAPI) {
+				if (wallet === 'albyApi') {
 					let res = await fetch('/api/alby/boost', {
 						method: 'POST',
 						credentials: 'include',
@@ -80,7 +79,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 					let data = await res.json();
 					console.log(data);
-				} else {
+				} else if ((wallet = 'webln')) {
 					await webln.keysend(record);
 				}
 			} catch (err) {

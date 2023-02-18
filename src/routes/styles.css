@@ -31,6 +31,7 @@
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	--color-list-divider: rgba(255, 255, 255, 0.2);
+	--color-scroll-bar: hsl(208, 40%, 22.5%);
 	font-family: var(--font-body);
 	color: var(--color-text-0);
 	color: var(--color-text-0);
@@ -145,4 +146,21 @@ input:focus, textarea:focus {
 
 ::selection {
 	background: #66afe9;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: var(--color-scroll-bar);
+	border-radius: 10px;
+}
+
+ul,
+div {
+	scrollbar-color: var(--color-scroll-bar) transparent;
+	scrollbar-width: thin;
 }
