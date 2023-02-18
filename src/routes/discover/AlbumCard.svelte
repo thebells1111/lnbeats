@@ -3,19 +3,22 @@
 </script>
 
 {#if album}
-	<card>
-		<img src={album.artwork || album.image} loading="lazy" width="75" height="75" />
-		<album-title>{album.title}</album-title>
-		<album-author>{album.author}</album-author>
-	</card>
+	<a href={`/album/${album.id}`}>
+		<card>
+			<img src={album.artwork || album.image} loading="lazy" width="115" height="115" />
+			<album-title>{album.title}</album-title>
+			<album-author>{album.author}</album-author>
+		</card>
+	</a>
 {/if}
 
 <style>
 	card {
 		display: flex;
 		flex-direction: column;
-		width: 100%;
 		width: 160px;
+		height: 160px;
+		max-width: calc(100% - 16px);
 		margin-bottom: 8px;
 		padding: 4px;
 		backdrop-filter: blur(14px);
@@ -24,9 +27,9 @@
 	}
 
 	img {
-		width: 75px;
+		width: 115px;
 		border-radius: 4px;
-		margin-bottom: 4px;
+		margin: 0 auto;
 	}
 
 	album-title,
@@ -35,12 +38,25 @@
 		white-space: nowrap;
 		overflow: hidden;
 		padding: 1px;
-		font-size: 0.9em;
+		font-size: 1.1em;
+		font-weight: 5500;
+	}
+
+	album-title {
+		margin-top: 4px;
 	}
 
 	album-author {
 		padding-left: 6px;
 		font-style: italic;
-		font-size: 0.8em;
+		font-size: 0.9em;
+	}
+
+	a,
+	a:hover {
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
