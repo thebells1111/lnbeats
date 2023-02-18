@@ -8,7 +8,7 @@ if (!process.env.PI_API_KEY) {
 
 const { PI_API_KEY, PI_API_SECRET } = process.env;
 
-console.log(PI_API_SECRET);
+console.log(PI_API_KEY);
 
 export async function GET({ url }) {
 	try {
@@ -39,7 +39,6 @@ export async function GET({ url }) {
 		const res = await fetch(url, options);
 
 		let response = await res.text();
-		console.log(response);
 
 		try {
 			let b = JSON.parse(response.body);
