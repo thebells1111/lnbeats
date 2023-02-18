@@ -37,6 +37,11 @@
 	color: var(--color-text-0);
 }
 
+html, body {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
   html {
     transform: rotate(-90deg);
@@ -50,10 +55,7 @@
   }
 }
 
-
-
 body {
-	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
 	background-color: var(--color-bg-3);
