@@ -4,7 +4,7 @@
 
 {#if album}
 	<card>
-		<img src={album.artwork || album.image} />
+		<img src={album.artwork || album.image} loading="lazy" width="75" height="75" />
 		<album-title>{album.title}</album-title>
 		<album-author>{album.author}</album-author>
 	</card>
