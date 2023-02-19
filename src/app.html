@@ -2,15 +2,84 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/fav.ico" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Charm&display=swap" rel="stylesheet" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+		<meta
+			name="description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="application-name" content="Music Side Project" />
+		<meta name="apple-mobile-web-app-title" content="Music Side Project" />
+		<meta name="theme-color" content="#333" />
+		<meta name="msapplication-navbutton-color" content="#333" />
+		<meta name="msapplication-TileColor" content="#333" />
+
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="msapplication-starturl" content="/" />
+
+		<link rel="manifest" href="/manifest.json" />
+
+		<meta name="robots" content="index,follow" />
+
+		<!-- Primary Meta Tags -->
+		<title>Music Side Project</title>
+		<meta name="title" content="Music Side Project" />
+		<meta
+			name="description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://musicsideproject.com/" />
+		<meta property="og:title" content="Music Side Project" />
+		<meta
+			property="og:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="og:image" content="https://musicsideproject.com/twitter-card.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://musicsideproject.com/" />
+		<meta property="twitter:title" content="Music Side Project" />
+		<meta
+			property="twitter:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="twitter:image" content="https://musicsideproject.com/twitter-card.png" />
+
+		<link rel="icon" href="%sveltekit.assets%/msp-icon-32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="%sveltekit.assets%/msp-icon-16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/msp-icon-32.png" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="512x512"
+			href="%sveltekit.assets%/msp-white-on-black-circle-512.png"
+		/>
+
+		<link
+			rel="apple-touch-icon"
+			sizes="192x192"
+			href="%sveltekit.assets%/msp-white-on-black-circle-192.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			type="image/png"
+			sizes="512x512"
+			href="%sveltekit.assets%/msp-white-on-black-circle-512.png"
+		/>
 
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
+		<div id="svelte-body" style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

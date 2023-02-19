@@ -61,6 +61,7 @@
 	poster-container {
 		width: 100%;
 		height: 100vh;
+		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -75,7 +76,6 @@
 		align-items: center;
 		padding: 16px 8px 8px 8px;
 		background-color: var(--color-poster-bg-0);
-		background-size: 100vw 100vh;
 		background-image: linear-gradient(
 			180deg,
 			var(--color-poster-bg-0) 33%,

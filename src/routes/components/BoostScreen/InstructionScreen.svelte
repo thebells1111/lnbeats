@@ -33,7 +33,7 @@
 
 		<a
 			class="alby-login"
-			href="https://getalby.com/oauth?client_id=32dVOIuGiA&response_type=code&redirect_uri=http://localhost:3000/api/alby/auth&scope=account:read%20balance:read%20payments:send"
+			href="https://getalby.com/oauth?client_id=BodItXraet&response_type=code&redirect_uri=https://musicsideproject.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
 		>
 			<img src="/alby.png" />
 			<h3>Log In or Create an account using Alby.</h3>
@@ -84,8 +84,12 @@
 	h2,
 	h3 {
 		text-align: center;
+		margin: 0;
 	}
 
+	h2 {
+		margin-top: 8px;
+	}
 	.alby-login {
 		display: flex;
 		flex-direction: column;
@@ -98,7 +102,7 @@
 	}
 
 	p {
-		margin: 16px;
+		margin: 8px 16px;
 	}
 
 	a {

@@ -13,12 +13,13 @@ if (!process.env.ALBY_ID) {
 const { ALBY_ID, ALBY_SECRET, ALBY_JWT } = process.env;
 
 export async function GET({ url, cookies }) {
+	console.log(ALBY_ID, ' ', ALBY_SECRET);
 	let newToken;
 	try {
 		let code = url.searchParams.get('code') ?? '';
 		var formData = new FormData();
 		formData.append('code', code);
-		formData.append('redirect_uri', 'http://localhost:3000/api/alby/auth');
+		formData.append('redirect_uri', 'https://musicsideproject.com/api/alby/auth');
 		formData.append('grant_type', 'authorization_code');
 		let resolve = await axios({
 			method: 'POST',

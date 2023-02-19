@@ -12,6 +12,13 @@
 	import Poster from './poster/Poster.svelte';
 
 	onMount(async () => {
+		const resizeOps = () => {
+			document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+		};
+
+		resizeOps();
+		window.addEventListener('resize', resizeOps);
+
 		const albumDB = localforage.createInstance({
 			name: 'albumDB'
 		});
@@ -38,11 +45,13 @@
 			$user.loggedIn = false;
 			$user.preferences.wallet = 'webln';
 		}
+		navigator.serviceWorker &&
+			navigator.serviceWorker.register('/serviceworker.js').then(function (registration) {});
 	});
 </script>
 
 <app>
-	{#if ![`/`, `/poster`].find((r) => r === $page.route.id)}
+	{#if ![`/`, `/poster`, '/discover'].find((r) => r === $page.route.id)}
 		<NavHeader />
 	{/if}
 
@@ -82,9 +91,9 @@
 
 <style>
 	app {
-		height: 100vh;
+		height: 100%;
 		max-width: 720px;
-		width: 100vw;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		position: relative;
