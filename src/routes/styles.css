@@ -12,12 +12,14 @@
 	--color-progressbar-0: hsl(208, 100%, 42%);
 	--color-progressbar-1: hsl(0, 0%, 97%);
 	--color-text-0: hsl(0, 0%, 97%);
+	--color-bg-support-button: hsl(234, 100%, 62%);
 	--color-playbar-text-0: hsl(0, 0%, 84%);
 	--color-text-0: hsl(0, 0%, 100%);
 	--color-text-1: hsl(0, 0%, 75%);
 	--color-text-2: hsl(0, 0%, 50%);
 	--color-text-3: hsl(0, 0%, 25%);
 	--color-text-4: hsl(208, 100%, 62%);
+	--color-text-support-button: hsl(0, 0%, 5%);
 	--color-text-boost-cancel-0: hsla(0, 0%, 75%, .4);
 	--color-nav-bg-0: hsl(0, 0%, 17%);
 	--color-playbar-bg-0: hsl(0, 0%, 25%);

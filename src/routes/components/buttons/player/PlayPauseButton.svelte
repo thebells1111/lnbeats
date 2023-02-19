@@ -5,9 +5,6 @@
 	export let size = 30;
 	export let style;
 
-	$: console.log($player.src);
-	$: console.log($playingSong);
-
 	function handlePlayButton() {
 		if ($player && $player.paused) {
 			$player.play();
