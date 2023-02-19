@@ -33,17 +33,22 @@
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosureUrl;
 
-		let res = await fetch('/api/alby/refresh');
-		let data = await res.json();
-		if (data.loggedIn) {
-			let res = await fetch('/api/alby/balance');
-			let data = await res.json();
-			$user.loggedIn = true;
-			$user.balance = data.balance.balance;
-			console.log($user);
-		} else {
-			$user.loggedIn = false;
+		if (window.webln) {
 			$user.preferences.wallet = 'webln';
+		}
+
+		if ($user.preferences.wallet === 'albyAPI') {
+			let res = await fetch('/api/alby/refresh');
+			let data = await res.json();
+			if (data.loggedIn) {
+				let res = await fetch('/api/alby/balance');
+				let data = await res.json();
+				$user.loggedIn = true;
+				$user.balance = data.balance.balance;
+				console.log($user);
+			}
+		} else if ($user.preferences.wallet === 'webln') {
+			$user.loggedIn = false;
 		}
 		navigator.serviceWorker &&
 			navigator.serviceWorker.register('/serviceworker.js').then(function (registration) {});

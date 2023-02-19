@@ -5,7 +5,7 @@
 	import { posterSwiper, user } from '$/stores';
 	import { onMount } from 'svelte';
 	let showBoostScreen = false;
-	let showInstructionScreen = true;
+	let showInstructionScreen = false;
 </script>
 
 <button
