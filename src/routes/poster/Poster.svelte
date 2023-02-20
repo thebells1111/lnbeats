@@ -60,8 +60,8 @@
 <style>
 	poster-container {
 		width: 100%;
-		height: calc(100vh - 16px);
-		height: calc(var(--vh, 1vh) * 100 - 16px);
+		height: calc(100vh);
+		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -86,6 +86,8 @@
 	@media (min-width: 722px) {
 		poster-container {
 			border-radius: 8px;
+			height: calc(100vh - 16px);
+			height: calc(var(--vh, 1vh) * 100 - 16px);
 		}
 		poster {
 			border-radius: 8px;
