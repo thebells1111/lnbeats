@@ -10,16 +10,6 @@
 
 	let satAmount = 100;
 	let boostagram = 'Music Side Project Alby Integration Test Boost';
-
-	async function handleAlby() {
-		sendBoost({
-			webln: false,
-			destinations: destinations,
-			satAmount: satAmount,
-			boostagram: boostagram,
-			albyAPI: true
-		});
-	}
 </script>
 
 <footer>

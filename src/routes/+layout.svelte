@@ -34,10 +34,10 @@
 		// $player.src = $playingSong.enclosureUrl;
 
 		if (window.webln) {
-			$user.preferences.wallet = 'webln';
+			$user.preferences.wallet === 'webln';
 		}
 
-		if ($user.preferences.wallet === 'albyAPI') {
+		if ($user.preferences.wallet === 'albyApi') {
 			let res = await fetch('/api/alby/refresh');
 			let data = await res.json();
 			if (data.loggedIn) {
