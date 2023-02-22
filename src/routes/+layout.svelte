@@ -55,7 +55,40 @@
 	});
 </script>
 
+<svelte:head>
+	{#if $page.route.id !== '/album/[slug]'}
+		<!-- Primary Meta Tags -->
+		<title>Music Side Project</title>
+		<meta name="title" content="Music Side Project" />
+		<meta
+			name="description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://musicsideproject.com/" />
+		<meta property="og:title" content="Music Side Project" />
+		<meta
+			property="og:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="og:image" content="https://musicsideproject.com/twitter-card.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://musicsideproject.com/" />
+		<meta property="twitter:title" content="Music Side Project" />
+		<meta
+			property="twitter:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="twitter:image" content="https://musicsideproject.com/twitter-card.png" />
+	{/if}
+</svelte:head>
+
 <app>
+	{$page.route.id}
 	{#if ![`/`, `/poster`, '/discover'].find((r) => r === $page.route.id)}
 		<NavHeader />
 	{/if}
