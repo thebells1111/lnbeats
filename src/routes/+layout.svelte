@@ -88,7 +88,6 @@
 </svelte:head>
 
 <app>
-	{$page.route.id}
 	{#if ![`/`, `/poster`, '/discover'].find((r) => r === $page.route.id)}
 		<NavHeader />
 	{/if}
