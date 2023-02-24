@@ -11,7 +11,7 @@
 	$selectedAlbum = data.album;
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 
-	$: console.log($library);
+	// $: console.log($library);
 	$: console.log($selectedAlbum);
 
 	function playSong(song) {

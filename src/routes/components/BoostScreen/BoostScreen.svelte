@@ -21,8 +21,8 @@
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
 	$: destinations =
-		$playingSong?.['@_value']?.['podcast:valueRecipient'] ||
-		$playingAlbum?.['@_value']?.['podcast:valueRecipient'];
+		$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
+		$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 
 	let showAppSupport = false;
 

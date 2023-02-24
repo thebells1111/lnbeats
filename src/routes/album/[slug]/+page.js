@@ -26,11 +26,6 @@ export async function load({ params, fetch }) {
 			throw error(404, 'Not found');
 		}
 
-		console.log(albumData);
-
-		let url = `/api/queryindex?q=${encodeURIComponent(`/episodes/byfeedid?id=${params.slug}`)}`;
-
-		console.log();
 		const res = await fetch(`/api/proxy?q=${albumData.feed.url}`);
 		let data = await res.text();
 
@@ -38,6 +33,10 @@ export async function load({ params, fetch }) {
 		let feed = xml2Json.rss.channel;
 
 		if (feed) {
+			if (feed.item?.[0]?.['podcast:episode']) {
+				feed.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
+			}
+
 			albumData.feed.songs = [].concat(feed.item);
 			albumData.feed.live = [].concat(data.liveItem);
 			return { album: albumData.feed };

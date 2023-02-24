@@ -2,6 +2,7 @@ import { playingAlbum, playingSong, player, senderName } from '$/stores';
 import { get } from 'svelte/store';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
+	console.log(destinations);
 	let feesDestinations = destinations.filter((v) => v.fee);
 	let splitsDestinations = destinations.filter((v) => !v.fee);
 	let runningTotal = satAmount;

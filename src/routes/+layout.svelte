@@ -29,6 +29,11 @@
 		$senderName = await boostDB.getItem('senderName');
 		$satsPerBoost = (await boostDB.getItem('satsPerBoost')) || $satsPerBoost || 1000;
 		$satsPerSong = (await boostDB.getItem('satsPerSong')) || $satsPerSong || 0;
+
+		if (window?.webln) {
+			$user.preferences.wallet = 'webln';
+		}
+
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosure['@_url'];
