@@ -8,6 +8,8 @@ if (!process.env.PI_API_KEY) {
 
 const { PI_API_KEY, PI_API_SECRET } = process.env;
 
+console.log(PI_API_KEY);
+
 export async function GET({ url }) {
 	try {
 		// ======== Hash them to get the Authorization token ========

@@ -60,7 +60,8 @@
 <style>
 	poster-container {
 		width: 100%;
-		height: 100vh;
+		height: calc(100vh);
+		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -75,12 +76,22 @@
 		align-items: center;
 		padding: 16px 8px 8px 8px;
 		background-color: var(--color-poster-bg-0);
-		background-size: 100vw 100vh;
 		background-image: linear-gradient(
 			180deg,
 			var(--color-poster-bg-0) 33%,
 			var(--color-poster-bg-1) 66%
 		);
+	}
+
+	@media (min-width: 722px) {
+		poster-container {
+			border-radius: 8px;
+			height: calc(100vh - 16px);
+			height: calc(var(--vh, 1vh) * 100 - 16px);
+		}
+		poster {
+			border-radius: 8px;
+		}
 	}
 
 	time-display {

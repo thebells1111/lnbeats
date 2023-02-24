@@ -2,6 +2,14 @@
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
 	import HomeIcon from '$icons/Home.svelte';
 	import SearchIcon from '$icons/Search.svelte';
+
+	import sendBoost from '$functions/sendBoost';
+	import BoostButton from '$buttons/BoostButton.svelte';
+	import { playingAlbum, playingSong } from '$/stores';
+	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
+
+	let satAmount = 100;
+	let boostagram = 'Music Side Project Alby Integration Test Boost';
 </script>
 
 <footer>

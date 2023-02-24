@@ -4,8 +4,6 @@
 	import Pause from '$icons/Pause.svelte';
 	export let size = 30;
 	export let style;
-	export let song = $playingSong;
-	export let album;
 
 	function handlePlayButton() {
 		if ($player && $player.paused) {
@@ -19,7 +17,7 @@
 
 {#if $player}
 	<button on:click={handlePlayButton} aria-label="Play Pause" {style}>
-		{#if $player.src !== song.enclosure['@_url']}
+		{#if $player.src !== $playingSong.enclosure['@_url']}
 			<Play {size} />
 		{:else if $player.paused}
 			<Play {size} />

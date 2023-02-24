@@ -11,7 +11,8 @@
 		posterSwiper,
 		satsPerSong,
 		senderName,
-		satsPerBoost
+		satsPerBoost,
+		user
 	} from '$/stores';
 	export let showBoostScreen;
 	import Close from '$icons/CancelFilled.svelte';
@@ -23,15 +24,33 @@
 		$playingSong?.['@_value']?.['podcast:valueRecipient'] ||
 		$playingAlbum?.['@_value']?.['podcast:valueRecipient'];
 
+	let showAppSupport = false;
+
+	let appDestination = [
+		{
+			address: '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
+			customKey: '696969',
+			customValue: 'UzrnTK2oEHR55gw7Djmb',
+			name: 'Music Side Project',
+			split: 100,
+			type: 'node'
+		}
+	];
+
 	async function handleBoost() {
 		try {
-			webln = await requestProvider();
+			let webln;
+			if (window?.webln) {
+				webln = await requestProvider();
+			}
 			throwConfetti();
+			console.log(showAppSupport ? appDestination : destinations);
 			sendBoost({
 				webln: webln,
-				destinations: destinations,
+				destinations: showAppSupport ? appDestination : destinations,
 				satAmount: satAmount,
-				boostagram: boostagram
+				boostagram: boostagram,
+				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
 			showBoostScreen = false;
@@ -47,12 +66,14 @@
 		const boostDB = localforage.createInstance({
 			name: 'boostDB'
 		});
+		$satsPerBoost = satAmount;
 		boostDB.setItem('senderName', $senderName);
-		boostDB.setItem('satsPerBoost', satAmount);
+		boostDB.setItem('satsPerBoost', $satsPerBoost);
 		boostDB.setItem('satsPerSong', $satsPerSong);
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <blurred-background on:click|self={() => (showBoostScreen = false)}>
 	<button
 		class="close"
@@ -64,6 +85,9 @@
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
+		{#if showAppSupport}
+			<h2>Thanks for Supporting<br />Music Side Project</h2>
+		{/if}
 		<boostagram>
 			<label>
 				<p>Sender Name</p>
@@ -83,27 +107,43 @@
 				<textarea placeholder="message" bind:value={boostagram} />
 			</label>
 			<boost-actions>
+				{#if !showAppSupport}
+					<button
+						on:click={() => {
+							showAppSupport = true;
+						}}
+						class="support-button"
+					>
+						<span>Support</span> <span>MSP</span>
+					</button>
+				{:else}
+					<support-placeholder />
+				{/if}
 				<button class="send" on:click={handleBoost}> <RocketLaunch size={35} /></button>
 			</boost-actions>
 		</boostagram>
-		<sats-per-song>
-			<label>
-				<p>Send this many sats after a song ends.</p>
-				<input
-					type="number"
-					name="sats-per-song"
-					placeholder="send sats per song"
-					bind:value={$satsPerSong}
-				/>
-			</label>
-			<button
-				class="save"
-				on:click={async () => {
-					await saveBoostData();
-					showBoostScreen = false;
-				}}>Save</button
-			>
-		</sats-per-song>
+		{#if !showAppSupport}
+			<sats-per-song>
+				<label>
+					<p>Send this many sats after a song ends.</p>
+					<input
+						type="number"
+						name="sats-per-song"
+						placeholder="send sats per song"
+						bind:value={$satsPerSong}
+					/>
+				</label>
+				<button
+					class="save"
+					on:click={async () => {
+						await saveBoostData();
+						showBoostScreen = false;
+					}}>Save</button
+				>
+			</sats-per-song>
+		{:else}
+			<p class="support">Send us your praise, complaints, and suggestions.</p>
+		{/if}
 	</card>
 </blurred-background>
 
@@ -137,7 +177,20 @@
 	boost-actions {
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: space-between;
+	}
+
+	h2 {
+		text-align: center;
+		margin: 0 0 8px 0;
+		font-size: 1.8em;
+	}
+
+	.support {
+		margin-bottom: 16px;
+		text-align: center;
+		font-size: 0.85em;
+		font-style: italic;
 	}
 
 	boostagram {
@@ -194,6 +247,27 @@
 		width: 60px;
 		height: 60px;
 		border-radius: 50px;
+	}
+
+	button.support-button {
+		margin: 0;
+		padding: 8px;
+		width: 60px;
+		height: 60px;
+		border-radius: 50px;
+		font-weight: 550;
+		background-color: var(--color-bg-support-button);
+		color: var(--color-text-support-button);
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.support-button span:first-of-type {
+		margin-top: 4px;
+		font-size: 0.85em;
 	}
 
 	input {

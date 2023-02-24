@@ -4,7 +4,7 @@
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
-	import { posterSwiper, senderName, satsPerBoost, satsPerSong } from '$/stores';
+	import { posterSwiper, senderName, satsPerBoost, satsPerSong, user } from '$/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
@@ -12,6 +12,13 @@
 	import Poster from './poster/Poster.svelte';
 
 	onMount(async () => {
+		const resizeOps = () => {
+			document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+		};
+
+		resizeOps();
+		window.addEventListener('resize', resizeOps);
+
 		const albumDB = localforage.createInstance({
 			name: 'albumDB'
 		});
@@ -28,8 +35,40 @@
 	});
 </script>
 
+<svelte:head>
+	{#if $page.route.id !== '/album/[slug]'}
+		<!-- Primary Meta Tags -->
+		<title>Music Side Project</title>
+		<meta name="title" content="Music Side Project" />
+		<meta
+			name="description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://musicsideproject.com/" />
+		<meta property="og:title" content="Music Side Project" />
+		<meta
+			property="og:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="og:image" content="https://musicsideproject.com/twitter-card.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://musicsideproject.com/" />
+		<meta property="twitter:title" content="Music Side Project" />
+		<meta
+			property="twitter:description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+		<meta property="twitter:image" content="https://musicsideproject.com/twitter-card.png" />
+	{/if}
+</svelte:head>
+
 <app>
-	{#if ![`/`, `/poster`].find((r) => r === $page.route.id)}
+	{#if ![`/`, `/poster`, '/discover'].find((r) => r === $page.route.id)}
 		<NavHeader />
 	{/if}
 
@@ -69,9 +108,9 @@
 
 <style>
 	app {
-		height: 100vh;
+		height: 100%;
 		max-width: 720px;
-		width: 100vw;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		position: relative;

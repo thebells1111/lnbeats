@@ -1,25 +1,24 @@
 <script>
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import BoostScreen from '../BoostScreen/BoostScreen.svelte';
-	import { posterSwiper } from '$/stores';
+	import InstructionScreen from '../BoostScreen/InstructionScreen.svelte';
+	import { posterSwiper, user } from '$/stores';
 	import { onMount } from 'svelte';
-	let _window;
 	let showBoostScreen = false;
-
-	onMount(() => {
-		_window = window;
-	});
+	let showInstructionScreen = false;
 </script>
 
 <button
 	on:click={() => {
-		if (_window?.webln) {
+		if (
+			(window?.webln && $user.preferences.wallet === 'webln') ||
+			($user.loggedIn && $user.preferences.wallet === 'albyApi')
+		) {
 			showBoostScreen = true;
 			$posterSwiper.enabled = false;
 		} else {
-			alert(
-				`You don't have a wallet enabled!!!\r\n\r\nTry using \r\n  Alby ( https://getalby.com/ )\r\n    on the Desktop \r\nor\r\n  Kiwi Browser ( https://kiwibrowser.com/ )\r\n    on your mobile device. Then you can install Alby on Kiwi. \r\n \r\nYou can also install Blue Wallet ( https://bluewallet.io/ ) \r\n or Blixt Wallet ( https://blixtwallet.github.io/ )  \r\n on your mobile device.`
-			);
+			showInstructionScreen = true;
+			$posterSwiper.enabled = false;
 		}
 	}}
 >
@@ -28,6 +27,8 @@
 
 {#if showBoostScreen}
 	<BoostScreen bind:showBoostScreen />
+{:else if showInstructionScreen}
+	<InstructionScreen bind:showInstructionScreen />
 {/if}
 
 <style>

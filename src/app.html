@@ -2,12 +2,56 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Charm&display=swap" rel="stylesheet" />
+
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+		<meta
+			name="description"
+			content="Lightning Network Enabled, Decentralized Music For The Masses"
+		/>
+
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="application-name" content="Music Side Project" />
+		<meta name="apple-mobile-web-app-title" content="Music Side Project" />
+		<meta name="theme-color" content="#333" />
+		<meta name="msapplication-navbutton-color" content="#333" />
+		<meta name="msapplication-TileColor" content="#333" />
+
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="msapplication-starturl" content="/" />
+
+		<link rel="manifest" href="/manifest.json" />
+
+		<meta name="robots" content="index,follow" />
+
+		<link rel="icon" href="%sveltekit.assets%/msp-icon-32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="%sveltekit.assets%/msp-icon-16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/msp-icon-32.png" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="512x512"
+			href="%sveltekit.assets%/msp-white-on-black-circle-512.png"
+		/>
+
+		<link
+			rel="apple-touch-icon"
+			sizes="192x192"
+			href="%sveltekit.assets%/msp-white-on-black-circle-192.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			type="image/png"
+			sizes="512x512"
+			href="%sveltekit.assets%/msp-white-on-black-circle-512.png"
+		/>
 
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
+		<div id="svelte-body" style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
