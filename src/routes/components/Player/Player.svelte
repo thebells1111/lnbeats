@@ -20,7 +20,8 @@
 					webln = await requestProvider();
 					sendBoost({
 						webln: webln,
-						destinations: $playingSong?.value?.destinations || $playingAlbum?.value?.destinations,
+						destinations:
+							$playingSong?.['@_value']?.destinations || $playingAlbum?.['@_value']?.destinations,
 						satAmount: $satsPerSong
 					});
 				} catch (err) {

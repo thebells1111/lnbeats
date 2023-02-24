@@ -19,9 +19,9 @@
 		$playingAlbum.title = $playingAlbum.title;
 		$playingAlbum.author = $playingAlbum.author;
 
-		if ($player.src !== song.enclosureUrl) {
+		if ($player.src !== song.enclosure['@_url']) {
 			$player.pause();
-			$player.src = song.enclosureUrl;
+			$player.src = song.enclosure['@_url'];
 			$playingSong = song;
 		}
 

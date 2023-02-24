@@ -19,7 +19,9 @@
 
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
-	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
+	$: destinations =
+		$playingSong?.['@_value']?.['podcast:valueRecipient'] ||
+		$playingAlbum?.['@_value']?.['podcast:valueRecipient'];
 
 	async function handleBoost() {
 		try {

@@ -1,5 +1,17 @@
 import { error } from '@sveltejs/kit';
 import { get } from 'svelte/store';
+import { parse } from 'fast-xml-parser';
+import { decode } from 'html-entities';
+
+const parserOptions = {
+	attributeNamePrefix: '@_',
+	//attrNodeName: false,
+	//textNodeName : "#text",
+	ignoreAttributes: false,
+	ignoreNameSpace: false,
+	attrValueProcessor: (val, attrName) => decode(val), //default is a=>a
+	tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
+};
 
 export async function load({ params, fetch }) {
 	try {
@@ -14,16 +26,20 @@ export async function load({ params, fetch }) {
 			throw error(404, 'Not found');
 		}
 
+		console.log(albumData);
+
 		let url = `/api/queryindex?q=${encodeURIComponent(`/episodes/byfeedid?id=${params.slug}`)}`;
 
-		const res = await fetch(url);
-		let data = await res.json();
+		console.log();
+		const res = await fetch(`/api/proxy?q=${albumData.feed.url}`);
+		let data = await res.text();
 
-		data = JSON.parse(data);
+		let xml2Json = parse(data, parserOptions);
+		let feed = xml2Json.rss.channel;
 
-		if (data.status) {
-			albumData.feed.songs = data.items;
-			albumData.feed.live = data.liveItems;
+		if (feed) {
+			albumData.feed.songs = [].concat(feed.item);
+			albumData.feed.live = [].concat(data.liveItem);
 			return { album: albumData.feed };
 		}
 	} catch (err) {

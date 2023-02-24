@@ -5,6 +5,6 @@ export default function loadSong(song) {
 	let _player = get(player);
 	_player.pause();
 	playingSong.set(song);
-	_player.src = get(playingSong).enclosureUrl;
+	_player.src = get(playingSong).enclosure['@_url'];
 	setTimeout(() => _player.play(), 200);
 }

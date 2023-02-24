@@ -25,6 +25,9 @@
 		"dotenv": "^16.0.3",
 		"localforage": "^1.10.0",
 		"swiper": "^8.4.6",
-		"webln": "^0.3.2"
+		"webln": "^0.3.2",
+		"fast-xml-parser": "^3.20.3",
+		"html-entities": "^2.3.2",
+		"parse-srt": "^1.0.0-alpha"
 	}
 }

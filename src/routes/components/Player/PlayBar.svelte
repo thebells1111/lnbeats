@@ -13,7 +13,7 @@
 </script>
 
 <playbar
-	class:hide={!$playingSong.enclosureUrl || [`/poster`].find((r) => r === $page.route.id)}
+	class:hide={!$playingSong?.enclosure?.['@_url'] || [`/poster`].find((r) => r === $page.route.id)}
 	on:click={openPoster}
 >
 	<playbar-controls>

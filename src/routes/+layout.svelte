@@ -24,7 +24,7 @@
 		$satsPerSong = (await boostDB.getItem('satsPerSong')) || $satsPerSong || 0;
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
-		// $player.src = $playingSong.enclosureUrl;
+		// $player.src = $playingSong.enclosure['@_url'];
 	});
 </script>
 
