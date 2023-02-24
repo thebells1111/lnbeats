@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram }) {
 	console.log(satAmount);
+	console.log;
 	let feesDestinations = destinations.filter((v) => v.fee);
 	let splitsDestinations = destinations.filter((v) => !v.fee);
 	let runningTotal = satAmount;
@@ -10,53 +11,53 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 	for (const dest of feesDestinations) {
 		let feeRecord = getBaseRecord(satAmount, boostagram);
 
-		let amount = Math.round((dest.split / 100) * satAmount);
+		let amount = Math.round((dest['@_split'] / 100) * satAmount);
 		if (amount) {
 			runningTotal -= amount;
-			feeRecord.name = dest.name;
+			feeRecord.name = dest['@_name'];
 			feeRecord.value_msat = amount * 1000;
 
 			let customRecords = { 7629169: JSON.stringify(feeRecord) };
 
-			if (dest.customKey) {
-				customRecords[dest.customKey] = dest.customValue;
+			if (dest['@_customKey']) {
+				customRecords[dest['@_customKey']] = dest['@_customValue'];
 			}
 
 			try {
 				let record = {
-					destination: dest.address,
+					destination: dest['@_address'],
 					amount: amount,
 					customRecords: customRecords
 				};
 				console.log(record);
 				await webln.keysend(record);
 			} catch (err) {
-				alert(`error with  ${dest.name}:  ${err.message}`);
+				alert(`error with  ${dest['@_name']}:  ${err.message}`);
 			}
 		}
 	}
 
 	for (const dest of splitsDestinations) {
 		let record = getBaseRecord(satAmount, boostagram);
-		let amount = Math.round((dest.split / 100) * runningTotal);
-		record.name = dest.name;
+		let amount = Math.round((dest['@_split'] / 100) * runningTotal);
+		record.name = dest['@_name'];
 		record.value_msat = amount * 1000;
 		if (amount >= 1) {
 			let customRecords = { 7629169: JSON.stringify(record) };
-			if (dest.customKey) {
-				customRecords[dest.customKey] = dest.customValue;
+			if (dest['@_customKey']) {
+				customRecords[dest['@_customKey']] = dest['@_customValue'];
 			}
 
 			try {
 				let record = {
-					destination: dest.address,
+					destination: dest['@_address'],
 					amount: amount,
 					customRecords: customRecords
 				};
 				console.log(record);
 				await webln.keysend(record);
 			} catch (err) {
-				alert(`error with  ${dest.name}:  ${err.message}`);
+				alert(`error with  ${dest['@_name']}:  ${err.message}`);
 			}
 		}
 	}
