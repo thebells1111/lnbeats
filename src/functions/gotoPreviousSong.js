@@ -3,8 +3,14 @@ import { get } from 'svelte/store';
 import loadSong from './loadSong';
 
 export default function gotoPreviousSong() {
-	let songIndex = get(playingAlbum).songs.findIndex((song) => song.id === get(playingSong).id);
-	if (songIndex > 0) {
-		loadSong(get(playingAlbum).songs[songIndex - 1]);
+	let album = get(playingAlbum);
+	let currentSong = get(playingSong);
+	if (album?.songs && currentSong?.enclosure) {
+		let songIndex = album.songs.findIndex(
+			(song) => song.enclosure['@_url'] === currentSong.enclosure['@_url']
+		);
+		if (songIndex > 0) {
+			loadSong(album.songs[songIndex - 1]);
+		}
 	}
 }
