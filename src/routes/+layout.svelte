@@ -32,6 +32,10 @@
 
 		if (window?.webln) {
 			$user.preferences.wallet = 'webln';
+		} else {
+			let res = await fetch('/api/alby/refresh');
+			let data = await res.json();
+			$user.loggedIn = data.loggedIn;
 		}
 
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
