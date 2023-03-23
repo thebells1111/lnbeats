@@ -1,10 +1,23 @@
 <script>
 	import { requestProvider } from 'webln';
-	import gotoNextSong from '$functions/gotoNextSong';
 	import sendBoost from '$functions/sendBoost';
+	import loadSong from '$functions/loadSong';
 	import { player, playingSong, playingAlbum, posterSwiper, satsPerSong } from '$/stores';
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
+
+	function gotoNextSong() {
+		let album = $playingAlbum;
+		let currentSong = $playingSong;
+		if (album?.songs && currentSong?.enclosure) {
+			let songIndex = album.songs.findIndex(
+				(song) => song.enclosure['@_url'] === currentSong.enclosure['@_url']
+			);
+			if (songIndex > -1 && songIndex < album.songs.length - 1) {
+				loadSong(album.songs[songIndex + 1]);
+			}
+		}
+	}
 
 	function setupPlayer() {
 		$player.ontimeupdate = () => {
