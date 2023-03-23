@@ -27,8 +27,10 @@
 			id="poster-image"
 			src={$playingSong.image ||
 				$playingSong.artwork ||
+				$playingSong?.['itunes:image']?.['@_href'] ||
 				$playingAlbum.image ||
-				$playingAlbum.artwork}
+				$playingAlbum.artwork ||
+				$playingAlbum?.['itunes:image']?.['@_href']}
 		/>
 
 		<below-poster-container>
