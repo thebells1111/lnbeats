@@ -4,7 +4,9 @@
 	let albumList = [];
 
 	onMount(async () => {
-		const res = await fetch(`api/queryindex?q=podcasts/bymedium?medium=music`);
+		const res = await fetch(
+			`api/queryindex?q=podcasts/bymedium?medium=music&max=1000&val=lightning`
+		);
 		let data = JSON.parse(await res.json());
 		albumList = data.feeds || data.feed || [];
 		albumList = albumList.filter(({ id }) => id !== 5718023).reverse();
