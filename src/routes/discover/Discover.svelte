@@ -5,12 +5,23 @@
 
 	onMount(async () => {
 		const res = await fetch(
-			`api/queryindex?q=podcasts/bymedium?medium=music&max=1000&val=lightning`
+			`api/queryindex?q=${encodeURIComponent(
+				'podcasts/bymedium?medium=music&max=1000&val=lightning'
+			)}`
 		);
 		let data = JSON.parse(await res.json());
 		albumList = data.feeds || data.feed || [];
-		albumList = albumList.filter(({ id }) => id !== 5718023).reverse();
+		//this removes 100% Retro Live Feed
+		albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
 	});
+
+	function shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	}
 </script>
 
 <header>
