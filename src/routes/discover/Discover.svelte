@@ -13,6 +13,12 @@
 		albumList = data.feeds || data.feed || [];
 		//this removes 100% Retro Live Feed
 		albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
+		const ccRes = await fetch(
+			`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
+		);
+		let ccData = JSON.parse(await ccRes.json());
+		console.log(ccData);
+		albumList = [ccData.feed].concat(albumList);
 	});
 
 	function shuffleArray(array) {

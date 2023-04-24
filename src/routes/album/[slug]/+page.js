@@ -38,7 +38,8 @@ export async function load({ params, fetch }) {
 			}
 
 			albumData.feed.songs = [].concat(feed.item);
-			albumData.feed.live = [].concat(data.liveItem);
+			albumData.feed.live = data.liveItem ? [].concat(data.liveItem) : undefined;
+
 			return { album: albumData.feed };
 		}
 	} catch (err) {

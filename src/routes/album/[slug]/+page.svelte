@@ -12,23 +12,77 @@
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 
 	// $: console.log($library);
-	$: console.log($selectedAlbum);
-
-	function playSong(song) {
-		$playingAlbum = $selectedAlbum;
-		$playingAlbum.title = $playingAlbum.title;
-		$playingAlbum.author = $playingAlbum.author;
-
+	// $: console.log($selectedAlbum);
+	const timeValueSplitBlock = [];
+	$: console.log(timeValueSplitBlock);
+	async function playSong(song) {
 		if ($player.src !== song.enclosure['@_url']) {
 			$player.pause();
 			$player.src = song.enclosure['@_url'];
 			$playingSong = song;
 		}
 
-		$player.play();
+		$playingAlbum = $selectedAlbum;
+		$playingAlbum.title = $playingAlbum.title;
+		$playingAlbum.author = $playingAlbum.author;
 
-		$player.paused = $player.paused;
+		const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
+
+		async function handleSplit(split) {
+			if (split['podcast:remoteItem']) {
+				const feedGuid = split['podcast:remoteItem']?.['@_feedGuid'];
+				const itemGuid = split['podcast:remoteItem']?.['@_itemGuid'];
+				const startTime = split?.['@_startTime'];
+				const duration = split?.['@_duration'];
+				const remoteSplit = split?.['@_remoteSplit'];
+				const feedGuidUrl = `/api/queryindex?q=${encodeURIComponent(
+					`/podcasts/byguid?guid=${feedGuid}`
+				)}`;
+				const itemsUrl = `/api/queryindex?q=${encodeURIComponent(
+					`/episodes/bypodcastguid?guid=${feedGuid}`
+				)}`;
+
+				let splitInfo = {};
+				let valueBlock = { feed: null, item: null };
+
+				const [feedData, itemsData] = await Promise.all([
+					fetch(feedGuidUrl).then((res) => res.json()),
+					fetch(itemsUrl).then((res) => res.json())
+				]).catch((error) => {
+					console.error('Error:', error);
+				});
+
+				let feed = JSON.parse(feedData)?.feed;
+				splitInfo.album = feed?.title;
+				splitInfo.artist = feed?.author;
+				splitInfo.startTime = startTime;
+				splitInfo.duration = duration;
+				splitInfo.remoteSplit = remoteSplit;
+				valueBlock.feed = feed?.value;
+
+				let items = JSON.parse(itemsData)?.items;
+				let item = items?.find((v) => v.guid === itemGuid);
+				splitInfo.song = item?.title;
+				valueBlock.item = item?.value;
+
+				splitInfo.valueBlock = valueBlock.item || valueBlock.feed;
+				return splitInfo;
+			}
+		}
+
+		if (splits.length > 0) {
+			handleSplit(splits[0]).then((splitInfo) => {
+				timeValueSplitBlock[0] = splitInfo;
+			});
+		}
+
+		$player.play();
 		openPoster();
+
+		for (let i = 1; i < splits.length; i++) {
+			let split = splits[i];
+			timeValueSplitBlock[i] = await handleSplit(split);
+		}
 	}
 
 	function openPoster() {
