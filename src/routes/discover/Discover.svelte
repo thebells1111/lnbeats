@@ -13,12 +13,12 @@
 		albumList = data.feeds || data.feed || [];
 		//this removes 100% Retro Live Feed
 		albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
-		const ccRes = await fetch(
-			`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
-		);
-		let ccData = JSON.parse(await ccRes.json());
-		console.log(ccData);
-		albumList = [ccData.feed].concat(albumList);
+		// const ccRes = await fetch(
+		// 	`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
+		// );
+		// let ccData = JSON.parse(await ccRes.json());
+		// console.log(ccData);
+		// albumList = [ccData.feed].concat(albumList);
 	});
 
 	function shuffleArray(array) {
@@ -32,7 +32,7 @@
 
 <header>
 	<h2>Discover</h2>
-	<img src="/msp-header.png" alt="music side project logo" />
+	<img src="/lnbeats-header.png" alt="ln beats logo" />
 </header>
 
 <ul>
@@ -53,7 +53,7 @@
 	}
 	img {
 		text-align: center;
-		width: 60px;
+		width: 150px;
 		margin-top: 4px;
 	}
 

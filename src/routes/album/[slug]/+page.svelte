@@ -6,15 +6,15 @@
 		player,
 		playingSong,
 		posterSwiper,
-		library
+		library,
+		timeValueSplitBlock
 	} from '$/stores';
 	$selectedAlbum = data.album;
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 
 	// $: console.log($library);
 	// $: console.log($selectedAlbum);
-	const timeValueSplitBlock = [];
-	$: console.log(timeValueSplitBlock);
+	$: console.log($timeValueSplitBlock);
 	async function playSong(song) {
 		if ($player.src !== song.enclosure['@_url']) {
 			$player.pause();
@@ -72,7 +72,7 @@
 
 		if (splits.length > 0) {
 			handleSplit(splits[0]).then((splitInfo) => {
-				timeValueSplitBlock[0] = splitInfo;
+				$timeValueSplitBlock[0] = splitInfo;
 			});
 		}
 
@@ -81,7 +81,7 @@
 
 		for (let i = 1; i < splits.length; i++) {
 			let split = splits[i];
-			timeValueSplitBlock[i] = await handleSplit(split);
+			$timeValueSplitBlock[i] = await handleSplit(split);
 		}
 	}
 
@@ -95,20 +95,17 @@
 <svelte:head>
 	{#if $selectedAlbum}
 		<meta name="description" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="og:site_name" content="Music Side Project" />
+		<meta property="og:site_name" content="LN Beats" />
 		<meta property="og:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="og:description" content="Listen on Music Side Project" />
+		<meta property="og:description" content="Listen on LN Beats" />
 		<meta property="og:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
-		<meta property="og:url" content={`https://musicsideproject.com/album/${$selectedAlbum.id}`} />
+		<meta property="og:url" content={`https://lnbeats.com/album/${$selectedAlbum.id}`} />
 
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="twitter:description" content="Listen on Music Side Project" />
+		<meta property="twitter:description" content="Listen on LN Beats" />
 		<meta property="twitter:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
-		<meta
-			property="twitter:url"
-			content={`https://musicsideproject.com/album/${$selectedAlbum.id}`}
-		/>
+		<meta property="twitter:url" content={`https://lnbeats.com/album/${$selectedAlbum.id}`} />
 	{/if}
 </svelte:head>
 

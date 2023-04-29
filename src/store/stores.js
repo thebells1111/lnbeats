@@ -20,3 +20,7 @@ export const user = writable({
 	loggedIn: false,
 	preferences: { wallet: 'albyApi' }
 });
+
+export const timeValueSplitBlock = writable([]);
+export const currentSplitDestinations = writable();
+export const webln = writable();

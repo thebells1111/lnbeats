@@ -9,7 +9,7 @@
 	$: destinations = $playingSong?.value?.destinations || $playingAlbum?.value?.destinations;
 
 	let satAmount = 100;
-	let boostagram = 'Music Side Project Alby Integration Test Boost';
+	let boostagram = 'LN Beats Alby Integration Test Boost';
 </script>
 
 <footer>

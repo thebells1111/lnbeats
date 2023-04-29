@@ -10,6 +10,7 @@
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
+	import { webln } from '$/stores';
 
 	onMount(async () => {
 		const resizeOps = () => {
@@ -30,14 +31,14 @@
 		$satsPerBoost = (await boostDB.getItem('satsPerBoost')) || $satsPerBoost || 1000;
 		$satsPerSong = (await boostDB.getItem('satsPerSong')) || $satsPerSong || 0;
 
-		if (window?.webln) {
-			$user.preferences.wallet = 'webln';
-		} else {
-			let res = await fetch('/api/alby/refresh');
-			let data = await res.json();
-			$user.loggedIn = data.loggedIn;
-		}
+		let res = await fetch('/api/alby/refresh');
+		let data = await res.json();
+		$user.loggedIn = data.loggedIn;
 
+		if (window?.webln) {
+			// $user.preferences.wallet = 'webln';
+			$webln = window.webln;
+		}
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosure['@_url'];
@@ -47,8 +48,8 @@
 <svelte:head>
 	{#if $page.route.id !== '/album/[slug]'}
 		<!-- Primary Meta Tags -->
-		<title>Music Side Project</title>
-		<meta name="title" content="Music Side Project" />
+		<title>LN Beats</title>
+		<meta name="title" content="LN Beats" />
 		<meta
 			name="description"
 			content="Lightning Network Enabled, Decentralized Music For The Masses"
@@ -56,23 +57,23 @@
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://musicsideproject.com/" />
-		<meta property="og:title" content="Music Side Project" />
+		<meta property="og:url" content="https://lnbeats.com/" />
+		<meta property="og:title" content="LN Beats" />
 		<meta
 			property="og:description"
 			content="Lightning Network Enabled, Decentralized Music For The Masses"
 		/>
-		<meta property="og:image" content="https://musicsideproject.com/twitter-card.png" />
+		<meta property="og:image" content="https://lnbeats.com/twitter-card.png" />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://musicsideproject.com/" />
-		<meta property="twitter:title" content="Music Side Project" />
+		<meta property="twitter:url" content="https://lnbeats.com/" />
+		<meta property="twitter:title" content="LN Beats" />
 		<meta
 			property="twitter:description"
 			content="Lightning Network Enabled, Decentralized Music For The Masses"
 		/>
-		<meta property="twitter:image" content="https://musicsideproject.com/twitter-card.png" />
+		<meta property="twitter:image" content="https://lnbeats.com/twitter-card.png" />
 	{/if}
 </svelte:head>
 

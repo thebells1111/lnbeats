@@ -28,7 +28,7 @@ export async function GET({ url }) {
 				'X-Auth-Date': '' + apiHeaderTime,
 				'X-Auth-Key': PI_API_KEY,
 				Authorization: hash4Header,
-				'User-Agent': 'MusicSideProject'
+				'User-Agent': 'lnbeats'
 			}
 		};
 

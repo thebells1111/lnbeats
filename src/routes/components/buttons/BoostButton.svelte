@@ -2,7 +2,7 @@
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import BoostScreen from '../BoostScreen/BoostScreen.svelte';
 	import InstructionScreen from '../BoostScreen/InstructionScreen.svelte';
-	import { posterSwiper, user } from '$/stores';
+	import { posterSwiper, user, webln } from '$/stores';
 	import { onMount } from 'svelte';
 	let showBoostScreen = false;
 	let showInstructionScreen = false;
@@ -11,7 +11,7 @@
 <button
 	on:click={() => {
 		if (
-			(window?.webln && $user.preferences.wallet === 'webln') ||
+			($webln && $user.preferences.wallet === 'webln') ||
 			($user.loggedIn && $user.preferences.wallet === 'albyApi')
 		) {
 			showBoostScreen = true;

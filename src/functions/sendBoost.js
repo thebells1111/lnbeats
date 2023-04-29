@@ -98,7 +98,7 @@ const getBaseRecord = (satAmount, boostagram) => {
 		episode: get(playingSong)?.title,
 		ts: Math.trunc(player.currentTime),
 		action: 'boost',
-		app_name: 'Music Side Project',
+		app_name: 'LN Beats',
 		value_msat: 0,
 		value_msat_total: satAmount * 1000,
 		name: undefined,

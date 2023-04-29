@@ -1,5 +1,4 @@
 <script>
-	import { requestProvider } from 'webln';
 	import localforage from 'localforage';
 	import throwConfetti from '$functions/throwConfetti';
 	import sendBoost from '$functions/sendBoost';
@@ -12,7 +11,9 @@
 		satsPerSong,
 		senderName,
 		satsPerBoost,
-		user
+		user,
+		webln,
+		currentSplitDestinations
 	} from '$/stores';
 	export let showBoostScreen;
 	import Close from '$icons/CancelFilled.svelte';
@@ -21,6 +22,7 @@
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
 	$: destinations =
+		$currentSplitDestinations ||
 		$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
 		$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 
@@ -31,7 +33,7 @@
 			address: '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
 			customKey: '696969',
 			customValue: 'UzrnTK2oEHR55gw7Djmb',
-			name: 'Music Side Project',
+			name: 'LN Beats',
 			split: 100,
 			type: 'node'
 		}
@@ -39,14 +41,10 @@
 
 	async function handleBoost() {
 		try {
-			let webln;
-			if (window?.webln) {
-				webln = await requestProvider();
-			}
 			throwConfetti();
 			console.log(showAppSupport ? appDestination : destinations);
 			sendBoost({
-				webln: webln,
+				webln: $webln,
 				destinations: showAppSupport ? appDestination : destinations,
 				satAmount: satAmount,
 				boostagram: boostagram,
@@ -86,7 +84,7 @@
 	</button>
 	<card>
 		{#if showAppSupport}
-			<h2>Thanks for Supporting<br />Music Side Project</h2>
+			<h2>Thanks for Supporting<br />LN Beats</h2>
 		{/if}
 		<boostagram>
 			<label>

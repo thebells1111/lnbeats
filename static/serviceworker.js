@@ -1,4 +1,4 @@
-var cacheName = 'msp-cache-' + Date.now();
+var cacheName = 'lnbeats-cache-' + Date.now();
 var filesToCache = ['/index.html'];
 self.addEventListener('install', function (e) {
 	// e.waitUntil(

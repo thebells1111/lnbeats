@@ -1,21 +1,7 @@
 <script>
-	import { requestProvider } from 'webln';
-	import localforage from 'localforage';
-	import throwConfetti from '$functions/throwConfetti';
-	import sendBoost from '$functions/sendBoost';
-
-	import {
-		playingAlbum,
-		playingSong,
-		player,
-		posterSwiper,
-		satsPerSong,
-		senderName,
-		satsPerBoost
-	} from '$/stores';
+	import { posterSwiper } from '$/stores';
 	export let showInstructionScreen;
 	import Close from '$icons/CancelFilled.svelte';
-	import RocketLaunch from '$icons/RocketLaunch.svelte';
 </script>
 
 <blurred-background on:click|self={() => (showInstructionScreen = false)}>
@@ -33,7 +19,7 @@
 
 		<a
 			class="alby-login"
-			href="https://getalby.com/oauth?client_id=BodItXraet&response_type=code&redirect_uri=https://musicsideproject.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
+			href="https://getalby.com/oauth?client_id=BodItXraet&response_type=code&redirect_uri=https://lnbeats.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
 		>
 			<img src="/alby.png" />
 			<h3>Log In or Create an account using Alby.</h3>
