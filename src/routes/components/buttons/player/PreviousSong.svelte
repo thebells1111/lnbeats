@@ -1,7 +1,7 @@
 <script>
-	// import gotoPreviousSong from '$functions/gotoPreviousSong';
 	import loadSong from '$functions/loadSong';
 	import SkipPrevious from '$icons/SkipPrevious.svelte';
+	import { playingIndex } from '$/stores';
 	export let size = 30;
 	export let style;
 
@@ -11,11 +11,9 @@
 		let album = $playingAlbum;
 		let currentSong = $playingSong;
 		if (album?.songs && currentSong?.enclosure) {
-			let songIndex = album.songs.findIndex(
-				(song) => song.enclosure['@_url'] === currentSong.enclosure['@_url']
-			);
-			if (songIndex > 0) {
-				loadSong(album.songs[songIndex - 1]);
+			if ($playingIndex > 0) {
+				$playingIndex = $playingIndex - 1;
+				loadSong(album.songs[$playingIndex]);
 			}
 		}
 	}

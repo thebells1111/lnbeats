@@ -3,7 +3,7 @@
 </script>
 
 {#if album}
-	<a href={`/album/${album.id}`}>
+	<a href={`/album/${album.podcastGuid}`}>
 		<card>
 			<img src={album.artwork || album.image} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>

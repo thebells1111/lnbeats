@@ -5,17 +5,15 @@
 	export let size = 30;
 	export let style;
 
-	import { playingAlbum, playingSong } from '$/stores';
+	import { playingAlbum, playingSong, playingIndex } from '$/stores';
 
 	function gotoNextSong() {
 		let album = $playingAlbum;
 		let currentSong = $playingSong;
 		if (album?.songs && currentSong?.enclosure) {
-			let songIndex = album.songs.findIndex(
-				(song) => song.enclosure['@_url'] === currentSong.enclosure['@_url']
-			);
-			if (songIndex > -1 && songIndex < album.songs.length - 1) {
-				loadSong(album.songs[songIndex + 1]);
+			if ($playingIndex > -1 && $playingIndex < album.songs.length - 1) {
+				$playingIndex = $playingIndex + 1;
+				loadSong(album.songs[$playingIndex]);
 			}
 		}
 	}

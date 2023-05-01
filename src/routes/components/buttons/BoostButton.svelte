@@ -1,10 +1,6 @@
 <script>
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
-	import BoostScreen from '../BoostScreen/BoostScreen.svelte';
-	import InstructionScreen from '../BoostScreen/InstructionScreen.svelte';
-	import DesktopSwiperFix from '../Player/DesktopSwiperFix.svelte';
 	import { posterSwiper, user, webln, showBoostScreen, showInstructionScreen } from '$/stores';
-	import { onMount } from 'svelte';
 </script>
 
 <button

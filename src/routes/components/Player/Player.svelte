@@ -11,7 +11,8 @@
 		timeValueSplitBlock,
 		user,
 		webln,
-		currentSplitDestinations
+		currentSplitDestinations,
+		playingIndex
 	} from '$/stores';
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
@@ -22,18 +23,27 @@
 	let minBoostTime = 30;
 
 	function gotoNextSong() {
-		let album = $playingAlbum;
-		let currentSong = $playingSong;
-		if (album?.songs && currentSong?.enclosure) {
-			let songIndex = album.songs.findIndex(
-				(song) => song.enclosure['@_url'] === currentSong.enclosure['@_url']
-			);
-			if (songIndex > -1 && songIndex < album.songs.length - 1) {
-				loadSong(album.songs[songIndex + 1]);
+		const album = $playingAlbum ?? {};
+		const currentSong = $playingSong ?? {};
+
+		if (album.songs && currentSong.enclosure) {
+			if ($playingIndex >= 0 && $playingIndex < album.songs.length - 1) {
+				$playingIndex = $playingIndex + 1;
+				const nextSong = album.songs[$playingIndex];
+				loadSong(nextSong);
+
+				if (nextSong.playlist) {
+					$playingAlbum = {
+						...$playingAlbum,
+						album: nextSong.album,
+						title: nextSong.album.title,
+						artwork: nextSong.album.artwork || nextSong.album.image,
+						author: nextSong.album.author
+					};
+				}
 			}
 		}
 	}
-	console.log($timeValueSplitBlock);
 
 	function setupPlayer() {
 		$player.ontimeupdate = updatePlayerTime;
@@ -50,16 +60,10 @@
 
 	onMount(setupPlayer);
 
-	function openPoster() {
-		document.getElementById('poster-swiper').style.visibility = 'initial';
-		$posterSwiper.slideTo(1);
-		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
-	}
-
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
+		currentSplit = findCurrentSplit(currentTime);
 		$player.currentTime = $player.currentTime;
-		const currentSplit = findCurrentSplit(currentTime);
 
 		if (currentSplit) {
 			if (isSameSplit(currentSplit, previousSplit)) {
@@ -85,16 +89,18 @@
 	}
 
 	function handleNewSplit(currentTime) {
-		startSplitTime = currentTime;
-		runningSplitTime = 0;
-
-		if (shouldBoost()) {
+		console.log('check boost');
+		if (shouldBoost() && $user.loggedIn) {
 			console.log('BOOST');
 			handleAutoBoost($currentSplitDestinations);
 		}
 
+		startSplitTime = currentTime;
+		runningSplitTime = 0;
+
 		if (currentSplit) {
 			const destinations = buildDestinations(currentSplit);
+
 			const feedDestinations = updateSplits(
 				clone(
 					$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
@@ -102,6 +108,7 @@
 				),
 				100 - currentSplit.remoteSplit
 			);
+
 			const remoteDestinations = updateSplits(destinations, currentSplit.remoteSplit);
 			$currentSplitDestinations = remoteDestinations
 				.map(removeUndefinedKeys)
@@ -109,7 +116,7 @@
 		} else {
 			$currentSplitDestinations = undefined;
 		}
-		console.log($currentSplitDestinations);
+
 		previousSplit = currentSplit;
 	}
 
@@ -130,7 +137,7 @@
 	}
 
 	function updateSplits(array, remoteSplit) {
-		const newArray = clone(array);
+		const newArray = [].concat(array);
 		const totalSplit = newArray.reduce(
 			(acc, item) =>
 				acc + (item['@_fee'] !== true && item['@_fee'] !== 'true' ? item['@_split'] : 0),

@@ -1,17 +1,16 @@
 <script>
 	import { posterSwiper, showInstructionScreen } from '$/stores';
 	import Close from '$icons/CancelFilled.svelte';
-
-	async function handleClose() {
-		$posterSwiper.enabled = true;
-		setTimeout(() => {
-			$showInstructionScreen = false;
-		}, 1);
-	}
 </script>
 
-<blurred-background on:click|self={handleClose}>
-	<button class="close" on:click={handleClose}>
+<blurred-background on:click|self={() => ($showInstructionScreen = false)}>
+	<button
+		class="close"
+		on:click={() => {
+			$showInstructionScreen = false;
+			$posterSwiper.enabled = true;
+		}}
+	>
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
@@ -19,7 +18,7 @@
 
 		<a
 			class="alby-login"
-			href="https://getalby.com/oauth?client_id=9QX2jPuEiu&response_type=code&redirect_uri=https://lnbeats.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
+			href="https://getalby.com/oauth?client_id=BodItXraet&response_type=code&redirect_uri=https://musicsideproject.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
 		>
 			<img src="/alby.png" />
 			<h3>Log In or Create an account using Alby.</h3>
@@ -45,9 +44,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100vh;
-		width: 100vw;
-		position: fixed;
+		height: 100%;
+		width: 100%;
+		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 99;

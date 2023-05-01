@@ -1,24 +1,29 @@
 <script>
 	import { onMount } from 'svelte';
 	import AlbumCard from './AlbumCard.svelte';
+
+	import { discoverList } from '$/stores';
 	let albumList = [];
 
 	onMount(async () => {
-		const res = await fetch(
-			`api/queryindex?q=${encodeURIComponent(
-				'podcasts/bymedium?medium=music&max=1000&val=lightning'
-			)}`
-		);
-		let data = JSON.parse(await res.json());
-		albumList = data.feeds || data.feed || [];
-		//this removes 100% Retro Live Feed
-		albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
-		// const ccRes = await fetch(
-		// 	`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
-		// );
-		// let ccData = JSON.parse(await ccRes.json());
-		// console.log(ccData);
-		// albumList = [ccData.feed].concat(albumList);
+		if (!$discoverList.length) {
+			const res = await fetch(
+				`api/queryindex?q=${encodeURIComponent(
+					'podcasts/bymedium?medium=music&max=1000&val=lightning'
+				)}`
+			);
+			let data = JSON.parse(await res.json());
+			albumList = data.feeds || data.feed || [];
+			//this removes 100% Retro Live Feed
+			albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
+			const ccRes = await fetch(
+				`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
+			);
+			let ccData = JSON.parse(await ccRes.json());
+			console.log(ccData);
+			albumList = [ccData.feed].concat(albumList);
+			$discoverList = albumList;
+		}
 	});
 
 	function shuffleArray(array) {
@@ -32,11 +37,11 @@
 
 <header>
 	<h2>Discover</h2>
-	<img src="/lnbeats-header.png" alt="ln beats logo" />
+	<img src="/msp-header.png" alt="music side project logo" />
 </header>
 
 <ul>
-	{#each albumList as album}
+	{#each $discoverList as album}
 		<li>
 			<AlbumCard {album} />
 		</li>
@@ -53,7 +58,7 @@
 	}
 	img {
 		text-align: center;
-		width: 150px;
+		width: 60px;
 		margin-top: 4px;
 	}
 

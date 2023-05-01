@@ -2,10 +2,14 @@ import { writable } from 'svelte/store';
 
 export const indexSearchResults = writable([]);
 export const library = writable({});
+export const discoverList = writable([]);
+export const playlists = writable(new Set());
+export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});
 export const playingAlbum = writable({});
 export const selectedSong = writable({});
 export const playingSong = writable({});
+export const playingIndex = writable();
 export const player = writable();
 export const playerTime = writable(0);
 export const playerDuration = writable(0);

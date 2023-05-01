@@ -7,8 +7,9 @@
 <button on:click={saveAlbum.bind(this, $selectedAlbum)}>
 	<Add
 		style={'color:var(--color-progressbar-0); filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.4))'}
-		size={50}
+		size={110}
 	/>
+	<p>Add to Library</p>
 </button>
 
 <style>
@@ -17,14 +18,20 @@
 		padding: 0;
 		border: none;
 		background-color: transparent;
-		width: 50px;
-		height: 50px;
-		border-radius: 50px;
-		bottom: 8px;
-		position: absolute;
-		right: 8px;
+		width: 60px;
+		height: 65px;
+		border-radius: 50%;
+
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+
+	p {
+		color: var(--color-text-0);
+		font-size: 0.6em;
+		padding: 0;
+		margin: 0;
 	}
 </style>

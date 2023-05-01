@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { parse } from 'fast-xml-parser';
 import { decode } from 'html-entities';
@@ -16,14 +16,13 @@ const parserOptions = {
 export async function load({ params, fetch }) {
 	try {
 		let albumUrl = `/api/queryindex?q=${encodeURIComponent(
-			`/podcasts/byfeedid?id=${params.slug}`
+			`podcasts/byguid?guid=${params.albumId}`
 		)}`;
-
 		const albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();
 		albumData = JSON.parse(albumData);
-		if (!albumData.status) {
-			throw error(404, 'Not found');
+		if (!albumData?.feed?.id) {
+			throw redirect(302, '/');
 		}
 
 		const res = await fetch(`/api/proxy?q=${albumData.feed.url}`);
@@ -38,11 +37,11 @@ export async function load({ params, fetch }) {
 			}
 
 			albumData.feed.songs = [].concat(feed.item);
-			albumData.feed.live = data.liveItem ? [].concat(data.liveItem) : undefined;
-
+			albumData.feed.live = [].concat(data.liveItem);
 			return { album: albumData.feed };
 		}
 	} catch (err) {
 		console.log(err);
+		return { album: undefined };
 	}
 }

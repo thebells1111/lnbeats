@@ -33,7 +33,7 @@
 			address: '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
 			customKey: '696969',
 			customValue: 'UzrnTK2oEHR55gw7Djmb',
-			name: 'LN Beats',
+			name: 'Music Side Project',
 			split: 100,
 			type: 'node'
 		}
@@ -51,7 +51,7 @@
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
-			handleClose();
+			showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(
@@ -69,23 +69,22 @@
 		boostDB.setItem('satsPerBoost', $satsPerBoost);
 		boostDB.setItem('satsPerSong', $satsPerSong);
 	}
-
-	async function handleClose() {
-		$posterSwiper.enabled = true;
-		setTimeout(() => {
-			$showBoostScreen = false;
-		}, 1);
-	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<blurred-background on:click|self={handleClose}>
-	<button class="close" on:click={handleClose}>
+<blurred-background on:click|self={() => ($showBoostScreen = false)}>
+	<button
+		class="close"
+		on:click={() => {
+			$showBoostScreen = false;
+			$posterSwiper.enabled = true;
+		}}
+	>
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
 		{#if showAppSupport}
-			<h2>Thanks for Supporting<br />LN Beats</h2>
+			<h2>Thanks for Supporting<br />Music Side Project</h2>
 		{/if}
 		<boostagram>
 			<label>
@@ -136,7 +135,7 @@
 					class="save"
 					on:click={async () => {
 						await saveBoostData();
-						handleClose();
+						$showBoostScreen = false;
 					}}>Save</button
 				>
 			</sats-per-song>
