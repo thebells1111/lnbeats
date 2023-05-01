@@ -30,6 +30,7 @@
 		"jsonwebtoken": "^9.0.0",
 		"just-clone": "^6.2.0",
 		"localforage": "^1.10.0",
+		"lodash-es": "^4.17.21",
 		"parse-srt": "^1.0.0-alpha",
 		"passport": "^0.6.0",
 		"passport-oauth2": "^1.6.1",

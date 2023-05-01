@@ -41,6 +41,7 @@
 	}
 
 	function handleMouseUp(e) {
+		$posterSwiper.enabled = true;
 		if (trackMouse) {
 			trackMouse = false;
 			// handleHeight = handleHeight / 2;
@@ -51,6 +52,7 @@
 	}
 
 	function handleTouchend(e) {
+		console.log(e);
 		if (trackMouse) {
 			trackMouse = false;
 			// handleHeight = handleHeight / 2;

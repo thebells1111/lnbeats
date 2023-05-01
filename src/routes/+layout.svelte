@@ -4,13 +4,15 @@
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
+	import BoostScreen from './components/BoostScreen/BoostScreen.svelte';
+	import InstructionScreen from './components/BoostScreen/InstructionScreen.svelte';
 	import { posterSwiper, senderName, satsPerBoost, satsPerSong, user } from '$/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
-	import { webln } from '$/stores';
+	import { webln, showBoostScreen, showInstructionScreen } from '$/stores';
 
 	onMount(async () => {
 		const resizeOps = () => {
@@ -94,6 +96,7 @@
 		<Swiper
 			direction="vertical"
 			autoHeight={true}
+			simulateTouch={false}
 			on:slideChange={() => {
 				// document.getElementById('poster-swiper').style.display = 'none';
 				console.log('slide change');
@@ -108,13 +111,21 @@
 			on:swiper={(e) => ($posterSwiper = e.detail[0])}
 		>
 			<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
-			<SwiperSlide><Poster /></SwiperSlide>
+			<SwiperSlide>
+				<Poster />
+			</SwiperSlide>
 		</Swiper>
 	</poster>
 	<div class="header-background" />
 	<div class="footer-background" />
 	<div class="main-background" />
 </app>
+
+{#if $showBoostScreen}
+	<BoostScreen />
+{:else if $showInstructionScreen}
+	<InstructionScreen />
+{/if}
 
 <style>
 	app {

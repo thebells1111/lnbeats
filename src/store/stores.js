@@ -24,3 +24,6 @@ export const user = writable({
 export const timeValueSplitBlock = writable([]);
 export const currentSplitDestinations = writable();
 export const webln = writable();
+
+export const showBoostScreen = writable(false);
+export const showInstructionScreen = writable(false);

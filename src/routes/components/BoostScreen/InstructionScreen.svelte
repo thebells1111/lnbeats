@@ -1,17 +1,17 @@
 <script>
-	import { posterSwiper } from '$/stores';
-	export let showInstructionScreen;
+	import { posterSwiper, showInstructionScreen } from '$/stores';
 	import Close from '$icons/CancelFilled.svelte';
+
+	async function handleClose() {
+		$posterSwiper.enabled = true;
+		setTimeout(() => {
+			$showInstructionScreen = false;
+		}, 1);
+	}
 </script>
 
-<blurred-background on:click|self={() => (showInstructionScreen = false)}>
-	<button
-		class="close"
-		on:click={() => {
-			showInstructionScreen = false;
-			$posterSwiper.enabled = true;
-		}}
-	>
+<blurred-background on:click|self={handleClose}>
+	<button class="close" on:click={handleClose}>
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
@@ -45,9 +45,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
-		width: 100%;
-		position: absolute;
+		height: 100vh;
+		width: 100vw;
+		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 99;

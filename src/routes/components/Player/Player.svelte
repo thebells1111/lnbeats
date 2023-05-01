@@ -58,6 +58,7 @@
 
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
+		$player.currentTime = $player.currentTime;
 		const currentSplit = findCurrentSplit(currentTime);
 
 		if (currentSplit) {

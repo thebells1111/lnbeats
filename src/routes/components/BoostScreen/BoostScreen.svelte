@@ -13,9 +13,9 @@
 		satsPerBoost,
 		user,
 		webln,
-		currentSplitDestinations
+		currentSplitDestinations,
+		showBoostScreen
 	} from '$/stores';
-	export let showBoostScreen;
 	import Close from '$icons/CancelFilled.svelte';
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 
@@ -51,7 +51,7 @@
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
-			showBoostScreen = false;
+			handleClose();
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(
@@ -69,17 +69,18 @@
 		boostDB.setItem('satsPerBoost', $satsPerBoost);
 		boostDB.setItem('satsPerSong', $satsPerSong);
 	}
+
+	async function handleClose() {
+		$posterSwiper.enabled = true;
+		setTimeout(() => {
+			$showBoostScreen = false;
+		}, 1);
+	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<blurred-background on:click|self={() => (showBoostScreen = false)}>
-	<button
-		class="close"
-		on:click={() => {
-			showBoostScreen = false;
-			$posterSwiper.enabled = true;
-		}}
-	>
+<blurred-background on:click|self={handleClose}>
+	<button class="close" on:click={handleClose}>
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
@@ -135,7 +136,7 @@
 					class="save"
 					on:click={async () => {
 						await saveBoostData();
-						showBoostScreen = false;
+						handleClose();
 					}}>Save</button
 				>
 			</sats-per-song>

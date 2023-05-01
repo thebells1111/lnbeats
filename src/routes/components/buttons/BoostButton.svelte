@@ -2,10 +2,9 @@
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import BoostScreen from '../BoostScreen/BoostScreen.svelte';
 	import InstructionScreen from '../BoostScreen/InstructionScreen.svelte';
-	import { posterSwiper, user, webln } from '$/stores';
+	import DesktopSwiperFix from '../Player/DesktopSwiperFix.svelte';
+	import { posterSwiper, user, webln, showBoostScreen, showInstructionScreen } from '$/stores';
 	import { onMount } from 'svelte';
-	let showBoostScreen = false;
-	let showInstructionScreen = false;
 </script>
 
 <button
@@ -14,22 +13,16 @@
 			($webln && $user.preferences.wallet === 'webln') ||
 			($user.loggedIn && $user.preferences.wallet === 'albyApi')
 		) {
-			showBoostScreen = true;
+			$showBoostScreen = true;
 			$posterSwiper.enabled = false;
 		} else {
-			showInstructionScreen = true;
+			$showInstructionScreen = true;
 			$posterSwiper.enabled = false;
 		}
 	}}
 >
 	<RocketLaunch size={35} />
 </button>
-
-{#if showBoostScreen}
-	<BoostScreen bind:showBoostScreen />
-{:else if showInstructionScreen}
-	<InstructionScreen bind:showInstructionScreen />
-{/if}
 
 <style>
 	button {
