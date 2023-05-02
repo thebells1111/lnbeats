@@ -51,7 +51,7 @@
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
-			showBoostScreen = false;
+			$showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(

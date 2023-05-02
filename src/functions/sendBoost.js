@@ -40,7 +40,6 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					});
 
 					let data = await res.json();
-					console.log(data);
 				} else if ((wallet = 'webln')) {
 					await webln.keysend(record);
 				}
@@ -67,7 +66,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					amount: amount,
 					customRecords: customRecords
 				};
-				console.log(record);
+
 				if (wallet === 'albyApi') {
 					let res = await fetch('/api/alby/boost', {
 						method: 'POST',

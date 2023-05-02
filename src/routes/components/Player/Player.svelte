@@ -101,13 +101,24 @@
 		if (currentSplit) {
 			const destinations = buildDestinations(currentSplit);
 
-			const feedDestinations = updateSplits(
-				clone(
-					$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
-						$playingAlbum?.['podcast:value']?.['podcast:valueRecipient']
-				),
-				100 - currentSplit.remoteSplit
+			let feedValue = clone(
+				$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
+					$playingAlbum?.['podcast:value']?.['podcast:valueRecipient']
 			);
+
+			// feedValue = [
+			// 	{
+			// 		'@_name': 'steven@getalby.com',
+			// 		'@_type': 'node',
+			// 		'@_address': '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
+			// 		'@_customKey': '696969',
+			// 		'@_customValue': 'eChoVKtO1KujpAA5HCoB',
+			// 		'@_split': 1,
+			// 		'@_fee': true
+			// 	}
+			// ].concat(feedValue);
+			// console.log(feedValue);
+			const feedDestinations = updateSplits(feedValue, 100 - currentSplit.remoteSplit);
 
 			const remoteDestinations = updateSplits(destinations, currentSplit.remoteSplit);
 			$currentSplitDestinations = remoteDestinations
@@ -116,6 +127,8 @@
 		} else {
 			$currentSplitDestinations = undefined;
 		}
+
+		console.log($currentSplitDestinations);
 
 		previousSplit = currentSplit;
 	}
