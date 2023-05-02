@@ -20,9 +20,9 @@
 <svelte:head>
 	{#if $selectedAlbum}
 		<meta name="description" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="og:site_name" content="Music Side Project" />
+		<meta property="og:site_name" content="LN Beats" />
 		<meta property="og:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="og:description" content="Listen on Music Side Project" />
+		<meta property="og:description" content="Listen on LN Beats" />
 		<meta property="og:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
 		<meta
 			property="og:url"
@@ -31,7 +31,7 @@
 
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
-		<meta property="twitter:description" content="Listen on Music Side Project" />
+		<meta property="twitter:description" content="Listen on LN Beats" />
 		<meta property="twitter:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
 		<meta
 			property="twitter:url"
