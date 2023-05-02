@@ -6,6 +6,8 @@
 	--color-bg-1: hsl(208, 100%, 22%);
 	--color-bg-2: hsl(0, 0%, 11%);
 	--color-bg-3: hsl(0, 0%, 15%);
+	--color-bg-context-menu-0: hsl(208, 100%, 32%);
+	--color-bg-context-menu-1: hsl(208, 100%, 22%);
 	--color-bg-boostagram-1:  hsl(0, 0%, 19%);
 	--color-poster-bg-0: hsl(208, 100%, 15%);
 	--color-poster-bg-1: hsl(208, 100%, 6%);
@@ -27,6 +29,9 @@
 	--color-player-icon-0: var(--color-nav-icon-0);
 	--color-text-boost-button: hsl(0, 0%, 4%);
 	--color-bg-boost-button: pink;
+	--color-bg-button-0: hsl(208, 100%, 42%);
+	--color-bg-button-1: hsl(0, 100%, 26%);
+	--color-bg-button-disabled-0: rgba(145, 145, 145, .5);
 	--color-input-bg-0: hsla(208, 14%, 49%, .5);	
 	--color-input-text-0: hsl(0, 0%, 95%);
 	--color-input-text-1: hsl(0, 0%, 81%);
@@ -131,7 +136,8 @@ input, textarea{
 	color: var(--color-input-text-0);
 	border-radius: 4px;
 	outline: 0;
-	border: none;
+	border: 1px solid transparent;
+	background-color: var(--color-input-bg-0);
 }
 
 input::placeholder {

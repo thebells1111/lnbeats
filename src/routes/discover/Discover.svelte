@@ -37,7 +37,7 @@
 
 <header>
 	<h2>Discover</h2>
-	<img src="/msp-header.png" alt="music side project logo" />
+	<img src="lnbeats-header.png" alt="ln beats logo" />
 </header>
 
 <ul>
