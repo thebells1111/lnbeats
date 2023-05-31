@@ -12,7 +12,7 @@
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
-	import { webln, showBoostScreen, showInstructionScreen } from '$/stores';
+	import { webln, showBoostScreen, showInstructionScreen, remoteServer } from '$/stores';
 
 	onMount(async () => {
 		const resizeOps = () => {
@@ -33,9 +33,17 @@
 		$satsPerBoost = (await boostDB.getItem('satsPerBoost')) || $satsPerBoost || 1000;
 		$satsPerSong = (await boostDB.getItem('satsPerSong')) || $satsPerSong || 0;
 
-		let res = await fetch('/api/alby/refresh');
-		let data = await res.json();
-		$user.loggedIn = data.loggedIn;
+		const urlParams = new URLSearchParams(window.location.search);
+		const code = urlParams.get('code');
+
+		if (!code) {
+			let res = await fetch(remoteServer + 'api/alby/auth?type=refresh', {
+				credentials: 'include'
+			});
+			let data = await res.json();
+			console.log(data);
+			$user.loggedIn = data.loggedIn;
+		}
 
 		if (window?.webln) {
 			// $user.preferences.wallet = 'webln';
