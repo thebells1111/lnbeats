@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import AlbumCard from './AlbumCard.svelte';
+	import SearchBar from '../main/NavHeader/SearchBar.svelte';
 
 	import { discoverList } from '$/stores';
 	let albumList = [];
@@ -33,12 +34,20 @@
 		}
 		return array;
 	}
+
+	function handleSearch() {}
+
+	function handleInput() {}
 </script>
 
 <header>
 	<h2>Discover</h2>
 	<img src="lnbeats-header.png" alt="ln beats logo" />
 </header>
+
+<search-header>
+	<SearchBar placeholder="search for album" searchFn={handleSearch} inputFn={handleInput} />
+</search-header>
 
 <ul>
 	{#each $discoverList as album}
@@ -56,6 +65,13 @@
 		height: 50px;
 		padding: 0 12px;
 	}
+
+	search-header {
+		min-height: 50px;
+		max-height: 50px;
+		display: flex;
+		align-items: center;
+	}
 	img {
 		text-align: center;
 		width: 150px;
@@ -72,7 +88,7 @@
 		display: flex;
 		padding: 0;
 		margin: 8px 0 8px 8px;
-		height: calc(100% - 66px);
+		height: calc(100% - 89px);
 		width: calc(100% - 8px);
 		flex-wrap: wrap;
 		justify-content: center;

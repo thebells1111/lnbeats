@@ -3,12 +3,8 @@
 	import { afterNavigate } from '$app/navigation';
 	let searchQuery = '';
 	let searchInput;
-
-	afterNavigate(({ from }) => {
-		setTimeout(() => searchInput.select(), 100);
-	});
-
-	async function searchIndex() {
+	export let placeholder = 'find new music';
+	export let searchFn = async () => {
 		let url = `api/queryindex?q=${encodeURIComponent(
 			`/search/music/byterm?q=${searchQuery}&val=lightning`
 		)}`;
@@ -24,39 +20,38 @@
 				$indexSearchResults = data.feeds.filter((feed) => !feed.title.includes('3Speak'));
 			}
 		} catch (error) {}
-	}
+	};
+
+	export let inputFn = () => {};
+
+	afterNavigate(({ from }) => {
+		setTimeout(() => searchInput.select(), 100);
+	});
 
 	function checkEnter(e) {
+		inputFn();
 		if (e.key === 'Enter') {
-			searchIndex();
+			searchFn();
 		}
 	}
 </script>
 
-<div>
-	<input
-		bind:this={searchInput}
-		bind:value={searchQuery}
-		on:submit={searchIndex}
-		on:keypress={checkEnter}
-		on:focus={() => {
-			searchInput.select();
-		}}
-		placeholder="find new music"
-	/>
-</div>
+<input
+	bind:this={searchInput}
+	bind:value={searchQuery}
+	on:submit={searchFn}
+	on:keypress={checkEnter}
+	on:focus={() => {
+		searchInput.select();
+	}}
+	{placeholder}
+/>
 
 <style>
-	div {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-	}
-
 	input {
 		width: calc(100% - 32px);
 		height: calc(100% - 24px);
+		min-height: 28px;
 		border-radius: 4px;
 		margin: 0 16px;
 		outline: 0;
