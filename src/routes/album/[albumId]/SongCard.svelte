@@ -10,7 +10,8 @@
 		playingSong,
 		posterSwiper,
 		playingIndex,
-		timeValueSplitBlock
+		timeValueSplitBlock,
+		remoteServer
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -61,12 +62,12 @@
 				const startTime = split?.['@_startTime'];
 				const duration = split?.['@_duration'];
 				const remoteSplit = split?.['@_remoteSplit'];
-				const feedGuidUrl = `/api/queryindex?q=${encodeURIComponent(
-					`/podcasts/byguid?guid=${feedGuid}`
-				)}`;
-				const itemsUrl = `/api/queryindex?q=${encodeURIComponent(
-					`/episodes/bypodcastguid?guid=${feedGuid}`
-				)}`;
+				const feedGuidUrl =
+					remoteServer +
+					`api/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${feedGuid}`)}`;
+				const itemsUrl =
+					remoteServer +
+					`api/queryindex?q=${encodeURIComponent(`/episodes/bypodcastguid?guid=${feedGuid}`)}`;
 
 				let splitInfo = {};
 				let valueBlock = { feed: null, item: null };
@@ -78,7 +79,7 @@
 					console.error('Error:', error);
 				});
 
-				let feed = JSON.parse(feedData)?.feed;
+				let feed = feedData?.feed;
 				splitInfo.album = feed?.title;
 				splitInfo.artist = feed?.author;
 				splitInfo.startTime = startTime;
@@ -86,7 +87,7 @@
 				splitInfo.remoteSplit = remoteSplit;
 				valueBlock.feed = feed?.value;
 
-				let items = JSON.parse(itemsData)?.items;
+				let items = itemsData?.items;
 				let item = items?.find((v) => v.guid === itemGuid);
 				splitInfo.song = item?.title;
 				valueBlock.item = item?.value;

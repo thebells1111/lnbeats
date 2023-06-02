@@ -1,13 +1,16 @@
 <script>
 	import { indexSearchResults } from '$/stores';
 	import { afterNavigate } from '$app/navigation';
+	import { remoteServer } from '$/stores';
 	let searchQuery = '';
 	let searchInput;
 	export let placeholder = 'find new music';
 	export let searchFn = async () => {
-		let url = `api/queryindex?q=${encodeURIComponent(
-			`/search/music/byterm?q=${searchQuery}&val=lightning`
-		)}`;
+		let url =
+			remoteServer +
+			`api/queryindex?q=${encodeURIComponent(
+				`/search/music/byterm?q=${searchQuery}&val=lightning`
+			)}`;
 
 		const res = await fetch(url);
 		let data = await res.json();
@@ -29,7 +32,6 @@
 	});
 
 	function checkEnter(e) {
-		inputFn();
 		if (e.key === 'Enter') {
 			searchFn();
 		}
@@ -41,6 +43,7 @@
 	bind:value={searchQuery}
 	on:submit={searchFn}
 	on:keypress={checkEnter}
+	on:input={inputFn}
 	on:focus={() => {
 		searchInput.select();
 	}}

@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
-import { get } from 'svelte/store';
 import { parse } from 'fast-xml-parser';
 import { decode } from 'html-entities';
+import { remoteServer } from '$/stores';
 
 const parserOptions = {
 	attributeNamePrefix: '@_',
@@ -15,12 +15,11 @@ const parserOptions = {
 
 export async function load({ params, fetch }) {
 	try {
-		let albumUrl = `/api/queryindex?q=${encodeURIComponent(
-			`podcasts/byguid?guid=${params.albumId}`
-		)}`;
+		let albumUrl =
+			remoteServer +
+			`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${params.albumId}`)}`;
 		const albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();
-		albumData = JSON.parse(albumData);
 		if (!albumData?.feed?.id) {
 			throw redirect(302, '/');
 		}

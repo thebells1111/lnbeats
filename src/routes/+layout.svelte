@@ -36,7 +36,7 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
 
-		if (!code) {
+		if (!code && false) {
 			let res = await fetch(remoteServer + 'api/alby/auth?type=refresh', {
 				credentials: 'include'
 			});

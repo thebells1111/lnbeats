@@ -2,29 +2,35 @@
 	import { onMount } from 'svelte';
 	import AlbumCard from './AlbumCard.svelte';
 	import SearchBar from '../main/NavHeader/SearchBar.svelte';
+	import { remoteServer } from '$/stores';
+	import clone from 'just-clone';
 
 	import { discoverList } from '$/stores';
 	let albumList = [];
+	let filteredList = [];
 
 	onMount(async () => {
 		if (!$discoverList.length) {
 			const res = await fetch(
-				`api/queryindex?q=${encodeURIComponent(
-					'podcasts/bymedium?medium=music&max=1000&val=lightning'
-				)}`
+				remoteServer +
+					`api/queryindex?q=${encodeURIComponent(
+						'podcasts/bymedium?medium=music&max=1000&val=lightning'
+					)}`
 			);
-			let data = JSON.parse(await res.json());
+			let data = await res.json();
 			albumList = data.feeds || data.feed || [];
 			//this removes 100% Retro Live Feed
 			albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
 			// const ccRes = await fetch(
 			// 	`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
 			// );
-			// let ccData = JSON.parse(await ccRes.json());
+			// let ccData = await ccRes.json();
 			// console.log(ccData);
 			// albumList = [ccData.feed].concat(albumList);
 			$discoverList = albumList;
 		}
+		filteredList = clone($discoverList);
+		console.log(filteredList);
 	});
 
 	function shuffleArray(array) {
@@ -37,7 +43,16 @@
 
 	function handleSearch() {}
 
-	function handleInput() {}
+	function handleInput(e) {
+		const query = e.target.value.toLowerCase();
+		if (query) {
+			filteredList = $discoverList
+				.filter(
+					(v) => v.author.toLowerCase().includes(query) || v.title.toLowerCase().includes(query)
+				)
+				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
+		} else filteredList = $discoverList;
+	}
 </script>
 
 <header>
@@ -50,7 +65,7 @@
 </search-header>
 
 <ul>
-	{#each $discoverList as album}
+	{#each filteredList as album}
 		<li>
 			<AlbumCard {album} />
 		</li>
