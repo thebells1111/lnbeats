@@ -16,7 +16,7 @@
 	<nav>
 		<a href="/library"> <LibraryMusic size={27} />Library</a>
 		<a href="/"><HomeIcon size={27} />Home</a>
-		<a href="/search"><SearchIcon size={27} />Search</a>
+		<!-- <a href="/search"><SearchIcon size={27} />Search</a> -->
 	</nav>
 </footer>
 

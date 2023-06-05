@@ -25,7 +25,7 @@ export async function load({ params, fetch }) {
 			throw error(404, 'Not found');
 		}
 
-		const res = await fetch(`/api/proxy?q=${albumData.feed.url}`);
+		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
 
 		let xml2Json = parse(data, parserOptions);

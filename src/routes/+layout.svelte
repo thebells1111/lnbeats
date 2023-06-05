@@ -36,13 +36,36 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
 
-		if (!code && false) {
-			let res = await fetch(remoteServer + 'api/alby/auth?type=refresh', {
+		console.log(code);
+		console.log(window.location.href);
+
+		if (code) {
+			const url = new URL(window.location.href);
+
+			let res = await fetch(
+				remoteServer +
+					'api/alby/auth?code=' +
+					code +
+					'&redirect_uri=' +
+					`${url.protocol}//${url.host}${url.pathname}`,
+				{
+					credentials: 'include'
+				}
+			);
+			let data = await res.json();
+			console.log(data);
+			$user.loggedIn = true;
+			$user.name = data.lightning_address;
+			$user.balance = data.balance;
+		} else {
+			let res = await fetch(remoteServer + 'api/alby/refresh', {
 				credentials: 'include'
 			});
 			let data = await res.json();
 			console.log(data);
-			$user.loggedIn = data.loggedIn;
+			$user.loggedIn = true;
+			$user.name = data.lightning_address;
+			$user.balance = data.balance;
 		}
 
 		if (window?.webln) {

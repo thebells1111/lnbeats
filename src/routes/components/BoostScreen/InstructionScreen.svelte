@@ -2,8 +2,14 @@
 	import { posterSwiper, showInstructionScreen } from '$/stores';
 	import { dev } from '$app/environment';
 	import Close from '$icons/CancelFilled.svelte';
+
+	function getRedirect() {
+		const url = new URL(window.location.href);
+		return `${url.protocol}//${url.host}${url.pathname}`;
+	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <blurred-background on:click|self={() => ($showInstructionScreen = false)}>
 	<button
 		class="close"
@@ -16,24 +22,16 @@
 	</button>
 	<card>
 		<h2>You don't have a wallet enabled!!!</h2>
+		<a
+			class="alby-login"
+			href={`https://getalby.com/oauth?client_id=${
+				dev ? '32dVOIuGiA' : '9QX2jPuEiu'
+			}&response_type=code&redirect_uri=${getRedirect()}&scope=account:read%20balance:read%20payments:send`}
+		>
+			<img src="/alby.png" />
+			<h3>Log In or Create an account using Alby.</h3>
+		</a>
 
-		{#if dev}
-			<a
-				class="alby-login"
-				href="https://getalby.com/oauth?client_id=32dVOIuGiA&response_type=code&redirect_uri=http://localhost:3000/api/alby/auth&scope=account:read%20balance:read%20payments:send"
-			>
-				<img src="/alby.png" />
-				<h3>Log In or Create an account using Alby.</h3>
-			</a>
-		{:else}
-			<a
-				class="alby-login"
-				href="https://getalby.com/oauth?client_id=9QX2jPuEiu&response_type=code&redirect_uri=https://lnbeats.com/api/alby/auth&scope=account:read%20balance:read%20payments:send"
-			>
-				<img src="/alby.png" />
-				<h3>Log In or Create an account using Alby.</h3>
-			</a>
-		{/if}
 		<p>
 			You can also use WebLN plus your favorite Client Provider using your Desktop Browser or the
 			<a href="https://kiwibrowser.com/">Kiwi Browser</a> on a mobile device.

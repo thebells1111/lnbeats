@@ -1,17 +1,21 @@
-import { playingAlbum, playingSong, player, senderName } from '$/stores';
+import { playingAlbum, playingSong, player, senderName, remoteServer } from '$/stores';
 import { get } from 'svelte/store';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
 	console.log(destinations);
+
+	let runningTotal = satAmount;
+
+	let payments = [];
+
 	let feesDestinations = destinations.filter((v) => v.fee);
 	let splitsDestinations = destinations.filter((v) => !v.fee);
-	let runningTotal = satAmount;
 
 	for (const dest of feesDestinations) {
 		let feeRecord = getBaseRecord(satAmount, boostagram);
 
 		let amount = Math.round((dest['@_split'] / 100) * satAmount);
-		if (amount) {
+		if (amount > 0) {
 			runningTotal -= amount;
 			feeRecord.name = dest['@_name'];
 			feeRecord.value_msat = amount * 1000;
@@ -28,18 +32,8 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 					amount: amount,
 					customRecords: customRecords
 				};
-				console.log(record);
 				if (wallet === 'albyApi') {
-					let res = await fetch('/api/alby/boost', {
-						method: 'POST',
-						credentials: 'include',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify(record)
-					});
-
-					let data = await res.json();
+					payments.push(record);
 				} else if ((wallet = 'webln')) {
 					await webln.keysend(record);
 				}
@@ -68,17 +62,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 				};
 
 				if (wallet === 'albyApi') {
-					let res = await fetch('/api/alby/boost', {
-						method: 'POST',
-						credentials: 'include',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify(record)
-					});
-
-					let data = await res.json();
-					console.log(data);
+					payments.push(record);
 				} else if ((wallet = 'webln')) {
 					await webln.keysend(record);
 				}
@@ -86,6 +70,20 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 				alert(`error with  ${dest['@_name']}:  ${err.message}`);
 			}
 		}
+	}
+
+	if (wallet === 'albyApi') {
+		let res = await fetch(remoteServer + 'api/alby/boost', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify([].concat(payments))
+		});
+
+		let data = await res.json();
+		console.log(data);
 	}
 }
 
