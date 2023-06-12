@@ -33,6 +33,18 @@
 		$satsPerBoost = (await boostDB.getItem('satsPerBoost')) || $satsPerBoost || 1000;
 		$satsPerSong = (await boostDB.getItem('satsPerSong')) || $satsPerSong || 0;
 
+		await loadAlby();
+
+		if (window?.webln) {
+			// $user.preferences.wallet = 'webln';
+			$webln = window.webln;
+		}
+		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
+		// $playingSong = $playingAlbum.songs[0];
+		// $player.src = $playingSong.enclosure['@_url'];
+	});
+
+	async function loadAlby() {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
 
@@ -54,28 +66,24 @@
 			);
 			let data = await res.json();
 			console.log(data);
-			$user.loggedIn = true;
-			$user.name = data.lightning_address;
-			$user.balance = data.balance;
+			if (data.lightning_address) {
+				$user.loggedIn = true;
+				$user.name = data.lightning_address;
+				$user.balance = data.balance;
+			}
 		} else {
 			let res = await fetch(remoteServer + 'api/alby/refresh', {
 				credentials: 'include'
 			});
 			let data = await res.json();
 			console.log(data);
-			$user.loggedIn = true;
-			$user.name = data.lightning_address;
-			$user.balance = data.balance;
+			if (data.lightning_address) {
+				$user.loggedIn = true;
+				$user.name = data.lightning_address;
+				$user.balance = data.balance;
+			}
 		}
-
-		if (window?.webln) {
-			// $user.preferences.wallet = 'webln';
-			$webln = window.webln;
-		}
-		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
-		// $playingSong = $playingAlbum.songs[0];
-		// $player.src = $playingSong.enclosure['@_url'];
-	});
+	}
 </script>
 
 <svelte:head>
