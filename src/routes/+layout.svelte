@@ -36,9 +36,6 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
 
-		console.log(code);
-		console.log(window.location.href);
-
 		if (code) {
 			const url = new URL(window.location.href);
 
@@ -62,7 +59,6 @@
 				credentials: 'include'
 			});
 			let data = await res.json();
-			console.log(data);
 			$user.loggedIn = true;
 			$user.name = data.lightning_address;
 			$user.balance = data.balance;
@@ -174,6 +170,8 @@
 		overflow: auto;
 		margin: 0 auto;
 		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
 	}
 
 	poster {

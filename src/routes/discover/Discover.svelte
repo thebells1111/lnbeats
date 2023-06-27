@@ -30,7 +30,12 @@
 			$discoverList = albumList;
 		}
 		filteredList = clone($discoverList);
-		console.log(filteredList);
+
+		let wavlake = filteredList.filter((v) => v.generator === 'Wavlake Studio');
+		let other = filteredList.filter((v) => v.generator !== 'Wavlake Studio');
+
+		console.log('Wavlake Feeds: ', wavlake);
+		console.log('Other Feeds: ', other);
 	});
 
 	function shuffleArray(array) {
@@ -102,8 +107,8 @@
 	ul {
 		display: flex;
 		padding: 0;
-		margin: 8px 0 8px 8px;
-		height: calc(100% - 89px);
+		margin: 8px 0 0 8px;
+		flex: 1;
 		width: calc(100% - 8px);
 		flex-wrap: wrap;
 		justify-content: center;
