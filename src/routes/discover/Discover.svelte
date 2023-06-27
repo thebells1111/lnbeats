@@ -31,8 +31,16 @@
 		}
 		filteredList = clone($discoverList);
 
-		let wavlake = filteredList.filter((v) => v.generator === 'Wavlake Studio');
-		let other = filteredList.filter((v) => v.generator !== 'Wavlake Studio');
+		let wavlake = filteredList
+			.filter((v) => v.generator === 'Wavlake Studio')
+			.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
+		let other = filteredList
+			.filter((v) => v.generator !== 'Wavlake Studio')
+			.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
 
 		console.log('Wavlake Feeds: ', wavlake);
 		console.log('Other Feeds: ', other);
