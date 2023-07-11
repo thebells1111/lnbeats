@@ -12,7 +12,13 @@
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
-	import { webln, showBoostScreen, showInstructionScreen, remoteServer } from '$/stores';
+	import {
+		webln,
+		showBoostScreen,
+		showInstructionScreen,
+		remoteServer,
+		selectedAlbum
+	} from '$/stores';
 
 	onMount(async () => {
 		const resizeOps = () => {
@@ -78,10 +84,12 @@
 			$user.balance = data.balance;
 		}
 	}
+
+	$: console.log($page.route.id);
 </script>
 
 <svelte:head>
-	{#if $page.route.id !== '/album/[slug]'}
+	{#if $page.route.id !== '/album/[albumId]'}
 		<!-- Primary Meta Tags -->
 		<title>LN Beats</title>
 		<meta name="title" content="LN Beats" />
@@ -109,6 +117,23 @@
 			content="Lightning Network Enabled, Decentralized Music For The Masses"
 		/>
 		<meta property="twitter:image" content="https://lnbeats.com/twitter-card.png" />
+	{:else if $selectedAlbum}
+		<title>{`${$selectedAlbum.author} - ${$selectedAlbum.title}`}</title>
+		<meta name="description" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
+		<meta property="og:site_name" content="LN Beats" />
+		<meta property="og:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
+		<meta property="og:description" content="Listen on LN Beats" />
+		<meta property="og:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
+		<meta property="og:url" content={`https://lnbeats.com/album/${$selectedAlbum.podcastGuid}`} />
+
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:title" content={`${$selectedAlbum.author} - ${$selectedAlbum.title}`} />
+		<meta property="twitter:description" content="Listen on LN Beats" />
+		<meta property="twitter:image" content={$selectedAlbum.artwork || $selectedAlbum.image} />
+		<meta
+			property="twitter:url"
+			content={`https://lnbeats.com/album/${$selectedAlbum.podcastGuid}`}
+		/>
 	{/if}
 </svelte:head>
 
