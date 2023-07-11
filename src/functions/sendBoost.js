@@ -8,8 +8,8 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 	let payments = [];
 
-	let feesDestinations = destinations.filter((v) => v.fee);
-	let splitsDestinations = destinations.filter((v) => !v.fee);
+	let feesDestinations = [].concat(destinations)?.filter((v) => v.fee) || [];
+	let splitsDestinations = [].concat(destinations)?.filter((v) => !v.fee) || [];
 
 	for (const dest of feesDestinations) {
 		let feeRecord = getBaseRecord(satAmount, boostagram);

@@ -79,13 +79,14 @@
 				credentials: 'include'
 			});
 			let data = await res.json();
-			$user.loggedIn = true;
-			$user.name = data.lightning_address;
-			$user.balance = data.balance;
+			console.log(data);
+			if (data.lightning_address) {
+				$user.loggedIn = true;
+				$user.name = data.lightning_address;
+				$user.balance = data.balance;
+			}
 		}
 	}
-
-	$: console.log($page.route.id);
 </script>
 
 <svelte:head>
