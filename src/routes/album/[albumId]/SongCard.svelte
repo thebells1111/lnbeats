@@ -44,6 +44,7 @@
 			$playingAlbum = $selectedAlbum;
 			$playingAlbum.title = $playingAlbum.title;
 			$playingAlbum.author = $playingAlbum.author;
+			$playingIndex = null;
 		}
 
 		if ($playingIndex !== index) {
