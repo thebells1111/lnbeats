@@ -1,6 +1,10 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+
+	import { convertAlbumIdtoGuid } from '$functions/covertAlbumIdToGuid';
+	import { deleteAlbum } from '$functions/deleteAlbum';
 
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 	import SongCard from './SongCard.svelte';
@@ -8,13 +12,24 @@
 	import { selectedAlbum, posterSwiper, library } from '$/stores';
 
 	export let data = {};
-
-	if (browser && !data.album) {
-		goto('/');
+	if (browser) {
+		if (data.album) {
+			if (data.redirect) {
+				let guid = data.redirect.split('/')[2];
+				convertAlbumIdtoGuid($page.params.albumId, guid);
+				goto(data.redirect, { replaceState: true });
+			}
+		}
 	}
 	$selectedAlbum = data.album;
 
 	let expandMenuOverride = false;
+
+	async function removeAlbum() {
+		const album = { guid: $page.params.albumId };
+		await deleteAlbum(album);
+		goto('/library', { replaceState: true });
+	}
 </script>
 
 <svelte:head>
@@ -51,6 +66,10 @@
 			<SongCard {song} {index} />
 		{/each}
 	</ul>
+{:else}
+	<h3>It appears this Album is no longer available.</h3>
+	<h3>Would you like to remove it from your library?</h3>
+	<button on:click={removeAlbum} class="primary">Remove</button>
 {/if}
 
 <style>
@@ -78,5 +97,25 @@
 	add-button {
 		position: relative;
 		margin: 8px 16px 0 0;
+	}
+
+	h3 {
+		text-align: center;
+		margin: 4px;
+	}
+
+	h3:first-of-type {
+		margin-top: 60px;
+	}
+	button {
+		width: calc(100% - 32px);
+		max-width: 350px;
+		height: 33px;
+		border-radius: 8px;
+		margin: 8px;
+		background-color: var(--color-bg-button-0);
+		color: var(--color-text-0);
+		font-weight: 600;
+		align-self: center;
 	}
 </style>

@@ -3,23 +3,23 @@ import { library } from '$/stores';
 import { get } from 'svelte/store';
 
 export async function saveAlbum(album) {
-	console.log(album);
 	const albumDB = localforage.createInstance({
 		name: 'albumDB'
 	});
 	const libraryDB = localforage.createInstance({
 		name: 'libraryDB'
 	});
-	albumDB.setItem(album.id.toString(), album);
+	const guid = album.podcastGuid.toString();
+	albumDB.setItem(guid, album);
 
 	let _library = (await libraryDB.getItem('library')) || {};
 
-	_library[album.id] = {
+	_library[guid] = {
 		title: album.title,
 		art: album.image || album.artwork,
 		url: album.url,
 		lastUpdateTime: album.lastUpdateTime,
-		id: album.id
+		guid
 	};
 
 	library.set(_library);

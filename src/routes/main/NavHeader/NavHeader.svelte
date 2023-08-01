@@ -19,7 +19,7 @@
 	});
 </script>
 
-<header>
+<header class:hidden={[`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}>
 	{#if ![`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}
 		<button class="back-button" on:click={navigateBack}><BackArrowIcon size={30} /></button>
 	{/if}
@@ -39,6 +39,10 @@
 		max-height: 50px;
 		display: flex;
 		align-items: center;
+	}
+
+	.hidden {
+		display: none;
 	}
 
 	.back-button {

@@ -15,13 +15,25 @@ const parserOptions = {
 
 export async function load({ params, fetch }) {
 	try {
+		let redirect;
 		let albumUrl =
 			remoteServer +
 			`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${params.albumId}`)}`;
-		const albumRes = await fetch(albumUrl);
+		let albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();
-		if (!albumData?.feed?.id) {
-			throw redirect(302, '/');
+
+		if (!albumData?.feed?.podcastGuid) {
+			albumUrl =
+				remoteServer +
+				`api/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=${params.albumId}`)}`;
+			albumRes = await fetch(albumUrl);
+			albumData = await albumRes.json();
+
+			if (!albumData?.feed?.id) {
+				return { redirect: '/' };
+			} else {
+				redirect = '/album/' + albumData?.feed?.podcastGuid;
+			}
 		}
 
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
@@ -37,7 +49,7 @@ export async function load({ params, fetch }) {
 
 			albumData.feed.songs = [].concat(feed.item);
 			albumData.feed.live = [].concat(data.liveItem);
-			return { album: albumData.feed };
+			return { album: albumData.feed, redirect };
 		}
 	} catch (err) {
 		console.log(err);

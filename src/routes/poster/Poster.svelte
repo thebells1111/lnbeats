@@ -23,7 +23,7 @@
 			<Close size={24} />
 		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
-		<button on:click >Share</button>
+		<!-- <button on:click >Share</button> -->
 		<img
 			id="poster-image"
 			src={$playingSong.image ||

@@ -17,6 +17,7 @@
 		});
 
 		$library = (await libraryDB.getItem('library')) || {};
+		console.log($library);
 	});
 </script>
 

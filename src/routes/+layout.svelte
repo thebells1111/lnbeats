@@ -196,6 +196,7 @@
 		height: 100vh;
 		overflow: hidden;
 		visibility: hidden;
+		z-index: 99;
 	}
 
 	.hidden-slide {
