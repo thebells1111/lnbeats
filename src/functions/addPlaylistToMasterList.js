@@ -27,10 +27,10 @@ export async function addPlaylistToMasterList(playlistArgs) {
 		name: 'libraryDB'
 	});
 	libraryDB.setItem('library', _library);
+	library.set(_library);
 
 	pLists.add(name);
 	playlists.set(pLists);
-	playlistDB.setItem('msp-playlist-db', pLists);
 	playlistDB.setItem(name, []);
 
 	console.log(pLists);

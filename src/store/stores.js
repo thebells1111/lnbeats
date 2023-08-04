@@ -1,7 +1,12 @@
 import { writable } from 'svelte/store';
 import { dev } from '$app/environment';
+import localforage from 'localforage';
 
 export const remoteServer = dev ? 'http://localhost:8000/' : 'https://curiohoster.com/';
+
+export const libraryDB = localforage.createInstance({
+	name: 'libraryDB'
+});
 
 export const indexSearchResults = writable([]);
 export const library = writable({});

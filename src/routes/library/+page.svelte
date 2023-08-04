@@ -1,27 +1,13 @@
 <script>
-	import localforage from 'localforage';
-	import { onMount } from 'svelte';
 	import { encodeURL } from '$functions/songId';
 
 	import AlbumCard from './AlbumCard.svelte';
 	import CreatePlaylistButton from '$c/CreatePlaylist/CreatePlaylistButton.svelte';
 	import OptionsMenu from './OptionsMenu.svelte';
 
-	import { library, playlists } from '$/stores';
+	import { library } from '$/stores';
 
 	let closerActive = false;
-
-	onMount(async () => {
-		const libraryDB = localforage.createInstance({
-			name: 'libraryDB'
-		});
-
-		$library = (await libraryDB.getItem('library')) || {};
-		const playlistDB = localforage.createInstance({
-			name: 'playlistDB'
-		});
-		$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
-	});
 </script>
 
 <!-- svelte-ignore component-name-lowercase -->
@@ -35,19 +21,19 @@
 
 	<ul>
 		{#each Object.entries($library) as [guid, album]}
-			{#if guid.includes('playlist-')}
-				<a href={`/playlist/${encodeURL(album.title)}`}>
-					<AlbumCard playlist={album.title} />
-				</a>
-				<OptionsMenu itemType="playlist" item={album.title} bind:closerActive />
-			{:else}
-				<li>
+			<li>
+				{#if guid.includes('playlist-')}
+					<a href={`/playlist/${encodeURL(album.title)}`}>
+						<AlbumCard playlist={album.title} />
+					</a>
+					<OptionsMenu itemType="playlist" item={album.title} bind:closerActive />
+				{:else}
 					<a href={`/album/${guid}`}>
 						<AlbumCard {album} />
 					</a>
 					<OptionsMenu itemType="album" item={album} bind:closerActive />
-				</li>
-			{/if}
+				{/if}
+			</li>
 		{/each}
 	</ul>
 </library>

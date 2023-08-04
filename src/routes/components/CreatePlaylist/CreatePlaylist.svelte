@@ -5,7 +5,7 @@
 	let displayText = '';
 
 	async function handleNewPlaylist() {
-		if (name && name !== 'msp-playlist-db') {
+		if (name) {
 			const { success, message } = await addPlaylistToMasterList({ name });
 
 			displayText = message;
@@ -28,7 +28,7 @@
 		>Create New Playlist
 		<input type="text" bind:value={name} />
 	</label>
-	<button on:click={handleNewPlaylist} disabled={!name && name !== 'msp-playlist-db'}>Save</button>
+	<button on:click={handleNewPlaylist} disabled={!name}>Save</button>
 	<h2>{displayText}</h2>
 </div>
 

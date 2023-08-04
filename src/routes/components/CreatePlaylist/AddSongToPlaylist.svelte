@@ -1,7 +1,7 @@
 <script>
 	import localforage from 'localforage';
 	import QueueMusic from '$icons/QueueMusic.svelte';
-	import { playlists, playingAlbum, selectedPlaylist } from '$/stores';
+	import { library, playingAlbum, selectedPlaylist } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
 	export let song;
 	let successList = '';
@@ -25,7 +25,9 @@
 			$selectedPlaylist.songs = playlist;
 		}
 		successList = list;
-		setTimeout(() => (successList = ''), 1000);
+		setTimeout(() => {
+			successList = '';
+		}, 1000);
 	}
 </script>
 
@@ -34,12 +36,14 @@
 	<CreatePlaylistButton />
 </header>
 <ul>
-	{#each [...$playlists] as list}
-		<li on:click={addSongToPlaylist.bind(this, list)}>
+	{#each Object.entries($library)
+		.map((v) => v[1])
+		.filter((v) => v.type === 'playlist') as { title }}
+		<li on:click={addSongToPlaylist.bind(this, title)}>
 			<queue-icon>
 				<QueueMusic size="55" />
 			</queue-icon>
-			<list-name>{list}</list-name>
+			<list-name>{title}</list-name>
 		</li>
 	{/each}
 </ul>

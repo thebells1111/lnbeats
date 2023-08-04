@@ -11,6 +11,5 @@ export async function deletePlaylistFromMasterList(name) {
 
 	pLists.delete(name);
 	playlists.set(pLists);
-	playlistDB.setItem('msp-playlist-db', pLists);
 	playlistDB.removeItem(name);
 }

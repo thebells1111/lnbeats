@@ -17,7 +17,8 @@
 		showBoostScreen,
 		showInstructionScreen,
 		remoteServer,
-		selectedAlbum
+		libraryDB,
+		library
 	} from '$/stores';
 
 	onMount(async () => {
@@ -28,9 +29,6 @@
 		resizeOps();
 		window.addEventListener('resize', resizeOps);
 
-		const albumDB = localforage.createInstance({
-			name: 'albumDB'
-		});
 		const boostDB = localforage.createInstance({
 			name: 'boostDB'
 		});
@@ -85,6 +83,10 @@
 				$user.name = data.lightning_address;
 				$user.balance = data.balance;
 			}
+		}
+
+		if (!Object.keys($library)) {
+			$library = (await libraryDB.getItem('library')) || {};
 		}
 	}
 </script>
