@@ -11,8 +11,8 @@
 			name: 'playlistDB'
 		});
 
-		($selectedPlaylist.playlist = data.playlist),
-			($selectedPlaylist.songs = (await playlistDB.getItem(data.playlist)) || []);
+		$selectedPlaylist.playlist = data.playlist;
+		$selectedPlaylist.songs = (await playlistDB.getItem(data.playlist)) || [];
 	});
 </script>
 

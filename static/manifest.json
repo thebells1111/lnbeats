@@ -1,27 +1,27 @@
 {
-  "name": "LN Beats",
-  "short_name": "LN Beats",
-  "description": "Lightning Network Enabled, Decentralized Music For The Masses",
-  "lang": "en-US",
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#333",
-  "background_color": "#333",
-  "icons": [
-    {
-      "src": "/lnbeats_logo_black_circle_512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/lnbeats_logo_black_circle_240.png",
-      "sizes": "240x240",
-      "type": "image/png"
-    },
-    {
-      "src": "/lnbeats_logo_black_circle_192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ]
+	"name": "LN Beats",
+	"short_name": "LN Beats",
+	"description": "Lightning Network Enabled, Decentralized Music For Plebs",
+	"lang": "en-US",
+	"start_url": "/",
+	"display": "standalone",
+	"theme_color": "#333",
+	"background_color": "#333",
+	"icons": [
+		{
+			"src": "/lnbeats_logo_black_circle_512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/lnbeats_logo_black_circle_240.png",
+			"sizes": "240x240",
+			"type": "image/png"
+		},
+		{
+			"src": "/lnbeats_logo_black_circle_192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	]
 }

@@ -17,7 +17,10 @@
 		});
 
 		$library = (await libraryDB.getItem('library')) || {};
-		console.log($library);
+		const playlistDB = localforage.createInstance({
+			name: 'playlistDB'
+		});
+		$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
 	});
 </script>
 
@@ -31,22 +34,20 @@
 	</header>
 
 	<ul>
-		{#each [...$playlists] as playlist}
-			<li>
-				<a href={`/playlist/${encodeURL(playlist)}`}>
-					<AlbumCard {playlist} />
-				</a>
-				<OptionsMenu itemType="playlist" item={playlist} bind:closerActive />
-			</li>
-		{/each}
-
 		{#each Object.entries($library) as [guid, album]}
-			<li>
-				<a href={`/album/${guid}`}>
-					<AlbumCard {album} />
+			{#if guid.includes('playlist-')}
+				<a href={`/playlist/${encodeURL(album.title)}`}>
+					<AlbumCard playlist={album.title} />
 				</a>
-				<OptionsMenu itemType="album" item={album} bind:closerActive />
-			</li>
+				<OptionsMenu itemType="playlist" item={album.title} bind:closerActive />
+			{:else}
+				<li>
+					<a href={`/album/${guid}`}>
+						<AlbumCard {album} />
+					</a>
+					<OptionsMenu itemType="album" item={album} bind:closerActive />
+				</li>
+			{/if}
 		{/each}
 	</ul>
 </library>

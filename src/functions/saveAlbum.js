@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { library } from '$/stores';
+import { library, remoteServer } from '$/stores';
 import { get } from 'svelte/store';
 
 export async function saveAlbum(album) {
@@ -23,5 +23,5 @@ export async function saveAlbum(album) {
 	};
 
 	library.set(_library);
-	libraryDB.setItem('library', _library);
+	await libraryDB.setItem('library', _library);
 }

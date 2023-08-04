@@ -94,10 +94,7 @@
 		<!-- Primary Meta Tags -->
 		<title>LN Beats</title>
 		<meta name="title" content="LN Beats" />
-		<meta
-			name="description"
-			content="Lightning Network Enabled, Decentralized Music For The Masses"
-		/>
+		<meta name="description" content="Lightning Network Enabled, Decentralized Music For Plebs" />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
@@ -105,7 +102,7 @@
 		<meta property="og:title" content="LN Beats" />
 		<meta
 			property="og:description"
-			content="Lightning Network Enabled, Decentralized Music For The Masses"
+			content="Lightning Network Enabled, Decentralized Music For Plebs"
 		/>
 		<meta property="og:image" content="https://lnbeats.com/twitter-card.png" />
 
@@ -115,7 +112,7 @@
 		<meta property="twitter:title" content="LN Beats" />
 		<meta
 			property="twitter:description"
-			content="Lightning Network Enabled, Decentralized Music For The Masses"
+			content="Lightning Network Enabled, Decentralized Music For Plebs"
 		/>
 		<meta property="twitter:image" content="https://lnbeats.com/twitter-card.png" />
 	{/if}
