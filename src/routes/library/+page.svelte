@@ -18,6 +18,10 @@
 
 		$library = (await libraryDB.getItem('library')) || {};
 		console.log($library);
+		const playlistDB = localforage.createInstance({
+			name: 'playlistDB'
+		});
+		$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
 	});
 </script>
 
