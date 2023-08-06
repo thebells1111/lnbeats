@@ -1,17 +1,14 @@
 import localforage from 'localforage';
-import { playlists, library } from '$/stores';
+import { library, libraryDB, playlistDB } from '$/stores';
 import { get } from 'svelte/store';
 import syncPlaylist from './syncPlaylist';
+import syncLibrary from './syncLibrary';
 
 export async function addPlaylistToMasterList(playlistArgs) {
 	const { name } = playlistArgs;
-	const playlistDB = localforage.createInstance({
-		name: 'playlistDB'
-	});
 
-	let pLists = get(playlists);
-
-	if (pLists.has(name)) {
+	let _library = get(library);
+	if (_library[`playlist-${name}`]) {
 		return { success: false, message: 'This play list already exists' };
 	}
 	let psuedoAlbum = {
@@ -20,22 +17,15 @@ export async function addPlaylistToMasterList(playlistArgs) {
 		title: name
 	};
 
-	let _library = get(library);
-	console.log(_library);
 	_library[psuedoAlbum.guid] = psuedoAlbum;
-	const libraryDB = localforage.createInstance({
-		name: 'libraryDB'
-	});
+
 	libraryDB.setItem('library', _library);
 	library.set(_library);
 
-	pLists.add(name);
-	playlists.set(pLists);
 	playlistDB.setItem(name, []);
 
-	console.log(pLists);
-
-	syncPlaylist({ master: [...pLists], name, playlist: [] });
+	syncPlaylist({ name, playlist: [] });
+	syncLibrary(_library);
 
 	return { success: true, message: 'Play list created' };
 }

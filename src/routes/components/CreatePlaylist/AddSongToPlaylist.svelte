@@ -1,16 +1,12 @@
 <script>
-	import localforage from 'localforage';
 	import QueueMusic from '$icons/QueueMusic.svelte';
-	import { library, playingAlbum, selectedPlaylist } from '$/stores';
+	import syncPlaylist from '$functions/syncPlaylist.js';
+	import { library, playingAlbum, selectedPlaylist, playlistDB } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
 	export let song;
 	let successList = '';
 
 	async function addSongToPlaylist(list) {
-		const playlistDB = localforage.createInstance({
-			name: 'playlistDB'
-		});
-
 		const { artwork, image, podcastGuid, title, author } = song.album;
 		song.album = { artwork, image, podcastGuid, title, author };
 		song.playlist = list;
@@ -25,6 +21,7 @@
 			$selectedPlaylist.songs = playlist;
 		}
 		successList = list;
+		syncPlaylist({ list, playlist });
 		setTimeout(() => {
 			successList = '';
 		}, 1000);

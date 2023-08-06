@@ -43,9 +43,6 @@
 			// $user.preferences.wallet = 'webln';
 			$webln = window.webln;
 		}
-		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
-		// $playingSong = $playingAlbum.songs[0];
-		// $player.src = $playingSong.enclosure['@_url'];
 	});
 
 	async function loadAlby() {

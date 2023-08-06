@@ -8,10 +8,13 @@ export const libraryDB = localforage.createInstance({
 	name: 'libraryDB'
 });
 
+export const playlistDB = localforage.createInstance({
+	name: 'playlistDB'
+});
+
 export const indexSearchResults = writable([]);
 export const library = writable({});
 export const discoverList = writable([]);
-export const playlists = writable(new Set());
 export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});
 export const playingAlbum = writable({});
