@@ -31,6 +31,7 @@
 
 	footer {
 		background-color: transparent;
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 
 	a {

@@ -22,6 +22,8 @@ export async function load({ params, fetch }) {
 		let albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();
 
+		console.log(albumData.feed);
+
 		if (!albumData?.feed?.podcastGuid) {
 			albumUrl =
 				remoteServer +
@@ -38,9 +40,11 @@ export async function load({ params, fetch }) {
 
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
+		console.log(data);
 
 		let xml2Json = parse(data, parserOptions);
 		let feed = xml2Json.rss.channel;
+		console.log(feed);
 
 		if (feed) {
 			if (feed.item?.[0]?.['podcast:episode']) {
