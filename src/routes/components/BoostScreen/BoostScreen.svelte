@@ -30,12 +30,12 @@
 
 	let appDestination = [
 		{
-			address: '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
-			customKey: '696969',
-			customValue: 'UzrnTK2oEHR55gw7Djmb',
-			name: 'LN Beats',
-			split: 100,
-			type: 'node'
+			'@_address': '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
+			'@_customKey': '696969',
+			'@_customValue': 'UzrnTK2oEHR55gw7Djmb',
+			'@_name': 'Music Side Project',
+			'@_split': '3',
+			'@_type': 'node'
 		}
 	];
 
@@ -112,7 +112,7 @@
 						}}
 						class="support-button"
 					>
-						<span>Support</span> <span>MSP</span>
+						<span>Support</span> <span>LNBeats</span>
 					</button>
 				{:else}
 					<support-placeholder />
@@ -263,9 +263,13 @@
 		justify-content: center;
 	}
 
+	.support-button span {
+		font-size: 0.8em;
+		color: var(--color-text-0);
+	}
+
 	.support-button span:first-of-type {
-		margin-top: 4px;
-		font-size: 0.85em;
+		margin-top: 1.5px;
 	}
 
 	input {
