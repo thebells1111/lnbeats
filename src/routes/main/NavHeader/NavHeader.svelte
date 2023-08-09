@@ -39,6 +39,7 @@
 		max-height: 50px;
 		display: flex;
 		align-items: center;
+		padding-top: env(safe-area-inset-bottom);
 	}
 
 	.hidden {
