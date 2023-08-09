@@ -34,7 +34,7 @@
 			'@_customKey': '696969',
 			'@_customValue': 'UzrnTK2oEHR55gw7Djmb',
 			'@_name': 'Music Side Project',
-			'@_split': '3',
+			'@_split': '100',
 			'@_type': 'node'
 		}
 	];
