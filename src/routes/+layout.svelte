@@ -126,7 +126,9 @@
 		<NavHeader />
 	{/if}
 
-	<main>
+	<main
+		class:apple-pad={[`/`, `/poster`, '/discover', '/library'].find((r) => r === $page.route.id)}
+	>
 		<slot />
 	</main>
 
@@ -187,8 +189,13 @@
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
+		padding: 0;
+	}
+
+	.apple-pad {
 		padding-left: env(safe-area-inset-left);
 		padding-right: env(safe-area-inset-right);
+		padding-top: env(safe-area-inset-top);
 	}
 
 	poster {

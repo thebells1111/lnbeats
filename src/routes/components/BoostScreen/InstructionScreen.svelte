@@ -105,7 +105,7 @@
 
 	button.close {
 		position: absolute;
-		top: 2px;
+		top: max(2px, env(safe-area-inset-top));
 		left: 2px;
 		width: 50px;
 		height: 50px;
