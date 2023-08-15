@@ -3,6 +3,8 @@
 	import { slide } from 'svelte/transition';
 	import Modals from '$c/Modals/Modals.svelte';
 	import MoreVert from '$icons/MoreVert.svelte';
+	import Play from '$icons/PlayArrow.svelte';
+	import Pause from '$icons/Pause.svelte';
 	import {
 		selectedAlbum,
 		playingAlbum,
@@ -129,6 +131,12 @@
 </script>
 
 <li on:click={playSong}>
+	{#if $player && !$player.paused && index === $playingIndex}
+		<Pause size="32" />
+	{:else}
+		<Play size="32" />
+	{/if}
+
 	<p>{song.title}</p>
 	<menu-container>
 		<button on:click|stopPropagation|capture={() => (expandMenu = !expandMenu)}>
@@ -170,14 +178,14 @@
 		justify-content: space-between;
 		border-bottom: 1px solid var(--color-text-2);
 		padding: 8px;
+		align-items: center;
 	}
 
 	p {
 		text-align: left;
 		width: 100%;
-		margin: 4px;
 		padding: 0;
-		margin: 0;
+		margin: 0 0 0 8px;
 	}
 
 	button {

@@ -4,10 +4,14 @@
 	import SearchBar from '../main/NavHeader/SearchBar.svelte';
 	import { remoteServer } from '$/stores';
 	import clone from 'just-clone';
+	import extras from './extras.json';
 
 	import { discoverList } from '$/stores';
 	let albumList = [];
 	let filteredList = [];
+	let extra = [];
+	let wavlake = [];
+	let other = [];
 
 	onMount(async () => {
 		if (!$discoverList.length) {
@@ -18,29 +22,44 @@
 					)}`
 			);
 			let data = await res.json();
-			albumList = data.feeds || data.feed || [];
-			//this removes 100% Retro Live Feed
-			albumList = shuffleArray(albumList.filter(({ id }) => id !== 5718023));
-			// const ccRes = await fetch(
-			// 	`api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=4935828')}`
-			// );
-			// let ccData = await ccRes.json();
-			// console.log(ccData);
-			// albumList = [ccData.feed].concat(albumList);
+			let fetchedFeeds = data.feeds || data.feed || [];
+			const resBB = await fetch(
+				remoteServer + `api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=6562175')}`
+			);
+			let dataBB = await resBB.json();
+			let BBFeed = dataBB.feeds || dataBB.feed || [];
+			console.log(BBFeed);
+
+			fetchedFeeds.forEach((v) => {
+				let addFeed = true;
+				if (
+					//this removes 100% Retro Live Feed
+					[5718023].find((w) => v.id === w) ||
+					v.author === 'Gabe Barrett'
+				) {
+					addFeed = false;
+				}
+				if (addFeed && v.generator === 'Wavlake Studio') {
+					wavlake.push(v);
+				}
+				if (addFeed && v.generator !== 'Wavlake Studio') {
+					other.push(v);
+				}
+			});
+
+			albumList = extras.concat(shuffleArray(other)).concat(shuffleArray(wavlake));
+
 			$discoverList = albumList;
 		}
 		filteredList = clone($discoverList);
 
-		let wavlake = filteredList
-			.filter((v) => v.generator === 'Wavlake Studio')
-			.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
-		let other = filteredList
-			.filter((v) => v.generator !== 'Wavlake Studio')
-			.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
+		wavlake.sort((a, b) => {
+			return a.title.localeCompare(b.title); // Sort by author
+		});
+
+		other.sort((a, b) => {
+			return a.title.localeCompare(b.title); // Sort by author
+		});
 
 		console.log('Wavlake Feeds: ', wavlake);
 		console.log('Other Feeds: ', other);

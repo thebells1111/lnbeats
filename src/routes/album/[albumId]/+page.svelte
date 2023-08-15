@@ -62,9 +62,16 @@
 			{/if}
 		</header>
 
-		{#each $selectedAlbum.songs as song, index}
-			<SongCard {song} {index} />
-		{/each}
+		{#if $selectedAlbum.songs.length}
+			{#each $selectedAlbum.songs as song, index}
+				<SongCard {song} {index} />
+			{/each}
+		{:else}
+			<p style="text-align:center">This album has no songs.</p>
+			<p style="text-align:center">
+				Maybe consider reaching out to the artist and letting them know.
+			</p>
+		{/if}
 	</ul>
 {:else}
 	<h3>It appears this Album is no longer available.</h3>

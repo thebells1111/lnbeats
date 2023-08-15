@@ -1,0 +1,138 @@
+[
+	{
+		"id": 6524027,
+		"podcastGuid": "6dfbd8e4-f9f3-5ea1-98a1-574134999b3b",
+		"medium": "podcast",
+		"title": "Boostagram Ball",
+		"url": "https://mp3s.nashownotes.com/bballrss.xml",
+		"originalUrl": "https://mp3s.nashownotes.com/bballrss.xml",
+		"link": "https://boostagramball.com",
+		"description": "The First Podcast with Value4Value Music hosted by Adam Curry",
+		"author": "Adam Curry",
+		"ownerName": "Adam Curry",
+		"image": "https://noagendaassets.com/enc/1690556352.157_bball-show-art-black.png",
+		"artwork": "https://noagendaassets.com/enc/1690556352.157_bball-show-art-black.png",
+		"lastUpdateTime": 1691848043,
+		"lastCrawlTime": 1692017427,
+		"lastParseTime": 1692017432,
+		"lastGoodHttpStatusTime": 1692017427,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "025b52a62037336491ae3e0dc9ccdd1d",
+		"episodeCount": 4,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 0,
+		"imageUrlHash": 831919587,
+		"value": {
+			"model": { "type": "lightning", "method": "keysend", "suggested": "0.00000005000" },
+			"destinations": [
+				{
+					"name": "Boostagram Ball",
+					"type": "node",
+					"address": "021f548a8ab5eb8e7cf91e4c9777c388463e213485ece9a1808e3c6850084ee630",
+					"split": 90
+				},
+				{
+					"name": "IPFSPodcasting.net",
+					"type": "node",
+					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
+					"split": 5
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB"
+				},
+				{
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"type": "node",
+					"fee": true,
+					"split": 1
+				}
+			]
+		}
+	},
+	{
+		"id": 6562175,
+		"podcastGuid": "469b403f-db2d-574c-9db9-96dbb3f6561c",
+		"medium": "podcast",
+		"title": "It's A Mood",
+		"url": "https://itsamood.org/itsamoodrss.xml",
+		"originalUrl": "https://itsamood.org/itsamoodrss.xml",
+		"link": "https://itsamood.org",
+		"description": "A value4value happenstance music show.",
+		"author": "",
+		"ownerName": "Mike Neumann",
+		"image": "https://itsamood.org/assets/static/itsamood-show-art-001.jpg",
+		"artwork": "https://itsamood.org/assets/static/itsamood-show-art-001.jpg",
+		"lastUpdateTime": 1691973075,
+		"lastCrawlTime": 1691973053,
+		"lastParseTime": 1691973076,
+		"lastGoodHttpStatusTime": 1691973053,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en-us",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "b5cd33bb3378478842d9c0a738d46765",
+		"episodeCount": 3,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 0,
+		"imageUrlHash": 3387580645,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "Mike Neumann",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 95,
+					"customKey": "696969",
+					"customValue": "a3Yee23J6ggBqc2RNwGr"
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 10,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB",
+					"fee": true
+				},
+				{
+					"name": "Podcastindex.org",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 5
+				}
+			]
+		},
+		"funding": {
+			"url": "https://www.buymeacoffee.com/mikeneumann",
+			"message": "Support the show! You know you want to!"
+		}
+	}
+]
