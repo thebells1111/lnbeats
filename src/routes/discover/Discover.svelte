@@ -1,12 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
 	import AlbumCard from './AlbumCard.svelte';
-	import SearchBar from '../main/NavHeader/SearchBar.svelte';
+	import SearchBar from './SearchBar.svelte';
 	import { remoteServer } from '$/stores';
 	import clone from 'just-clone';
 	import extras from './extras.json';
 
-	import { discoverList } from '$/stores';
+	import { discoverList, albumSearch } from '$/stores';
 	let albumList = [];
 	let filteredList = [];
 	let extra = [];
@@ -52,7 +52,12 @@
 
 			$discoverList = albumList;
 		}
-		filteredList = clone($discoverList);
+
+		if ($albumSearch) {
+			handleInput({ target: { value: $albumSearch } });
+		} else {
+			filteredList = clone($discoverList);
+		}
 
 		wavlake.sort((a, b) => {
 			return a.title.localeCompare(b.title); // Sort by author
@@ -78,6 +83,7 @@
 
 	function handleInput(e) {
 		const query = e.target.value.toLowerCase();
+		$albumSearch = query;
 		if (query) {
 			filteredList = $discoverList
 				.filter(

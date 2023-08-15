@@ -7,11 +7,12 @@
 	import CreatePlaylistButton from '$c/CreatePlaylist/CreatePlaylistButton.svelte';
 	import OptionsMenu from './OptionsMenu.svelte';
 
-	import { library, playlists } from '$/stores';
+	import { library, playlists, albumSearch } from '$/stores';
 
 	let closerActive = false;
 
 	onMount(async () => {
+		$albumSearch = '';
 		const libraryDB = localforage.createInstance({
 			name: 'libraryDB'
 		});

@@ -4,13 +4,12 @@
 	import { page } from '$app/stores';
 
 	import { goto, afterNavigate } from '$app/navigation';
-	import SearchBar from './SearchBar.svelte';
 	let previousPage = '';
 
 	function navigateBack() {
 		if (previousPage) {
 			goto(previousPage);
-		} else goto('/discover');
+		} else goto('/');
 	}
 
 	afterNavigate(({ from }) => {
@@ -22,10 +21,6 @@
 <header class:hidden={[`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}>
 	{#if ![`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}
 		<button class="back-button" on:click={navigateBack}><BackArrowIcon size={30} /></button>
-	{/if}
-
-	{#if $page.route.id === '/search'}
-		<SearchBar />
 	{/if}
 
 	{#if $page.route.id === '/discover'}
