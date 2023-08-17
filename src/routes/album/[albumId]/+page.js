@@ -40,18 +40,16 @@ export async function load({ params, fetch }) {
 
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
-		console.log(data);
 
 		let xml2Json = parse(data, parserOptions);
 		let feed = xml2Json.rss.channel;
-		console.log(feed);
 
 		if (feed) {
 			if (feed.item?.[0]?.['podcast:episode']) {
 				feed.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
 			}
 
-			albumData.feed.songs = [].concat(feed.item);
+			albumData.feed.songs = feed.item ? [].concat(feed.item) : [];
 			albumData.feed.live = [].concat(data.liveItem);
 			return { album: albumData.feed, redirect };
 		}

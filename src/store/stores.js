@@ -4,6 +4,7 @@ import { dev } from '$app/environment';
 export const remoteServer = dev ? 'http://localhost:8000/' : 'https://curiohoster.com/';
 
 export const indexSearchResults = writable([]);
+export const albumSearch = writable('');
 export const library = writable({});
 export const discoverList = writable([]);
 export const playlists = writable(new Set());
