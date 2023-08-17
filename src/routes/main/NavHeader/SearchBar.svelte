@@ -27,10 +27,6 @@
 
 	export let inputFn = () => {};
 
-	afterNavigate(({ from }) => {
-		setTimeout(() => searchInput.select(), 100);
-	});
-
 	function checkEnter(e) {
 		if (e.key === 'Enter') {
 			searchFn();

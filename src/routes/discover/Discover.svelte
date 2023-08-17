@@ -92,7 +92,6 @@
 		align-items: center;
 		height: 50px;
 		padding: 0 12px;
-		padding-top: env(safe-area-inset-top);
 	}
 
 	search-header {

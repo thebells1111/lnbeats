@@ -78,6 +78,11 @@
 		flex-direction: column;
 		align-items: center;
 		padding: 16px 8px 8px 8px;
+		padding-top: calc(16px + env(safe-area-inset-top));
+		padding-left: calc(8px + env(safe-area-inset-left));
+		padding-bottom: calc(8px + env(safe-area-inset-bottom));
+		padding-right: calc(8px + env(safe-area-inset-right));
+
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(
 			180deg,

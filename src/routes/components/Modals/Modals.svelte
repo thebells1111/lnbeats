@@ -59,7 +59,7 @@
 
 	.close {
 		position: fixed;
-		top: 8px;
+		top: max(8px, env(safe-area-inset-top));
 		left: calc(50% + min(316px, calc((100% / 2) - 44px)));
 		background-color: transparent;
 		padding: 8px;
@@ -69,10 +69,10 @@
 
 	container {
 		display: block;
-
-		width: calc(100% - 32px);
-		height: calc(100% - 42px);
-		margin: 42px 16px 0 16px;
+		width: calc(100% - 32px - env(safe-area-inset-right) - env(safe-area-inset-left));
+		height: calc(100% - 42px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+		margin: calc(42px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
+			env(safe-area-inset-bottom) calc(16px + env(safe-area-inset-left));
 		overflow: hidden;
 	}
 
