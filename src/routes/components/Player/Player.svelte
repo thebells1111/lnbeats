@@ -12,7 +12,9 @@
 		user,
 		webln,
 		currentSplitDestinations,
-		playingIndex
+		playingIndex,
+		playingChapters,
+		currentPlayingChapter
 	} from '$/stores';
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
@@ -62,6 +64,8 @@
 
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
+		$currentPlayingChapter = findCurrentChapter(currentTime);
+		console.log($currentPlayingChapter);
 		currentSplit = findCurrentSplit(currentTime);
 		$player.currentTime = $player.currentTime;
 
@@ -73,6 +77,16 @@
 			}
 		} else if (previousSplit?.duration) {
 			handleNewSplit(currentTime);
+		}
+	}
+
+	function findCurrentChapter(currentTime) {
+		if ($playingChapters?.length) {
+			return $playingChapters.find((chapter) => {
+				const startTime = parseFloat(chapter.startTime);
+				const endTime = chapter.endTime ? parseFloat(chapter.endTime) : undefined;
+				return currentTime >= startTime && chapter.endTime ? currentTime <= endTime : true;
+			});
 		}
 	}
 

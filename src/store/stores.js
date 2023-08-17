@@ -32,6 +32,7 @@ export const user = writable({
 export const valueTimeSplitBlock = writable([]);
 export const displayChapters = writable([]);
 export const playingChapters = writable([]);
+export const currentPlayingChapter = writable();
 export const currentSplitDestinations = writable();
 export const webln = writable();
 
