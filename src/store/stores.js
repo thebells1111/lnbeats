@@ -29,7 +29,9 @@ export const user = writable({
 	preferences: { wallet: 'albyApi' }
 });
 
-export const timeValueSplitBlock = writable([]);
+export const valueTimeSplitBlock = writable([]);
+export const displayChapters = writable([]);
+export const playingChapters = writable([]);
 export const currentSplitDestinations = writable();
 export const webln = writable();
 

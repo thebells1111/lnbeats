@@ -47,8 +47,8 @@
 				}
 			});
 
-			// albumList = extras.concat(shuffleArray(other)).concat(shuffleArray(wavlake));
-			albumList = shuffleArray(other).concat(shuffleArray(wavlake));
+			albumList = extras.concat(shuffleArray(other)).concat(shuffleArray(wavlake));
+			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
 
 			$discoverList = albumList;
 		}

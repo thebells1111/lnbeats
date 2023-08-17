@@ -8,7 +8,7 @@
 		playingAlbum,
 		posterSwiper,
 		satsPerSong,
-		timeValueSplitBlock,
+		valueTimeSplitBlock,
 		user,
 		webln,
 		currentSplitDestinations,
@@ -77,11 +77,13 @@
 	}
 
 	function findCurrentSplit(currentTime) {
-		return $timeValueSplitBlock.find((block) => {
-			const startTime = parseFloat(block.startTime);
-			const endTime = startTime + parseFloat(block.duration);
-			return currentTime >= startTime && currentTime <= endTime;
-		});
+		if ($valueTimeSplitBlock?.length) {
+			return $valueTimeSplitBlock.find((block) => {
+				const startTime = parseFloat(block.startTime);
+				const endTime = startTime + parseFloat(block.duration);
+				return currentTime >= startTime && currentTime <= endTime;
+			});
+		}
 	}
 
 	function isSameSplit(split1, split2) {

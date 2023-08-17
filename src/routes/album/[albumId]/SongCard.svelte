@@ -1,6 +1,7 @@
 <script>
 	import localforage from 'localforage';
 	import { slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
 	import Modals from '$c/Modals/Modals.svelte';
 	import MoreVert from '$icons/MoreVert.svelte';
 	import Play from '$icons/PlayArrow.svelte';
@@ -12,8 +13,10 @@
 		playingSong,
 		posterSwiper,
 		playingIndex,
-		timeValueSplitBlock,
-		remoteServer
+		valueTimeSplitBlock,
+		remoteServer,
+		displayChapters,
+		playingChapters
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -26,7 +29,15 @@
 	let modalStatus = false;
 	let modalType;
 
+	onMount(() => {});
+
 	async function playSong() {
+		if (song['podcast:chapters']) {
+			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
+				.then((res) => res.json())
+				.then((data) => ($playingChapters = data?.chapters))
+				.then(() => console.log($playingChapters));
+		}
 		if (song.playlist) {
 			const playlistDB = localforage.createInstance({
 				name: 'playlistDB'
@@ -57,6 +68,45 @@
 		}
 
 		const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
+		let guidList = organizePodcastsByGuid(splits);
+		console.log(splits);
+		console.log(guidList);
+		let resUrl = remoteServer + `api/queryindex?q=value/batch/byepisodeguid`;
+		let guidRes = await fetch(resUrl, {
+			method: 'POST',
+			body: JSON.stringify({ data: guidList }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		let data = await guidRes.json();
+		console.log(data);
+
+		if (splits.length > 0 && false) {
+			handleSplit(splits[0]).then((splitInfo) => {
+				$valueTimeSplitBlock[0] = splitInfo;
+			});
+		}
+
+		function organizePodcastsByGuid(podcasts) {
+			const result = {};
+
+			podcasts.forEach((podcast) => {
+				if (podcast['podcast:remoteItem']) {
+					const feedGuid = podcast['podcast:remoteItem']['@_feedGuid'];
+					const itemGuid = podcast['podcast:remoteItem']['@_itemGuid'];
+
+					if (!result[feedGuid]) {
+						result[feedGuid] = [];
+					}
+
+					result[feedGuid].push(itemGuid);
+				}
+			});
+
+			return result;
+		}
 
 		async function handleSplit(split) {
 			if (split['podcast:remoteItem']) {
@@ -100,19 +150,13 @@
 			}
 		}
 
-		if (splits.length > 0) {
-			handleSplit(splits[0]).then((splitInfo) => {
-				$timeValueSplitBlock[0] = splitInfo;
-			});
-		}
-
 		$player.play();
 
 		$player.paused = $player.paused;
 		openPoster();
 		for (let i = 1; i < splits.length; i++) {
 			let split = splits[i];
-			$timeValueSplitBlock[i] = await handleSplit(split);
+			// $valueTimeSplitBlock[i] = await handleSplit(split);
 		}
 	}
 
