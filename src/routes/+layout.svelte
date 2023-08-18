@@ -68,18 +68,18 @@
 				}
 			);
 			let data = await res.json();
-			console.log(data);
 			if (data.lightning_address) {
 				$user.loggedIn = true;
 				$user.name = data.lightning_address;
 				$user.balance = data.balance;
 			}
+			const urlWithoutQuery = window.location.href.split('?')[0];
+			window.history.replaceState(null, null, urlWithoutQuery);
 		} else {
 			let res = await fetch(remoteServer + 'api/alby/refresh', {
 				credentials: 'include'
 			});
 			let data = await res.json();
-			console.log(data);
 			if (data.lightning_address) {
 				$user.loggedIn = true;
 				$user.name = data.lightning_address;

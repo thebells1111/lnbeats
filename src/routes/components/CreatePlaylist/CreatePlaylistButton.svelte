@@ -2,12 +2,12 @@
 	import PlaylistAdd from '$icons/PlaylistAdd.svelte';
 	import CreatePlaylist from './CreatePlaylist.svelte';
 	import Modals from '../Modals/Modals.svelte';
-	let modalStatus = false;
+	let showModal = false;
 </script>
 
 <button
 	on:click={() => {
-		modalStatus = true;
+		showModal = true;
 	}}
 >
 	<PlaylistAdd
@@ -17,8 +17,8 @@
 	<p>Create Playlist</p>
 </button>
 
-<Modals bind:modalStatus>
-	<CreatePlaylist bind:modalStatus />
+<Modals bind:showModal>
+	<CreatePlaylist bind:showModal />
 </Modals>
 
 <style>

@@ -1,6 +1,6 @@
 <script>
 	import { addPlaylistToMasterList } from '$functions/addPlaylistToMasterList';
-	export let modalStatus;
+	export let showModal;
 	let name = '';
 	let displayText = '';
 
@@ -14,7 +14,7 @@
 
 			if (success) {
 				setTimeout(() => {
-					modalStatus = false;
+					showModal = false;
 				}, 1000);
 			}
 		} else {

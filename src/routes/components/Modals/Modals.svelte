@@ -1,14 +1,14 @@
 <script>
 	import Close from '$icons/Close.svelte';
 
-	export let modalStatus = false;
+	export let showModal = false;
 
 	function closeModal() {
-		modalStatus = false;
+		showModal = false;
 	}
 </script>
 
-{#if modalStatus}
+{#if showModal}
 	<blurred-background on:mousedown|self={closeModal} on:touchend|self={closeModal}>
 		<modal>
 			<button class="close" on:click={closeModal}>
@@ -71,8 +71,9 @@
 		display: block;
 		width: calc(100% - 32px - env(safe-area-inset-right) - env(safe-area-inset-left));
 		height: calc(100% - 42px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-		margin: calc(42px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
-			env(safe-area-inset-bottom) calc(16px + env(safe-area-inset-left));
+		padding-top: calc(42px + env(safe-area-inset-top));
+		margin: 0 calc(16px + env(safe-area-inset-right)) env(safe-area-inset-bottom)
+			calc(16px + env(safe-area-inset-left));
 		overflow: hidden;
 	}
 

@@ -10,7 +10,7 @@
 	export let closerActive;
 
 	let expandMenu = false;
-	let modalStatus = false;
+	let showModal = false;
 	let modalScreen;
 
 	$: if (!closerActive) {
@@ -19,7 +19,7 @@
 
 	function handleRemoveItem() {
 		expandMenu = false;
-		modalStatus = true;
+		showModal = true;
 		modalScreen = 'remove-confirm';
 	}
 </script>
@@ -60,9 +60,9 @@
 	/>
 {/if}
 
-<Modals bind:modalStatus>
+<Modals bind:showModal>
 	{#if modalScreen === 'remove-confirm'}
-		<RemoveConfirmModal bind:modalStatus {item} {itemType} />
+		<RemoveConfirmModal bind:showModal {item} {itemType} />
 	{/if}
 </Modals>
 
