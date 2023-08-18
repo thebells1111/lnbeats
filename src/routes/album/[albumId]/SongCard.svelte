@@ -23,7 +23,7 @@
 	$: console.log(song);
 
 	let expandMenu = false;
-	let modalStatus = false;
+	let showModal = false;
 	let modalType;
 
 	async function playSong() {
@@ -122,11 +122,10 @@
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
 	}
 
-	function showModal(type) {
+	function handleShowModal(type) {
 		expandMenu = false;
-		modalStatus = true;
+		showModal = true;
 		modalType = type;
-		console.log(modalType);
 	}
 </script>
 
@@ -145,9 +144,11 @@
 		{#if expandMenu}
 			<menu>
 				<ul transition:slide>
-					<li on:click|stopPropagation={showModal.bind(this, 'playlist-add')}>Add to Playlist</li>
+					<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
+						Add to Playlist
+					</li>
 					{#if song.playlist}
-						<li on:click|stopPropagation={showModal.bind(this, 'playlist-remove')}>Remove</li>
+						<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>Remove</li>
 					{/if}
 				</ul>
 			</menu>
@@ -163,11 +164,11 @@
 	/>
 {/if}
 
-<Modals bind:modalStatus>
+<Modals bind:showModal>
 	{#if modalType === 'playlist-add'}
 		<AddSongToPlaylist song={{ ...song, album: $selectedAlbum }} />
 	{:else if modalType === 'playlist-remove'}
-		<RemoveConfirmModal bind:modalStatus item={song} {index} itemType="playlist-song" />
+		<RemoveConfirmModal bind:showModal item={song} {index} itemType="playlist-song" />
 	{/if}
 </Modals>
 

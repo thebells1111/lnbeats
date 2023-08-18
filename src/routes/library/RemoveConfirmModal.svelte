@@ -3,7 +3,7 @@
 	import { deletePlaylistFromMasterList } from '$functions/deletePlaylistFromMasterList';
 	import { deleteSongFromPlaylist } from '$functions/deleteSongFromPlaylist';
 
-	export let modalStatus = false;
+	export let showModal = false;
 	export let item;
 	export let itemType;
 	export let index;
@@ -17,7 +17,7 @@
 			deleteSongFromPlaylist(item, index);
 		}
 
-		modalStatus = false;
+		showModal = false;
 	}
 </script>
 
@@ -25,7 +25,7 @@
 
 <button-container>
 	<button on:click={handleRemoveConfirm}>Yes</button>
-	<button class="cancel" on:click={() => (modalStatus = false)}>No</button>
+	<button class="cancel" on:click={() => (showModal = false)}>No</button>
 </button-container>
 
 <style>
