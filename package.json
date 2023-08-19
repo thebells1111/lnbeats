@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "concurrently \"cd ../00-curiohoster && npm run dev\" \"vite dev --host --port 3000\"",
+		"vite": "vite dev --host --port 3000",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --plugin-search-dir . --check .",
