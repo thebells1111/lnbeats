@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { dev } from '$app/environment';
 
-export const remoteServer = dev ? 'http://localhost:8000/' : 'https://curiohoster.com/';
+export const remoteServer = dev ? 'http://localhost:8000/' : 'https://api.lnbeats.com/';
 export const albyClientId = dev ? '32dVOIuGiA' : '9QX2jPuEiu';
 
 export const indexSearchResults = writable([]);
