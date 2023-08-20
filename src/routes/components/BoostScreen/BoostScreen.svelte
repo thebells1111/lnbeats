@@ -44,6 +44,7 @@
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
+			$currentBoostDestinations = null;
 			$showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong
