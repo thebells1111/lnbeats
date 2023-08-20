@@ -51,6 +51,17 @@
 			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
 
 			$discoverList = albumList;
+
+			wavlake.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
+
+			other.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
+
+			console.log('Wavlake Feeds: ', wavlake);
+			console.log('Other Feeds: ', other);
 		}
 
 		if ($albumSearch) {
@@ -58,17 +69,6 @@
 		} else {
 			filteredList = clone($discoverList);
 		}
-
-		wavlake.sort((a, b) => {
-			return a.title.localeCompare(b.title); // Sort by author
-		});
-
-		other.sort((a, b) => {
-			return a.title.localeCompare(b.title); // Sort by author
-		});
-
-		console.log('Wavlake Feeds: ', wavlake);
-		console.log('Other Feeds: ', other);
 	});
 
 	function shuffleArray(array) {

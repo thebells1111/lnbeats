@@ -12,17 +12,19 @@
 	let closerActive = false;
 
 	onMount(async () => {
-		$albumSearch = '';
-		const libraryDB = localforage.createInstance({
-			name: 'libraryDB'
-		});
+		if (!$library) {
+			$albumSearch = '';
+			const libraryDB = localforage.createInstance({
+				name: 'libraryDB'
+			});
 
-		$library = (await libraryDB.getItem('library')) || {};
-		console.log($library);
-		const playlistDB = localforage.createInstance({
-			name: 'playlistDB'
-		});
-		$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
+			$library = (await libraryDB.getItem('library')) || {};
+			console.log($library);
+			const playlistDB = localforage.createInstance({
+				name: 'playlistDB'
+			});
+			$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
+		}
 	});
 </script>
 

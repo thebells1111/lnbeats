@@ -5,15 +5,31 @@
 	export let size = 30;
 	export let style;
 
-	import { playingAlbum, playingSong, playingIndex } from '$/stores';
+	import {
+		playingAlbum,
+		playingSong,
+		playingIndex,
+		playingChapters,
+		currentPlayingChapter,
+		currentChapterIndex,
+		player,
+		chapterBoostBypass
+	} from '$/stores';
 
 	function gotoNextSong() {
-		let album = $playingAlbum;
-		let currentSong = $playingSong;
-		if (album?.songs && currentSong?.enclosure) {
-			if ($playingIndex > -1 && $playingIndex < album.songs.length - 1) {
-				$playingIndex = $playingIndex + 1;
-				loadSong(album.songs[$playingIndex]);
+		if ($currentChapterIndex < $playingChapters?.length - 1) {
+			$currentChapterIndex++;
+			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			$player.currentTime = $currentPlayingChapter.startTime;
+			$chapterBoostBypass = true;
+		} else {
+			let album = $playingAlbum;
+			let currentSong = $playingSong;
+			if (album?.songs && currentSong?.enclosure) {
+				if ($playingIndex > -1 && $playingIndex < album.songs.length - 1) {
+					$playingIndex = $playingIndex + 1;
+					loadSong(album.songs[$playingIndex]);
+				}
 			}
 		}
 	}

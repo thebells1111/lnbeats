@@ -15,7 +15,6 @@
 		playingIndex,
 		valueTimeSplitBlock,
 		remoteServer,
-		displayChapters,
 		playingChapters
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
@@ -23,7 +22,6 @@
 
 	export let song;
 	export let index;
-	$: console.log(song);
 
 	let expandMenu = false;
 	let showModal = false;
@@ -68,25 +66,32 @@
 		}
 
 		const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
-		let guidList = organizePodcastsByGuid(splits);
-		console.log(splits);
-		console.log(guidList);
-		let resUrl = remoteServer + `api/queryindex?q=value/batch/byepisodeguid`;
-		let guidRes = await fetch(resUrl, {
-			method: 'POST',
-			body: JSON.stringify({ data: guidList }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+		// let guidList = organizePodcastsByGuid(splits);
+		// let resUrl = remoteServer + `api/queryindex?q=value/batch/byepisodeguid`;
+		// let guidRes = await fetch(resUrl, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify({ data: guidList }),
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// });
 
-		let data = await guidRes.json();
-		console.log(data);
+		// let data = await guidRes.json();
+		// console.log(data);
 
-		if (splits.length > 0 && false) {
+		if (splits.length > 0) {
 			handleSplit(splits[0]).then((splitInfo) => {
 				$valueTimeSplitBlock[0] = splitInfo;
 			});
+		}
+
+		$player.play();
+
+		$player.paused = $player.paused;
+		openPoster();
+		for (let i = 1; i < splits.length; i++) {
+			let split = splits[i];
+			$valueTimeSplitBlock[i] = await handleSplit(split);
 		}
 
 		function organizePodcastsByGuid(podcasts) {
@@ -114,7 +119,7 @@
 				const itemGuid = split['podcast:remoteItem']?.['@_itemGuid'];
 				const startTime = split?.['@_startTime'];
 				const duration = split?.['@_duration'];
-				const remoteSplit = split?.['@_remoteSplit'];
+				const remotePercentage = split?.['@_remotePercentage'];
 				const feedGuidUrl =
 					remoteServer +
 					`api/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${feedGuid}`)}`;
@@ -137,7 +142,7 @@
 				splitInfo.artist = feed?.author;
 				splitInfo.startTime = startTime;
 				splitInfo.duration = duration;
-				splitInfo.remoteSplit = remoteSplit;
+				splitInfo.remotePercentage = remotePercentage;
 				valueBlock.feed = feed?.value;
 
 				let items = itemsData?.items;
@@ -147,16 +152,37 @@
 
 				splitInfo.valueBlock = valueBlock.item || valueBlock.feed;
 				return splitInfo;
+			} else if (split['podcast:valueRecipient']) {
+				let splitInfo = {};
+				splitInfo.startTime = split?.['@_startTime'];
+				splitInfo.duration = split?.['@_duration'];
+				splitInfo.remotePercentage = split?.['@_remotePercentage'];
+				let tempValueBlock = [].concat(split['podcast:valueRecipient']);
+				let valueBlock = {
+					model: {
+						type: 'lightning',
+						method: 'keysend'
+					},
+					destinations: []
+				};
+
+				valueBlock.destinations = tempValueBlock
+					.map((v) => {
+						let block = {};
+						if (v['@_address']) {
+							block.address = v['@_address'];
+							block.customKey = v['@_customKey'];
+							block.customValue = v['@_customValue'];
+							block.name = v['@_name'];
+							block.split = Number(v['@_split']) || 100;
+							block.type = v['@_type'] || 'node';
+						}
+						return block;
+					})
+					.filter((v) => v);
+				splitInfo.valueBlock = valueBlock;
+				return splitInfo;
 			}
-		}
-
-		$player.play();
-
-		$player.paused = $player.paused;
-		openPoster();
-		for (let i = 1; i < splits.length; i++) {
-			let split = splits[i];
-			// $valueTimeSplitBlock[i] = await handleSplit(split);
 		}
 	}
 
@@ -171,10 +197,13 @@
 		showModal = true;
 		modalType = type;
 	}
+
+	$: console.log($playingSong);
+	$: console.log(song);
 </script>
 
 <li on:click={playSong}>
-	{#if $player && !$player.paused && index === $playingIndex}
+	{#if $player && !$player.paused && index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)}
 		<Pause size="32" />
 	{:else}
 		<Play size="32" />
