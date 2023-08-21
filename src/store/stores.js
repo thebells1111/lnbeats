@@ -9,6 +9,7 @@ export const albumSearch = writable('');
 export const library = writable({});
 export const discoverList = writable([]);
 export const playlists = writable(new Set());
+export const favorites = writable(new Set());
 export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});
 export const playingAlbum = writable({});

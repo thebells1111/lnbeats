@@ -1,17 +1,45 @@
 <script>
+	import { scale } from 'svelte/transition';
 	import {
 		playingSong,
 		playingAlbum,
 		player,
 		posterSwiper,
 		currentPlayingChapter,
-		playingChapters
+		playingChapters,
+		favorites
 	} from '$/stores';
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
+	import Favorite from '$icons/Favorite.svelte';
+	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 	import Close from '$icons/Close.svelte';
+	$: isFavorite = $favorites.has(
+		`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
+	);
+
+	console.l;
+
+	function toggleFavorite() {
+		console.log($favorites);
+		console.log($playingSong);
+		if (
+			$favorites.has(
+				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
+			)
+		) {
+			$favorites.delete(
+				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
+			);
+		} else {
+			$favorites.add(
+				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
+			);
+		}
+		$favorites = $favorites;
+	}
 
 	$: console.log($playingAlbum);
 	$: console.log($playingChapters);
@@ -44,6 +72,21 @@
 		/>
 
 		<below-poster-container>
+			<button on:click={toggleFavorite} class="favorite-container">
+				{#if isFavorite}
+					<filled-container
+						style={`${isFavorite ? 'display:initial' : 'display:none'}`}
+						class:filled={isFavorite}
+						transition:scale
+					>
+						<FavoriteFilled size="40" />
+					</filled-container>
+				{:else}
+					<unfilled-container style={`${isFavorite ? 'display:none' : 'display:initial'}`}>
+						<Favorite size="40" />
+					</unfilled-container>
+				{/if}
+			</button>
 			<album-info>
 				<song-title
 					>{$currentPlayingChapter
@@ -52,6 +95,7 @@
 				>
 				<band-name>{$currentPlayingChapter ? '' : $playingAlbum.author}</band-name>
 			</album-info>
+
 			<BoostButton />
 		</below-poster-container>
 		{#if $player?.src}
@@ -155,6 +199,7 @@
 		flex-direction: column;
 		width: 100%;
 		align-items: flex-start;
+		margin-left: 44px;
 	}
 
 	song-title {
@@ -178,5 +223,19 @@
 		background-color: transparent;
 		border: none;
 		padding: 0;
+	}
+
+	button.favorite-container {
+		display: flex;
+		padding: 4px;
+		margin-top: 16px;
+	}
+
+	filled-container,
+	unfilled-container {
+		position: absolute;
+	}
+	.filled {
+		color: rgb(249, 24, 128);
 	}
 </style>
