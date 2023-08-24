@@ -134,5 +134,150 @@
 			"url": "https://www.buymeacoffee.com/mikeneumann",
 			"message": "Support the show! You know you want to!"
 		}
+	},
+	{
+		"id": 6582415,
+		"podcastGuid": "4a2df26a-2f1e-59c5-b302-e5fe309a75f9",
+		"medium": "podcast",
+		"title": "Black Cat Music Podcast",
+		"url": "https://podcastcontent.sfo2.cdn.digitaloceanspaces.com/Black_Cat_Music_Podcast/feed.xml",
+		"originalUrl": "https://podcastcontent.sfo2.cdn.digitaloceanspaces.com/Black_Cat_Music_Podcast/feed.xml",
+		"link": "blackcatmusicpodcast.xyz",
+		"description": "Music Podcast using V4V and doing rebellion. Mostly Punk",
+		"author": "ryley",
+		"ownerName": "ryley",
+		"image": "https://podcastcontent.sfo2.cdn.digitaloceanspaces.com/Black_Cat_Music_Podcast/art/Cover.jpg",
+		"artwork": "https://podcastcontent.sfo2.cdn.digitaloceanspaces.com/Black_Cat_Music_Podcast/art/Cover.jpg",
+		"lastUpdateTime": 1692725927,
+		"lastCrawlTime": 1692828622,
+		"lastParseTime": 1692828626,
+		"lastGoodHttpStatusTime": 1692828622,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "798d00010d1f81302f20b09e0a732e45",
+		"episodeCount": 2,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 0,
+		"imageUrlHash": 2657628547,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "ryley",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 90,
+					"customKey": "696969",
+					"customValue": "kUg25ls0Ge0jieVEyxT4"
+				},
+				{
+					"name": "Podcasting 2.0",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 5
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB"
+				}
+			]
+		}
+	},
+	{
+		"id": 6567390,
+		"podcastGuid": "de603d82-40f5-5d0c-957c-35f251fcd103",
+		"medium": "podcast",
+		"title": "The Fairly Fun Show",
+		"url": "https://fairly-fun.fra1.cdn.digitaloceanspaces.com/The_Fairly_Fun_Show/feed.xml",
+		"originalUrl": "https://fairly-fun.fra1.cdn.digitaloceanspaces.com/The_Fairly_Fun_Show/feed.xml",
+		"link": "https://silastv.live/FairlyFun",
+		"description": "Podcast about entertaining facts, jokes and also playing a mix of music.",
+		"author": "Silas Vogt",
+		"ownerName": "Silas Vogt",
+		"image": "https://fairly-fun.fra1.cdn.digitaloceanspaces.com/The_Fairly_Fun_Show/art/ArtWork1.jpg",
+		"artwork": "https://fairly-fun.fra1.cdn.digitaloceanspaces.com/The_Fairly_Fun_Show/art/ArtWork1.jpg",
+		"lastUpdateTime": 1691789400,
+		"lastCrawlTime": 1692791076,
+		"lastParseTime": 1692791099,
+		"lastGoodHttpStatusTime": 1692791076,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "f443b2bf4969d66c55d679780ad1ea95",
+		"episodeCount": 2,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 0,
+		"imageUrlHash": 4083949214,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "silasonlinux@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 99,
+					"customKey": "696969",
+					"customValue": "CJQy23zX5FanmqYAivXQ"
+				},
+				{
+					"name": "IPFS Podcasting",
+					"type": "node",
+					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
+					"split": 5,
+					"fee": true
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB",
+					"fee": true
+				},
+				{
+					"name": "Silas Node Test",
+					"type": "node",
+					"address": "023d53a588b9f5d50d3b9f10f1c780dc29992755c4674311aa78fb94488670efc4",
+					"split": 1
+				},
+				{
+					"name": "Podcastindex",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 1,
+					"fee": true
+				}
+			]
+		}
 	}
 ]
