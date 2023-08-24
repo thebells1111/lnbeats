@@ -1,13 +1,21 @@
 <script>
-	import { playingSong, playingAlbum, player, posterSwiper } from '$/stores';
+	import {
+		playingSong,
+		playingAlbum,
+		player,
+		posterSwiper,
+		currentPlayingChapter,
+		playingChapters
+	} from '$/stores';
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
 	import Close from '$icons/Close.svelte';
-	import BoostScreen from '../components/BoostScreen/BoostScreen.svelte';
-	let showBoost = false;
+
 	$: console.log($playingAlbum);
+	$: console.log($playingChapters);
+	// $: console.log($currentPlayingChapter);
 </script>
 
 <poster-container>
@@ -26,7 +34,8 @@
 		<!-- <button on:click >Share</button> -->
 		<img
 			id="poster-image"
-			src={$playingSong.image ||
+			src={$currentPlayingChapter?.img ||
+				$playingSong.image ||
 				$playingSong.artwork ||
 				$playingSong?.['itunes:image']?.['@_href'] ||
 				$playingAlbum.image ||
@@ -36,8 +45,12 @@
 
 		<below-poster-container>
 			<album-info>
-				<song-title>{$playingSong.title}</song-title>
-				<band-name>{$playingAlbum.author}</band-name>
+				<song-title
+					>{$currentPlayingChapter
+						? $currentPlayingChapter.title || ''
+						: $playingSong.title}</song-title
+				>
+				<band-name>{$currentPlayingChapter ? '' : $playingAlbum.author}</band-name>
 			</album-info>
 			<BoostButton />
 		</below-poster-container>

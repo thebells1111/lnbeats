@@ -30,9 +30,15 @@ export const user = writable({
 	preferences: { wallet: 'albyApi' }
 });
 
-export const timeValueSplitBlock = writable([]);
+export const valueTimeSplitBlock = writable([]);
+export const displayChapters = writable([]);
+export const playingChapters = writable([]);
+export const currentPlayingChapter = writable();
+export const currentChapterIndex = writable(0);
+export const chapterBoostBypass = writable(false);
 export const currentSplitDestinations = writable();
 export const webln = writable();
 
 export const showBoostScreen = writable(false);
+export const currentBoostDestinations = writable();
 export const showInstructionScreen = writable(false);

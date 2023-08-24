@@ -8,11 +8,16 @@
 		playingAlbum,
 		posterSwiper,
 		satsPerSong,
-		timeValueSplitBlock,
+		valueTimeSplitBlock,
 		user,
 		webln,
 		currentSplitDestinations,
-		playingIndex
+		playingIndex,
+		playingChapters,
+		currentPlayingChapter,
+		currentChapterIndex,
+		chapterBoostBypass,
+		remoteServer
 	} from '$/stores';
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
@@ -62,6 +67,7 @@
 
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
+		findCurrentChapter(currentTime);
 		currentSplit = findCurrentSplit(currentTime);
 		$player.currentTime = $player.currentTime;
 
@@ -70,18 +76,56 @@
 				runningSplitTime = currentTime - startSplitTime;
 			} else {
 				handleNewSplit(currentTime);
+				console.log('split: ', currentSplit);
 			}
 		} else if (previousSplit?.duration) {
 			handleNewSplit(currentTime);
 		}
 	}
 
+	function findCurrentChapter(currentTime) {
+		if ($playingChapters?.length) {
+			while (currentTime >= $playingChapters?.[$currentChapterIndex + 1]?.startTime) {
+				$currentChapterIndex++;
+			}
+
+			while (currentTime < $playingChapters?.[$currentChapterIndex]?.startTime) {
+				$currentChapterIndex--;
+			}
+
+			// if ($playingChapters?.[$currentChapterIndex]?.endTime) {
+			// 	if ($player.currentTime > $playingChapters[$currentChapterIndex].endTime) {
+			// 		$useDefaultChapter = true;
+			// 	} else {
+			// 		$useDefaultChapter = false;
+			// 	}
+			// } else {
+			// 	$useDefaultChapter = false;
+			// }
+
+			let foundChapter = $playingChapters[$currentChapterIndex];
+
+			if (JSON.stringify($currentPlayingChapter) !== JSON.stringify(foundChapter)) {
+				$currentPlayingChapter = foundChapter;
+			}
+		}
+	}
+
 	function findCurrentSplit(currentTime) {
-		return $timeValueSplitBlock.find((block) => {
-			const startTime = parseFloat(block.startTime);
-			const endTime = startTime + parseFloat(block.duration);
-			return currentTime >= startTime && currentTime <= endTime;
+		let activeItem = null;
+
+		$valueTimeSplitBlock.forEach((item) => {
+			let startTime = parseFloat(item.startTime);
+			let duration = parseFloat(item.duration);
+
+			if (startTime <= currentTime && startTime + duration > currentTime) {
+				if (activeItem == null || startTime > parseFloat(activeItem.startTime)) {
+					activeItem = item;
+				}
+			}
 		});
+
+		return activeItem;
 	}
 
 	function isSameSplit(split1, split2) {
@@ -89,10 +133,15 @@
 	}
 
 	function handleNewSplit(currentTime) {
-		console.log('check boost');
 		if (shouldBoost() && $user.loggedIn) {
-			console.log('BOOST');
-			handleAutoBoost($currentSplitDestinations);
+			console.log('BOOST CHECK');
+			console.log($currentSplitDestinations);
+			if ($chapterBoostBypass) {
+				$chapterBoostBypass = false;
+			} else {
+				console.log('BOOST');
+				handleAutoBoost($currentSplitDestinations);
+			}
 		}
 
 		startSplitTime = currentTime;
@@ -118,9 +167,10 @@
 			// 	}
 			// ].concat(feedValue);
 			// console.log(feedValue);
-			const feedDestinations = updateSplits(feedValue, 100 - currentSplit.remoteSplit);
+			const feedDestinations = updateSplits(feedValue, 100 - currentSplit.remotePercentage);
 
-			const remoteDestinations = updateSplits(destinations, currentSplit.remoteSplit);
+			const remoteDestinations = updateSplits(destinations, currentSplit.remotePercentage);
+
 			$currentSplitDestinations = remoteDestinations
 				.map(removeUndefinedKeys)
 				.concat(feedDestinations);
@@ -128,9 +178,8 @@
 			$currentSplitDestinations = undefined;
 		}
 
-		console.log($currentSplitDestinations);
-
 		previousSplit = currentSplit;
+		console.log(currentSplit);
 	}
 
 	function buildDestinations(split) {
@@ -141,7 +190,7 @@
 			'@_name': v.name,
 			'@_type': split?.valueBlock?.model.type,
 			'@_split': v.split,
-			'@_fee': v.fee
+			'@_fee': v?.fee
 		}));
 	}
 
@@ -149,18 +198,18 @@
 		return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== undefined));
 	}
 
-	function updateSplits(array, remoteSplit) {
+	function updateSplits(array, remotePercentage) {
 		const newArray = [].concat(array);
-		const totalSplit = newArray.reduce(
-			(acc, item) =>
-				acc + (item['@_fee'] !== true && item['@_fee'] !== 'true' ? item['@_split'] : 0),
-			0
-		);
-		const remoteSplitPercentage = Number(remoteSplit) / 100;
+		const totalSplit = newArray.reduce((acc, item) => {
+			return acc + (item?.['@_fee'] !== true && item?.['@_fee'] !== 'true' ? item['@_split'] : 0);
+		}, 0);
+		const remotePercentagePercentage = Number(remotePercentage) / 100;
 
 		newArray.forEach((item) => {
-			if (item['@_fee'] !== true && item['@_fee'] !== 'true') {
-				item['@_split'] = Math.floor((item['@_split'] / totalSplit) * remoteSplitPercentage * 100);
+			if (item?.['@_fee'] !== true && item?.['@_fee'] !== 'true') {
+				item['@_split'] = Math.floor(
+					(item['@_split'] / totalSplit) * remotePercentagePercentage * 100
+				);
 			}
 		});
 
@@ -172,8 +221,6 @@
 	}
 
 	async function handleAutoBoost(destinations) {
-		console.log(destinations);
-
 		if ($satsPerSong > 0 && destinations) {
 			try {
 				sendBoost({

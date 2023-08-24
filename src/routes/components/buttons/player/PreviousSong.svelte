@@ -1,19 +1,33 @@
 <script>
 	import loadSong from '$functions/loadSong';
 	import SkipPrevious from '$icons/SkipPrevious.svelte';
-	import { playingIndex } from '$/stores';
+	import {
+		playingIndex,
+		playingChapters,
+		currentPlayingChapter,
+		currentChapterIndex,
+		player,
+		chapterBoostBypass
+	} from '$/stores';
 	export let size = 30;
 	export let style;
 
 	import { playingAlbum, playingSong } from '$/stores';
 
 	function gotoPreviousSong() {
-		let album = $playingAlbum;
-		let currentSong = $playingSong;
-		if (album?.songs && currentSong?.enclosure) {
-			if ($playingIndex > 0) {
-				$playingIndex = $playingIndex - 1;
-				loadSong(album.songs[$playingIndex]);
+		if ($currentChapterIndex > 0) {
+			$currentChapterIndex--;
+			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			$player.currentTime = $currentPlayingChapter.startTime;
+			$chapterBoostBypass = true;
+		} else {
+			let album = $playingAlbum;
+			let currentSong = $playingSong;
+			if (album?.songs && currentSong?.enclosure) {
+				if ($playingIndex > 0) {
+					$playingIndex = $playingIndex - 1;
+					loadSong(album.songs[$playingIndex]);
+				}
 			}
 		}
 	}

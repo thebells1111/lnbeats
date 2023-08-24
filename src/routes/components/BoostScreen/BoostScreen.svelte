@@ -4,27 +4,20 @@
 	import sendBoost from '$functions/sendBoost';
 
 	import {
-		playingAlbum,
-		playingSong,
-		player,
 		posterSwiper,
 		satsPerSong,
 		senderName,
 		satsPerBoost,
 		user,
 		webln,
-		currentSplitDestinations,
-		showBoostScreen
+		showBoostScreen,
+		currentBoostDestinations
 	} from '$/stores';
 	import Close from '$icons/CancelFilled.svelte';
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
-	$: destinations =
-		$currentSplitDestinations ||
-		$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
-		$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 
 	let showAppSupport = false;
 
@@ -42,15 +35,16 @@
 	async function handleBoost() {
 		try {
 			throwConfetti();
-			console.log(showAppSupport ? appDestination : destinations);
+			console.log(showAppSupport ? appDestination : $currentBoostDestinations);
 			sendBoost({
 				webln: $webln,
-				destinations: showAppSupport ? appDestination : destinations,
+				destinations: showAppSupport ? appDestination : $currentBoostDestinations,
 				satAmount: satAmount,
 				boostagram: boostagram,
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
+			$currentBoostDestinations = null;
 			$showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong

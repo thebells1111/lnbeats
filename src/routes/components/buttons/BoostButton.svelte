@@ -1,10 +1,24 @@
 <script>
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
-	import { posterSwiper, user, webln, showBoostScreen, showInstructionScreen } from '$/stores';
+	import {
+		posterSwiper,
+		user,
+		webln,
+		showBoostScreen,
+		showInstructionScreen,
+		currentSplitDestinations,
+		playingSong,
+		playingAlbum,
+		currentBoostDestinations
+	} from '$/stores';
 </script>
 
 <button
 	on:click={() => {
+		$currentBoostDestinations =
+			$currentSplitDestinations ||
+			$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
+			$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 		if (
 			($webln && $user.preferences.wallet === 'webln') ||
 			($user.loggedIn && $user.preferences.wallet === 'albyApi')
