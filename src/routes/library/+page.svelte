@@ -12,7 +12,7 @@
 	let closerActive = false;
 
 	onMount(async () => {
-		if (!$library) {
+		if (!Object.keys($library).length) {
 			$albumSearch = '';
 			const libraryDB = localforage.createInstance({
 				name: 'libraryDB'
