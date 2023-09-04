@@ -2,14 +2,29 @@ import { playingAlbum, playingSong, player, senderName, remoteServer } from '$/s
 import { get } from 'svelte/store';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
+	destinations = [].concat(destinations);
+	let hasPI = destinations.find(
+		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
+	);
+
+	if (!hasPI) {
+		destinations.push({
+			'@_name': 'Podcastindex.org',
+			'@_address': '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a',
+			'@_type': 'node',
+			'@_split': '1',
+			'@_fee': 'true'
+		});
+	}
+
 	console.log(destinations);
 
 	let runningTotal = satAmount;
 
 	let payments = [];
 
-	let feesDestinations = [].concat(destinations)?.filter((v) => v.fee) || [];
-	let splitsDestinations = [].concat(destinations)?.filter((v) => !v.fee) || [];
+	let feesDestinations = destinations?.filter((v) => v['@_fee']) || [];
+	let splitsDestinations = destinations?.filter((v) => !v['@_fee']) || [];
 
 	for (const dest of feesDestinations) {
 		let feeRecord = getBaseRecord(satAmount, boostagram);
@@ -45,6 +60,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 	for (const dest of splitsDestinations) {
 		let record = getBaseRecord(satAmount, boostagram);
+		console.log(runningTotal);
 		let amount = Math.round((dest['@_split'] / 100) * runningTotal);
 		record.name = dest['@_name'];
 		record.value_msat = amount * 1000;
