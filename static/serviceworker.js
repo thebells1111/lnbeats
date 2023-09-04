@@ -1,4 +1,4 @@
-var cacheName = 'lnbeats-cache-v1';
+var cacheName = 'lnbeats-cache-v2';
 var contentCache = 'content-v1';
 var mediaCache = 'media-v1';
 
