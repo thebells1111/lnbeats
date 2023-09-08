@@ -44,8 +44,6 @@
 	async function gotoNextSong() {
 		const album = $playingAlbum ?? {};
 		const currentSong = $playingSong ?? {};
-		console.log($playingIndex);
-		console.log($top100Playing);
 
 		if (album.songs && currentSong.enclosure) {
 			if (
@@ -92,7 +90,7 @@
 						$playingAlbum.author = $playingAlbum.author;
 
 						const foundSong = $playingAlbum.songs.find((v) => {
-							return v.title === _nextSong.title;
+							return v.title == _nextSong.title;
 						});
 
 						nextSong = foundSong;

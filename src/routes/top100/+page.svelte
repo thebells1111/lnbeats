@@ -46,19 +46,19 @@
 			let parser = new DOMParser();
 			let doc = parser.parseFromString(data, 'text/html');
 
-			let listItems = doc.querySelectorAll('.chart ul li');
+			let listItems = doc.querySelectorAll('.chart li');
 			let dataArray = [];
 
-			listItems.forEach((li) => {
-				let rank = li.querySelector('.rank').textContent.replace('.', '');
-				let title = li.querySelector('.title a').textContent;
-				let href = li.querySelector('.title a').getAttribute('href');
+			listItems.forEach((li, i) => {
+				let rank = i + 1;
+				let title = li.querySelector('.title').textContent;
+				let href = li.querySelector('.title').getAttribute('href');
 				let podcastIndexId = href.split('/').pop();
 				let sats = parseInt(
 					li.querySelector('.sats').textContent.replace(',', '').replace('sats', '').trim()
 				);
 				let artist = li.querySelector('.artist').textContent.replace('by ', '');
-				let imageURL = li.querySelector('.image img').src;
+				let imageURL = li.querySelector('.cover').src;
 
 				dataArray.push({
 					rank: parseInt(rank),
@@ -78,6 +78,8 @@
 
 	async function playSong(song) {
 		$top100Playing = true;
+		console.log(song);
+		console.log($top100Playing);
 		const { podcastIndexId, rank, title } = song;
 		if ($playingIndex === rank) {
 			openPoster();
@@ -115,7 +117,7 @@
 			$playingAlbum.author = $playingAlbum.author;
 
 			const foundSong = $playingAlbum.songs.find((v) => {
-				return v.title === title;
+				return v.title == title;
 			});
 
 			$player.pause();
