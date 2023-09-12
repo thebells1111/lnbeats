@@ -8,6 +8,8 @@ export const indexSearchResults = writable([]);
 export const albumSearch = writable('');
 export const library = writable({});
 export const discoverList = writable([]);
+export const featuredList = writable([]);
+export const discoverScreen = writable('featured');
 export const playlists = writable(new Set());
 export const favorites = writable(new Set());
 export const selectedPlaylist = writable([]);
@@ -43,3 +45,6 @@ export const webln = writable();
 export const showBoostScreen = writable(false);
 export const currentBoostDestinations = writable();
 export const showInstructionScreen = writable(false);
+
+export const top100 = writable([]);
+export const top100Playing = writable(false);

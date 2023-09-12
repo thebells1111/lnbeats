@@ -25,8 +25,8 @@
 		{
 			'@_address': '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
 			'@_customKey': '696969',
-			'@_customValue': 'UzrnTK2oEHR55gw7Djmb',
-			'@_name': 'Music Side Project',
+			'@_customValue': 'eChoVKtO1KujpAA5HCoB',
+			'@_name': 'LN Beats',
 			'@_split': '100',
 			'@_type': 'node'
 		}
@@ -149,17 +149,19 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		z-index: 99;
-		backdrop-filter: blur(5px);
+		z-index: 100;
+		backdrop-filter: blur(5px) contrast(60%);
+		-webkit-backdrop-filter: blur(2px) contrast(60%);
 	}
 
 	card {
-		height: calc(100% - 48px);
-		width: calc(100% - 36px);
+		height: calc(100% - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+		width: calc(100% - 36px - env(safe-area-inset-right) - env(safe-area-inset-left));
 		max-width: 380px;
 		max-height: 660px;
 		border-radius: 8px;
 		padding: 8px;
+		margin-top: calc(env(safe-area-inset-top));
 		background-color: var(--color-bg-boostagram-1);
 		color: var(--color-text-0);
 		display: flex;
@@ -206,7 +208,7 @@
 
 	button.close {
 		position: absolute;
-		top: 2px;
+		top: max(2px, env(safe-area-inset-top));
 		left: 2px;
 		width: 50px;
 		height: 50px;
@@ -214,6 +216,7 @@
 		justify-content: flex-start;
 		background-color: transparent;
 		border: none;
+
 		/* background-color: red; */
 	}
 

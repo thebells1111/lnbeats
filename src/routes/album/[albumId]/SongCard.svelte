@@ -15,7 +15,8 @@
 		playingIndex,
 		valueTimeSplitBlock,
 		remoteServer,
-		playingChapters
+		playingChapters,
+		top100Playing
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -30,6 +31,7 @@
 	onMount(() => {});
 
 	async function playSong() {
+		$top100Playing = false;
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
 				.then((res) => res.json())
