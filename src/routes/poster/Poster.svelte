@@ -1,5 +1,6 @@
 <script>
 	import { scale } from 'svelte/transition';
+	import clone from 'just-clone';
 	import {
 		playingSong,
 		playingAlbum,
@@ -7,7 +8,8 @@
 		posterSwiper,
 		currentPlayingChapter,
 		playingChapters,
-		favorites
+		favorites,
+		favoritesDB
 	} from '$/stores';
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
@@ -16,29 +18,50 @@
 	import Favorite from '$icons/Favorite.svelte';
 	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 	import Close from '$icons/Close.svelte';
-	$: isFavorite = $favorites.has(
-		`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
-	);
-
-	console.l;
+	$: isFavorite =
+		$favorites[
+			`${$playingAlbum.podcastGuid}::${
+				$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+			}`
+		];
 
 	function toggleFavorite() {
 		console.log($favorites);
 		console.log($playingSong);
-		if (
-			$favorites.has(
-				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
-			)
-		) {
-			$favorites.delete(
-				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
-			);
+		console.log($playingAlbum);
+		console.log(
+			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+		);
+
+		let id = `${$playingAlbum.podcastGuid || $playingSong?.album?.podcastGuid}::${
+			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+		}`;
+
+		if ($favorites[id]) {
+			delete $favorites[id];
+			favoritesDB.removeItem(id);
 		} else {
-			$favorites.add(
-				`${$playingAlbum.podcastGuid}||${$playingSong.guid || $playingSong.enclosure['@_url']}`
-			);
+			const { artwork, image, podcastGuid, title, author } = $playingAlbum;
+			let song = clone($playingSong);
+			song.album = { artwork, image, podcastGuid, title, author };
+			$favorites[id] = {
+				artwork:
+					song.image ||
+					song.artwork ||
+					song?.['itunes:image']?.['@_href'] ||
+					song.album?.image ||
+					song.album?.artwork ||
+					song.album?.['itunes:image']?.['@_href'],
+				title: song.title,
+				album: song.album.title,
+				author: song.album.author,
+				id: id
+			};
+
+			favoritesDB.setItem(id, song);
 		}
 		$favorites = $favorites;
+		favoritesDB.setItem('favoritesList', $favorites);
 	}
 
 	$: console.log($playingAlbum);

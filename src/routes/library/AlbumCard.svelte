@@ -1,8 +1,10 @@
 <script>
 	import QueueMusic from '$icons/QueueMusic.svelte';
+	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 
 	export let album = {};
 	export let playlist;
+	export let favorites;
 	console.log(album);
 </script>
 
@@ -11,12 +13,16 @@
 		<queue-icon>
 			<QueueMusic size="55" />
 		</queue-icon>
+	{:else if favorites}
+		<queue-icon class="favorites">
+			<FavoriteFilled size="42" />
+		</queue-icon>
 	{:else}
 		<img src={album.art} />
 	{/if}
 
 	<album-info>
-		<p>{album.title || playlist}</p>
+		<p>{album.title || playlist || 'Favorites'}</p>
 	</album-info>
 </album>
 
@@ -30,6 +36,7 @@
 		min-width: 60px;
 		max-width: 60px;
 		max-height: 60px;
+		min-height: 60px;
 		margin-right: 8px;
 		border-radius: 4px;
 	}
@@ -44,5 +51,9 @@
 			var(--color-poster-bg-0) 33%,
 			var(--color-poster-bg-1) 66%
 		);
+	}
+
+	.favorites {
+		color: rgb(249, 24, 128);
 	}
 </style>

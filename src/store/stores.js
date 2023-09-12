@@ -1,8 +1,13 @@
 import { writable } from 'svelte/store';
 import { dev } from '$app/environment';
+import localforage from 'localforage';
 
 export const remoteServer = dev ? 'http://localhost:8000/' : 'https://api.lnbeats.com/';
 export const albyClientId = dev ? '32dVOIuGiA' : '9QX2jPuEiu';
+
+export const favoritesDB = localforage.createInstance({
+	name: 'favoritesDB'
+});
 
 export const indexSearchResults = writable([]);
 export const albumSearch = writable('');
@@ -11,7 +16,7 @@ export const discoverList = writable([]);
 export const featuredList = writable([]);
 export const discoverScreen = writable('featured');
 export const playlists = writable(new Set());
-export const favorites = writable(new Set());
+export const favorites = writable({});
 export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});
 export const playingAlbum = writable({});
