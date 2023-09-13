@@ -16,6 +16,7 @@
 		valueTimeSplitBlock,
 		remoteServer,
 		playingChapters,
+		currentPlayingChapter,
 		top100Playing
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
@@ -37,6 +38,9 @@
 				.then((res) => res.json())
 				.then((data) => ($playingChapters = data?.chapters))
 				.then(() => console.log($playingChapters));
+		} else {
+			$playingChapters = undefined;
+			$currentPlayingChapter = undefined;
 		}
 		if (song.playlist) {
 			const playlistDB = localforage.createInstance({
@@ -51,7 +55,8 @@
 				title: song.album.title,
 				artwork: song.album.artwork || song.album.image,
 				songs: playlist,
-				author: song.album.author
+				author: song.album.author,
+				podcastGuid: song.album.podcastGuid
 			};
 		} else {
 			$playingAlbum = $selectedAlbum;
