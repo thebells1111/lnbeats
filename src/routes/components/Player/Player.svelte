@@ -20,7 +20,8 @@
 		chapterBoostBypass,
 		remoteServer,
 		top100Playing,
-		top100
+		top100,
+		top100Loop
 	} from '$/stores';
 
 	const parserOptions = {
@@ -49,12 +50,17 @@
 			if (
 				$playingIndex >= 0 &&
 				($playingIndex < album.songs.length - 1 ||
-					($top100Playing && $playingIndex < $top100.length - 1))
+					($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)))
 			) {
 				$playingIndex = $playingIndex + 1;
 				let nextSong;
+				let _nextSong;
 				if ($top100Playing) {
-					let _nextSong = $top100[$playingIndex - 1];
+					if ($playingIndex - 1 === $top100.length) {
+						$playingIndex = 1;
+					}
+
+					_nextSong = $top100[$playingIndex - 1];
 					console.log(_nextSong);
 					let podcastIndexId = _nextSong.podcastIndexId;
 					console.log(podcastIndexId);

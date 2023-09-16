@@ -279,5 +279,415 @@
 				}
 			]
 		}
+	},
+	{
+		"id": 6594066,
+		"podcastGuid": "f38e27af-fb9e-46ef-9ed9-5d8046d094a9",
+		"medium": "podcast",
+		"title": "Before The Sch3m3s",
+		"url": "https://music.behindthesch3m3s.com/b4ts feed/feed.xml",
+		"originalUrl": "https://music.behindthesch3m3s.com/b4ts feed/feed.xml",
+		"link": "https://behindthesch3m3s.com/",
+		"description": "The BTS preshow featuring nothing but boostable value time split enabled music!! Follow https://mk.spook.social/@behindthesch3m3s for updates. Live every Monday night at https://behindthesch3m3s.com/thescalyshow/",
+		"author": "Boo Bury",
+		"ownerName": "Boo Bury",
+		"image": "https://media.podserve.fm/media/user_3398/logos/makeheroism_before_the_sch3m3s_cassette_ZdIFhQm.jpg",
+		"artwork": "https://media.podserve.fm/media/user_3398/logos/makeheroism_before_the_sch3m3s_cassette_ZdIFhQm.jpg",
+		"lastUpdateTime": 1694508771,
+		"lastCrawlTime": 1694822333,
+		"lastParseTime": 1694822341,
+		"lastGoodHttpStatusTime": 1694822333,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en-us",
+		"explicit": true,
+		"type": 0,
+		"dead": 0,
+		"chash": "8cf1dfa222f2f8dadf05aa5a349f2d85",
+		"episodeCount": 5,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
+		},
+		"locked": 0,
+		"imageUrlHash": 2971241280,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.0000100000"
+			},
+			"destinations": [
+				{
+					"name": "lavish@fountain.fm",
+					"type": "node",
+					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
+					"split": 38,
+					"customKey": "112111100",
+					"customValue": "o8Zpqqre1SWyIYPOCCPb"
+				},
+				{
+					"name": "ThunderRoad",
+					"type": "node",
+					"address": "03589f3ddb81f3802f3fc9aaa359b684ed19840b55db88f7c9c2cc671e74ac93e2",
+					"split": 36
+				},
+				{
+					"name": "SirVoBlitz",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 7,
+					"customKey": "696969",
+					"customValue": "wTNpYiVzK1EqHwFuK4kY"
+				},
+				{
+					"name": "cottongin",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 7,
+					"customKey": "696969",
+					"customValue": "5mZYvK0KkmbXcam43VC6"
+				},
+				{
+					"name": "SirBemrose",
+					"type": "node",
+					"address": "035df303dcc65edcf4965960be85c2f65b7910d253a7d6a52dd3768018a83f016a",
+					"split": 6
+				},
+				{
+					"name": "BoostBot",
+					"type": "node",
+					"address": "03d55f4d4c870577e98ac56605a54c5ed20c8897e41197a068fd61bdb580efaa67",
+					"split": 1
+				},
+				{
+					"name": "Podcast Index",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 1
+				},
+				{
+					"name": "Podverse - Mitch Downey",
+					"type": "node",
+					"address": "02b92193a4c9d035c81f8076ae4a4aba04b7ea8e04058eb3296f894e6ccd5f2e6e",
+					"split": 1
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 1,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB"
+				},
+				{
+					"name": "boobury@fountain.fm",
+					"type": "node",
+					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
+					"split": 1,
+					"customKey": "112111100",
+					"customValue": "OzNAzO9LHnky6T0Jm43S"
+				},
+				{
+					"name": "boobury@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 1,
+					"customKey": "696969",
+					"customValue": "unLU40SXU1G1iFYM7oqB"
+				}
+			]
+		},
+		"funding": {
+			"url": "https://www.paypal.com/paypalme/behindthesch3m3s",
+			"message": "Support Public Radio Tonight!!!"
+		}
+	},
+	{
+		"id": 6602210,
+		"podcastGuid": "41ffc8be-4db0-5337-8219-6b6a311ec1a7",
+		"medium": "podcast",
+		"title": "DJ V4V Podcast",
+		"url": "https://djw-podcast.nyc3.digitaloceanspaces.com/DJ_V4V_Podcast/feed.xml",
+		"originalUrl": "https://djw-podcast.nyc3.digitaloceanspaces.com/DJ_V4V_Podcast/feed.xml",
+		"link": "https://satsquatchyeti.com/dj-v4v-podcast",
+		"description": "A Randomly Curated Mix of Music from Various Value For Value ( V4V ) Music Streaming Platforms.",
+		"author": "DJ V4V",
+		"ownerName": "DJ V4V",
+		"image": "https://djw-podcast.nyc3.cdn.digitaloceanspaces.com/DJ_V4V_Podcast/art/DJV4VCover2.jpg",
+		"artwork": "https://djw-podcast.nyc3.cdn.digitaloceanspaces.com/DJ_V4V_Podcast/art/DJV4VCover2.jpg",
+		"lastUpdateTime": 1694056958,
+		"lastCrawlTime": 1694782981,
+		"lastParseTime": 1694783004,
+		"lastGoodHttpStatusTime": 1694782981,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "f9c2d5fdec1f4470940a3faf9fadf6b3",
+		"episodeCount": 3,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 1,
+		"imageUrlHash": 1392327012,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "Dirty_Jersey_Whore",
+					"type": "node",
+					"address": "0219665f869cf7d915aff3293dcc9a99d7ab86ccd9ebb1cebd028fc67040a5ef73",
+					"split": 85
+				},
+				{
+					"name": "IPFS Podcasting",
+					"type": "node",
+					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
+					"split": 5
+				},
+				{
+					"name": "Podcastindex.org",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 5
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB"
+				}
+			]
+		}
+	},
+	{
+		"id": 6602228,
+		"podcastGuid": "82a22266-d643-5860-a1b2-04804ceb38e4",
+		"medium": "podcast",
+		"title": "Phantom Power Music Hour",
+		"url": "https://phantompowermusichour.nyc3.digitaloceanspaces.com/Feed.xml",
+		"originalUrl": "https://phantompowermusichour.nyc3.digitaloceanspaces.com/Feed.xml",
+		"link": "https://www.phantompowermusic.com",
+		"description": "A Music Review",
+		"author": "",
+		"ownerName": "",
+		"image": "https://phantompowermusichour.nyc3.digitaloceanspaces.com/p.png",
+		"artwork": "https://phantompowermusichour.nyc3.digitaloceanspaces.com/p.png",
+		"lastUpdateTime": 1694634579,
+		"lastCrawlTime": 1694832765,
+		"lastParseTime": 1694832786,
+		"lastGoodHttpStatusTime": 1694832765,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "e98ad40cb86dc7d33c5b852339462442",
+		"episodeCount": 3,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
+		},
+		"locked": 0,
+		"imageUrlHash": 4283414307,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "phantompowermusic@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 100,
+					"customKey": "696969",
+					"customValue": "7oMmuEhZ2MjZoJqqgcuH"
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB",
+					"fee": true
+				},
+				{
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"type": "node",
+					"fee": true,
+					"split": 1
+				}
+			]
+		}
+	},
+	{
+		"id": 6602332,
+		"podcastGuid": "d5e73072-64a2-56a3-9dcd-4a00bfe561d5",
+		"medium": "podcast",
+		"title": "Lightning Thrashes",
+		"url": "https://sirlibre.com/lightning-thrashes-rss.xml",
+		"originalUrl": "https://sirlibre.com/lightning-thrashes-rss.xml",
+		"link": "https://lightningthrashes.com",
+		"description": "A rockin' music podcasting featuring songs in the metal, grunge, punk etc. in a radio show format.",
+		"author": "Kolomona Myer AKA Sir Libre",
+		"ownerName": "Kolomona",
+		"image": "https://cdn.kolomona.com/podcasts/lightning-thrashes/001-Lightning-Thrashes-1000.jpg",
+		"artwork": "https://cdn.kolomona.com/podcasts/lightning-thrashes/001-Lightning-Thrashes-1000.jpg",
+		"lastUpdateTime": 1694641768,
+		"lastCrawlTime": 1694832817,
+		"lastParseTime": 1694832839,
+		"lastGoodHttpStatusTime": 1694832817,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "ac2427b1ef35f6c2743338115cdd0ad0",
+		"episodeCount": 2,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 0,
+		"imageUrlHash": 2548554425,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "kolomona@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 92,
+					"customKey": "696969",
+					"customValue": "912ezE5oAMbMPuxCiHq8"
+				},
+				{
+					"name": "IPFS Podcasting",
+					"type": "node",
+					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
+					"split": 5
+				},
+				{
+					"name": "Sovereign Feeds-TheSplitKit",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 2,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB"
+				},
+				{
+					"name": "Podcastindex.org",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 1
+				}
+			]
+		},
+		"funding": {
+			"url": "https://sirlibre.com/donate",
+			"message": "Send some value back!"
+		}
+	},
+	{
+		"id": 6578610,
+		"podcastGuid": "cb43c4c7-35df-5a31-95ab-4fb54f0f39c6",
+		"medium": "music",
+		"title": "Sats and Sounds",
+		"url": "https://satsandsounds.com/saspodcast.xml",
+		"originalUrl": "https://satsandsounds.com/saspodcast.xml",
+		"link": "https://www.satsandsounds.com",
+		"description": "Value4Value music show. Every Monday tune in for three different tracks. You never know what I might find.",
+		"author": "Kevin Bae",
+		"ownerName": "Kevin Bae",
+		"image": "https://www.satsandsounds.com/wp-content/uploads/2023/08/Sats-and-Sounds-Logo-Black-w-White-Background1400.png",
+		"artwork": "https://www.satsandsounds.com/wp-content/uploads/2023/08/Sats-and-Sounds-Logo-Black-w-White-Background1400.png",
+		"lastUpdateTime": 1694437799,
+		"lastCrawlTime": 1694437777,
+		"lastParseTime": 1694437799,
+		"lastGoodHttpStatusTime": 1694437777,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "b0c9f9d0f978b6436873e376ece1bd46",
+		"episodeCount": 4,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": null,
+		"locked": 1,
+		"imageUrlHash": 2819064982,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "Sats and Sounds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 95,
+					"customKey": "696969",
+					"customValue": "GkJTb8WljzkN1fZQ6B9X"
+				},
+				{
+					"name": "Podcast Index",
+					"type": "node",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 5
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB",
+					"fee": true
+				}
+			]
+		},
+		"funding": {
+			"url": "https://www.paypal.com/donate/?hosted_button_id=QP85HP4N8JGLL",
+			"message": "Donate to the show!"
+		}
 	}
 ]

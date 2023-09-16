@@ -46,4 +46,8 @@ export const currentBoostDestinations = writable();
 export const showInstructionScreen = writable(false);
 
 export const top100 = writable([]);
+export const sortedTop100 = writable([]);
 export const top100Playing = writable(false);
+export const top100Loop = writable(false);
+
+export const radio = writable([]);

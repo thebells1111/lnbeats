@@ -8,8 +8,11 @@
 	import Pause from '$icons/Pause.svelte';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
-
+	import Shuffle from '$icons/Shuffle.svelte';
+	import Laps from '$icons/Laps.svelte';
 	import { onMount } from 'svelte';
+	import clone from 'just-clone';
+
 	import {
 		posterSwiper,
 		top100,
@@ -18,13 +21,17 @@
 		remoteServer,
 		playingAlbum,
 		playingIndex,
-		playingSong
+		playingSong,
+		sortedTop100,
+		top100Loop
 	} from '$/stores';
 
 	let expandMenu = false;
 	let expandedIndex;
 	let showModal = false;
 	let modalType;
+
+	let isShuffled = false;
 
 	const parserOptions = {
 		attributeNamePrefix: '@_',
@@ -71,6 +78,7 @@
 			});
 
 			$top100 = dataArray.sort((a, b) => a.rank - b.rank);
+			$sortedTop100 = clone($top100);
 
 			console.log($top100);
 		}
@@ -146,6 +154,32 @@
 		showModal = true;
 		modalType = type;
 	}
+
+	function handleShuffle() {
+		isShuffled = !isShuffled;
+		$top100 = isShuffled ? shuffleArray([...$sortedTop100]) : $sortedTop100;
+
+		function shuffleArray(array) {
+			let currentIndex = array.length,
+				randomIndex;
+
+			// While there remain elements to shuffle...
+			while (currentIndex !== 0) {
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex--;
+
+				// And swap it with the current element.
+				[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+			}
+
+			return array;
+		}
+	}
+
+	function handleLoop() {
+		$top100Loop = !$top100Loop;
+	}
 </script>
 
 <ol>
@@ -197,6 +231,15 @@
 	
 	{/if}
 </Modals> -->
+
+<button class:shuffled={isShuffled} on:click={handleShuffle} class="random">
+	<Shuffle size="30" />
+</button>
+
+<button class:looped={$top100Loop} on:click={handleLoop} class="loop">
+	<Laps size="27" />
+</button>
+
 <style>
 	ol {
 		padding: 0;
@@ -230,6 +273,36 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+	}
+
+	button.random,
+	button.loop {
+		position: absolute;
+		bottom: 75px;
+		color: var(--color-text-0);
+		right: 8px;
+		background-color: gray;
+		align-items: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		min-width: 36px;
+		height: 36px;
+		padding: 0;
+		border-radius: 48px;
+	}
+
+	button.loop {
+		bottom: 120px;
+	}
+
+	button.shuffled {
+		background-color: var(--color-theme-yellow-light);
+	}
+
+	button.looped {
+		background-color: var(--color-theme-yellow-light);
 	}
 
 	menu-container {

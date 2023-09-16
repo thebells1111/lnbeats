@@ -13,15 +13,16 @@
 		discoverScreen,
 		albumSearch,
 		remoteServer,
-		playingSong
+		playingSong,
+		radio
 	} from '$/stores';
 	let albumList = [];
 	let filteredList = [];
-	let extra = [];
 	let wavlake = [];
 	let other = [];
 	onMount(async () => {
 		if (!$discoverList.length) {
+			$radio = shuffleArray(extras);
 			$featuredList = shuffleArray(_featured);
 			const res = await fetch(
 				remoteServer +
@@ -175,7 +176,7 @@
 	</a>
 {:else if $discoverScreen === 'radio'}
 	<ul>
-		{#each extras as album}
+		{#each $radio as album}
 			<li>
 				<AlbumCard {album} />
 			</li>
@@ -268,8 +269,8 @@
 
 		background-image: linear-gradient(
 			180deg,
-			var(--color-bg-context-menu-0) 15%,
-			var(--color-bg-context-menu-1) 66%
+			var(--color-theme-yellow-light) 15%,
+			var(--color-theme-yellow-dark) 66%
 		);
 		box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.75);
 		display: flex;

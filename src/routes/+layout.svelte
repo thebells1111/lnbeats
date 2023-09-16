@@ -20,6 +20,37 @@
 		selectedAlbum
 	} from '$/stores';
 
+	let isPWA = false;
+	let showBanner = true;
+	let deferredPrompt;
+	let dontShowAgain = false;
+	let bannerVisible = false;
+
+	// Function to trigger PWA installation
+	function installPWA() {
+		console.log(deferredPrompt);
+		if (deferredPrompt) {
+			deferredPrompt.prompt();
+			deferredPrompt.userChoice.then((choiceResult) => {
+				if (choiceResult.outcome === 'accepted') {
+					isPWA = true;
+				}
+				deferredPrompt = null;
+			});
+		}
+	}
+
+	// Function to hide the banner
+	function hideBanner() {
+		bannerVisible = false;
+		setTimeout(() => {
+			showBanner = false;
+			if (dontShowAgain) {
+				localStorage.setItem('noShowBanner', 'true');
+			}
+		}, 300); // Wait for the slide-out transition to complete
+	}
+
 	onMount(async () => {
 		const resizeOps = () => {
 			document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
@@ -48,7 +79,31 @@
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosure['@_url'];
+
+		// Check if PWA is already installed
+		if (window.matchMedia('(display-mode: standalone)').matches) {
+			isPWA = true;
+		}
+
+		// Check if user has opted to not see the banner again
+		if (localStorage.getItem('noShowBanner') === 'true') {
+			showBanner = false;
+		}
+
+		// Capture the install prompt event
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault();
+			console.log(e);
+			deferredPrompt = e;
+		});
 	});
+
+	// Show the banner after 5 seconds
+	setTimeout(() => {
+		if (!isPWA && showBanner) {
+			bannerVisible = true;
+		}
+	}, 5000);
 
 	async function loadAlby() {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -171,6 +226,15 @@
 	<InstructionScreen />
 {/if}
 
+{#if !isPWA && showBanner}
+	<div id="installBanner" class={bannerVisible ? 'slide-in' : 'slide-out'}>
+		<input type="checkbox" bind:checked={dontShowAgain} /> Don't show me again
+		<p>LNBeats works great as an app. Do you want to install?</p>
+		<button on:click={installPWA}>Yes</button>
+		<button on:click={hideBanner}>No</button>
+	</div>
+{/if}
+
 <style>
 	app {
 		height: 100%;
@@ -266,5 +330,39 @@
 		.footer-background {
 			border-radius: 0 0 8px 8px;
 		}
+	}
+
+	#installBanner {
+		position: fixed;
+		bottom: -150px; /* Initially hidden */
+		left: 0;
+		width: 100%;
+		background-color: #333;
+		color: white;
+		text-align: center;
+		transition: bottom 0.3s ease;
+		padding-top: 8px;
+	}
+
+	#installBanner.slide-in {
+		bottom: 0; /* Slide in */
+	}
+
+	#installBanner.slide-out {
+		bottom: -150px; /* Slide out */
+	}
+
+	#installBanner button {
+		background-color: var(--color-bg-button-0);
+		padding: 8px;
+		margin: 0 16px 8px 16px;
+		width: 50px;
+		border-radius: 16px;
+		font-weight: bold;
+	}
+
+	#installBanner button:nth-of-type(2) {
+		background-color: var(--color-bg-button-1);
+		color: var(--color-text-0);
 	}
 </style>
