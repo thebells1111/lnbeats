@@ -6,6 +6,7 @@
 	import extras from './extras.json';
 	import _featured from './featured.json';
 	import Top100 from '$routes/top100/+page.svelte';
+	import PlayArrow from '$icons/PlayArrow.svelte';
 
 	import {
 		discoverList,
@@ -14,7 +15,8 @@
 		albumSearch,
 		remoteServer,
 		playingSong,
-		radio
+		radio,
+		playFeatured
 	} from '$/stores';
 	let albumList = [];
 	let filteredList = [];
@@ -159,6 +161,9 @@
 		class="featured"
 		href={`/album/${$featuredList?.[0]?.podcastGuid}`}
 		class:hide={$playingSong?.enclosure?.['@_url']}
+		on:click={() => {
+			$playFeatured = true;
+		}}
 	>
 		<featurebar>
 			<img
@@ -172,6 +177,7 @@
 				<album-title>{$featuredList?.[0]?.title}</album-title>
 				<album-author>{$featuredList?.[0]?.author}</album-author>
 			</right>
+			<play><PlayArrow size="36" /></play>
 		</featurebar>
 	</a>
 {:else if $discoverScreen === 'radio'}
@@ -345,5 +351,10 @@
 
 	navbar > button.active {
 		border-bottom: 1px solid var(--color-text-0);
+	}
+
+	play {
+		display: flex;
+		align-items: flex-end;
 	}
 </style>

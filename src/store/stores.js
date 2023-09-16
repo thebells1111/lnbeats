@@ -51,3 +51,4 @@ export const top100Playing = writable(false);
 export const top100Loop = writable(false);
 
 export const radio = writable([]);
+export const playFeatured = writable(false);

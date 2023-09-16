@@ -16,7 +16,8 @@
 		valueTimeSplitBlock,
 		remoteServer,
 		playingChapters,
-		top100Playing
+		top100Playing,
+		playFeatured
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -28,7 +29,12 @@
 	let showModal = false;
 	let modalType;
 
-	onMount(() => {});
+	onMount(() => {
+		if ($playFeatured && index === 0) {
+			playSong();
+			$playFeatured = false;
+		}
+	});
 
 	async function playSong() {
 		$top100Playing = false;
