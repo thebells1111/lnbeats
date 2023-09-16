@@ -12,6 +12,8 @@
 	import { selectedAlbum, posterSwiper, library } from '$/stores';
 
 	export let data = {};
+	let expandDescription = false;
+	let descriptionEl;
 	if (browser) {
 		if (data.album) {
 			if (data.redirect) {
@@ -29,6 +31,12 @@
 		const album = { guid: $page.params.albumId };
 		await deleteAlbum(album);
 		goto('/library', { replaceState: true });
+	}
+
+	function isOverflowingHorizontally(element) {
+		console.log(element?.scrollWidth);
+		console.log(element?.clientWidth);
+		return element?.scrollHeight > element?.clientHeight;
 	}
 </script>
 
@@ -61,6 +69,16 @@
 				</add-button>
 			{/if}
 		</header>
+		<description
+			on:click={() => {
+				expandDescription = !expandDescription;
+			}}
+		>
+			<p bind:this={descriptionEl} class:expand={expandDescription}>{$selectedAlbum.description}</p>
+			{#if isOverflowingHorizontally(descriptionEl)}
+				<p class="arrows" class:expand={expandDescription}>{expandDescription ? '▲' : '▼'}</p>
+			{/if}
+		</description>
 
 		{#if $selectedAlbum.songs.length}
 			{#each $selectedAlbum.songs as song, index}
@@ -91,7 +109,34 @@
 	}
 
 	h2 {
-		flex-grow: 1;
+		flex: 1;
+	}
+
+	description {
+		display: block;
+		position: relative;
+	}
+	p {
+		margin: 0px 20px 4px 8px;
+		line-height: 1.2em;
+		overflow: hidden;
+		height: 1.2em;
+		color: var(--color-theme-yellow-light);
+	}
+	p.expand {
+		overflow: initial;
+		white-space: initial;
+		height: initial;
+		padding-bottom: 8px;
+	}
+
+	p.arrows {
+		width: 20px;
+		height: 1.2em;
+		background-color: transparent;
+		position: absolute;
+		right: -16px;
+		top: 0em;
 	}
 
 	img {
