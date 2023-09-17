@@ -7,91 +7,41 @@
 	import _featured from './featured.json';
 	import Top100 from '$routes/top100/+page.svelte';
 	import PlayArrow from '$icons/PlayArrow.svelte';
+	import FilteredList from './FilteredList.svelte';
 
 	import {
 		discoverList,
 		featuredList,
 		discoverScreen,
 		albumSearch,
-		remoteServer,
 		playingSong,
 		radio,
 		playFeatured
 	} from '$/stores';
-	let albumList = [];
+
 	let filteredList = [];
-	let wavlake = [];
-	let other = [];
 	onMount(async () => {
-		if (!$discoverList.length) {
-			$radio = shuffleArray(extras);
+		if (!$featuredList.length) {
 			$featuredList = shuffleArray(_featured);
-			const res = await fetch(
-				remoteServer +
-					`api/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&max=1000&val=lightning'
-					)}`
-			);
-			let data = await res.json();
-			let fetchedFeeds = data.feeds || data.feed || [];
-			const resBB = await fetch(
-				remoteServer + `api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=6562175')}`
-			);
-			let dataBB = await resBB.json();
-			let BBFeed = dataBB.feeds || dataBB.feed || [];
-			console.log(BBFeed);
-
-			fetchedFeeds.forEach((v) => {
-				let addFeed = true;
-				if (
-					//this removes 100% Retro Live Feed
-					[5718023].find((w) => v.id === w) ||
-					v.author === 'Gabe Barrett'
-				) {
-					addFeed = false;
-				}
-				if (addFeed && v.generator === 'Wavlake Studio') {
-					wavlake.push(v);
-				}
-				if (addFeed && v.generator !== 'Wavlake Studio') {
-					other.push(v);
-				}
-			});
-
-			albumList = shuffleArray(other).concat(shuffleArray(wavlake));
-			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
-
-			$discoverList = albumList;
-
-			wavlake.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
-
-			other.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
-
-			// let featured = [];
-			// for (let i = 0; i < other.length; i++) {
-			// 	const res = await fetch(remoteServer + `api/proxy?url=${other[i].originalUrl}`);
-			// 	let data = await res.text();
-			// 	if (data.includes('eChoVKtO1KujpAA5HCoB') || data.includes('UzrnTK2oEHR55gw7Djmb')) {
-			// 		featured.push(other[i]);
-			// 	}
-			// }
-
-			// console.log('Featured: ', featured);
-
-			console.log('Wavlake Feeds: ', wavlake);
-			console.log('Other Feeds: ', other);
+		}
+		if (!$radio.length) {
+			$radio = shuffleArray(extras);
 		}
 
 		if ($albumSearch) {
 			handleInput({ target: { value: $albumSearch } });
 		} else {
-			filteredList = clone($discoverList);
+			showFilteredList();
 		}
 	});
+
+	function showFilteredList() {
+		if ($discoverList.length) {
+			filteredList = clone($discoverList);
+		} else {
+			setTimeout(showFilteredList, 100);
+		}
+	}
 
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -196,21 +146,18 @@
 	<search-header>
 		<SearchBar placeholder="search for album" searchFn={handleSearch} inputFn={handleInput} />
 	</search-header>
-	<ul>
-		{#if filteredList}
-			{#each filteredList as album}
-				<li>
-					<AlbumCard {album} />
-				</li>
-			{/each}
-		{:else}
+
+	{#if filteredList}
+		<FilteredList items={filteredList} />
+	{:else}
+		<ul>
 			{#each $discoverList as album}
 				<li>
 					<AlbumCard {album} />
 				</li>
 			{/each}
-		{/if}
-	</ul>
+		</ul>
+	{/if}
 {/if}
 
 <style>

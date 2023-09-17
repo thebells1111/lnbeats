@@ -19,12 +19,15 @@
 		showBoostScreen,
 		showInstructionScreen,
 		remoteServer,
-		selectedAlbum,
-		shareUrl
+		shareUrl,
+		discoverList
 	} from '$/stores';
+	let albumList = [];
+	let wavlake = [];
+	let other = [];
 
 	let isPWA = false;
-	let showBanner = true;
+	let showBanner = false;
 	let deferredPrompt;
 	let dontShowAgain = false;
 	let bannerVisible = false;
@@ -55,9 +58,30 @@
 	}
 
 	onMount(async () => {
+		getDisoverList();
 		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('/service-worker.js');
+			navigator.serviceWorker.register('/serviceworker.js');
+			console.log(navigator);
 		}
+
+		// Check if PWA is already installed
+		if (window.matchMedia('(display-mode: standalone)').matches) {
+			isPWA = true;
+		}
+
+		// Check if user has opted to not see the banner again
+
+		// Capture the install prompt event
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault();
+			deferredPrompt = e;
+			if (localStorage.getItem('noShowBanner') !== 'true') {
+				showBanner = true;
+			}
+			if (!isPWA && showBanner) {
+				bannerVisible = true;
+			}
+		});
 
 		const resizeOps = () => {
 			document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
@@ -86,30 +110,15 @@
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosure['@_url'];
-
-		// Check if PWA is already installed
-		if (window.matchMedia('(display-mode: standalone)').matches) {
-			isPWA = true;
-		}
-
-		// Check if user has opted to not see the banner again
-		if (localStorage.getItem('noShowBanner') === 'true') {
-			showBanner = false;
-		}
-
-		// Capture the install prompt event
-		window.addEventListener('beforeinstallprompt', (e) => {
-			e.preventDefault();
-			deferredPrompt = e;
-		});
 	});
 
-	// Show the banner after 5 seconds
-	setTimeout(() => {
-		if (!isPWA && showBanner) {
-			bannerVisible = true;
+	function shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
 		}
-	}, 5000);
+		return array;
+	}
 
 	async function loadAlby() {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -146,6 +155,69 @@
 				$user.name = data.lightning_address;
 				$user.balance = data.balance;
 			}
+		}
+	}
+
+	async function getDisoverList() {
+		if (!$discoverList.length) {
+			const res = await fetch(
+				remoteServer +
+					`api/queryindex?q=${encodeURIComponent(
+						'podcasts/bymedium?medium=music&max=1000&val=lightning'
+					)}`
+			);
+			let data = await res.json();
+			let fetchedFeeds = data.feeds || data.feed || [];
+			const resBB = await fetch(
+				remoteServer + `api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=6562175')}`
+			);
+			let dataBB = await resBB.json();
+			let BBFeed = dataBB.feeds || dataBB.feed || [];
+			console.log(BBFeed);
+
+			fetchedFeeds.forEach((v) => {
+				let addFeed = true;
+				if (
+					//this removes 100% Retro Live Feed
+					[5718023].find((w) => v.id === w) ||
+					v.author === 'Gabe Barrett'
+				) {
+					addFeed = false;
+				}
+				if (addFeed && v.generator === 'Wavlake Studio') {
+					wavlake.push(v);
+				}
+				if (addFeed && v.generator !== 'Wavlake Studio') {
+					other.push(v);
+				}
+			});
+
+			albumList = shuffleArray(other).concat(shuffleArray(wavlake));
+			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
+
+			$discoverList = albumList;
+
+			wavlake.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
+
+			other.sort((a, b) => {
+				return a.title.localeCompare(b.title); // Sort by author
+			});
+
+			// let featured = [];
+			// for (let i = 0; i < other.length; i++) {
+			// 	const res = await fetch(remoteServer + `api/proxy?url=${other[i].originalUrl}`);
+			// 	let data = await res.text();
+			// 	if (data.includes('eChoVKtO1KujpAA5HCoB') || data.includes('UzrnTK2oEHR55gw7Djmb')) {
+			// 		featured.push(other[i]);
+			// 	}
+			// }
+
+			// console.log('Featured: ', featured);
+
+			console.log('Wavlake Feeds: ', wavlake);
+			console.log('Other Feeds: ', other);
 		}
 	}
 </script>

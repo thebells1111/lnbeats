@@ -17,7 +17,8 @@
 		remoteServer,
 		playingChapters,
 		top100Playing,
-		playFeatured
+		playFeatured,
+		currentPlayingChapter
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -43,6 +44,9 @@
 				.then((res) => res.json())
 				.then((data) => ($playingChapters = data?.chapters))
 				.then(() => console.log($playingChapters));
+		} else {
+			$playingChapters = [];
+			$currentPlayingChapter = undefined;
 		}
 		if (song.playlist) {
 			const playlistDB = localforage.createInstance({
@@ -74,18 +78,6 @@
 		}
 
 		const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
-		// let guidList = organizePodcastsByGuid(splits);
-		// let resUrl = remoteServer + `api/queryindex?q=value/batch/byepisodeguid`;
-		// let guidRes = await fetch(resUrl, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify({ data: guidList }),
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	}
-		// });
-
-		// let data = await guidRes.json();
-		// console.log(data);
 
 		if (splits.length > 0) {
 			handleSplit(splits[0]).then((splitInfo) => {
@@ -100,25 +92,6 @@
 		for (let i = 1; i < splits.length; i++) {
 			let split = splits[i];
 			$valueTimeSplitBlock[i] = await handleSplit(split);
-		}
-
-		function organizePodcastsByGuid(podcasts) {
-			const result = {};
-
-			podcasts.forEach((podcast) => {
-				if (podcast['podcast:remoteItem']) {
-					const feedGuid = podcast['podcast:remoteItem']['@_feedGuid'];
-					const itemGuid = podcast['podcast:remoteItem']['@_itemGuid'];
-
-					if (!result[feedGuid]) {
-						result[feedGuid] = [];
-					}
-
-					result[feedGuid].push(itemGuid);
-				}
-			});
-
-			return result;
 		}
 
 		async function handleSplit(split) {

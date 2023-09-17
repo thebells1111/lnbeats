@@ -21,7 +21,8 @@
 		remoteServer,
 		top100Playing,
 		top100,
-		top100Loop
+		top100Loop,
+		currentSplit
 	} from '$/stores';
 
 	const parserOptions = {
@@ -36,7 +37,6 @@
 
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
-	let currentSplit;
 	let previousSplit;
 	let startSplitTime = 0;
 	let runningSplitTime = 0;
@@ -139,15 +139,15 @@
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
 		findCurrentChapter(currentTime);
-		currentSplit = findCurrentSplit(currentTime);
+		$currentSplit = findCurrentSplit(currentTime);
 		$player.currentTime = $player.currentTime;
 
-		if (currentSplit) {
-			if (isSameSplit(currentSplit, previousSplit)) {
+		if ($currentSplit) {
+			if (isSameSplit($currentSplit, previousSplit)) {
 				runningSplitTime = currentTime - startSplitTime;
 			} else {
 				handleNewSplit(currentTime);
-				console.log('split: ', currentSplit);
+				console.log('split: ', $currentSplit);
 			}
 		} else if (previousSplit?.duration) {
 			handleNewSplit(currentTime);
@@ -218,8 +218,8 @@
 		startSplitTime = currentTime;
 		runningSplitTime = 0;
 
-		if (currentSplit) {
-			const destinations = buildDestinations(currentSplit);
+		if ($currentSplit) {
+			const destinations = buildDestinations($currentSplit);
 
 			let feedValue = clone(
 				$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
@@ -238,9 +238,9 @@
 			// 	}
 			// ].concat(feedValue);
 			// console.log(feedValue);
-			const feedDestinations = updateSplits(feedValue, 100 - currentSplit.remotePercentage);
+			const feedDestinations = updateSplits(feedValue, 100 - $currentSplit.remotePercentage);
 
-			const remoteDestinations = updateSplits(destinations, currentSplit.remotePercentage);
+			const remoteDestinations = updateSplits(destinations, $currentSplit.remotePercentage);
 
 			$currentSplitDestinations = remoteDestinations
 				.map(removeUndefinedKeys)
@@ -249,8 +249,8 @@
 			$currentSplitDestinations = undefined;
 		}
 
-		previousSplit = currentSplit;
-		console.log(currentSplit);
+		previousSplit = $currentSplit;
+		console.log($currentSplit);
 	}
 
 	function buildDestinations(split) {

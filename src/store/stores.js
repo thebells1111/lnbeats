@@ -39,6 +39,7 @@ export const currentPlayingChapter = writable();
 export const currentChapterIndex = writable(0);
 export const chapterBoostBypass = writable(false);
 export const currentSplitDestinations = writable();
+export const currentSplit = writable({});
 export const webln = writable();
 
 export const showBoostScreen = writable(false);

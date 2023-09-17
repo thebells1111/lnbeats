@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import toUrlFriendly from '$functions/toUrlFriendly';
 	import {
 		playingSong,
 		playingAlbum,
@@ -10,7 +11,8 @@
 		selectedAlbum,
 		selectedSong,
 		shareUrl,
-		shareText
+		shareText,
+		currentSplit
 	} from '$/stores';
 
 	import AudioProgressBar from './AudioProgressBar.svelte';
@@ -20,6 +22,8 @@
 	import Close from '$icons/Close.svelte';
 	import Share from '$icons/Share.svelte';
 	import { encodeURL } from '$functions/songId';
+
+	$: console.log($currentPlayingChapter);
 
 	function handleShare() {
 		console.log($playingAlbum);
@@ -80,7 +84,16 @@
 						? $currentPlayingChapter.title || ''
 						: $playingSong.title}</song-title
 				>
-				<band-name>{$currentPlayingChapter ? '' : $playingAlbum.author}</band-name>
+				<band-name>
+					<a
+						href={`/artist/${toUrlFriendly(
+							$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''
+						)}
+					`}
+					>
+						{$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''}
+					</a>
+				</band-name>
 			</album-info>
 			<BoostButton />
 		</below-poster-container>

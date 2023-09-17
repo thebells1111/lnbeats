@@ -39,7 +39,7 @@
 		overflow: hidden;
 		padding: 1px;
 		font-size: 1.1em;
-		font-weight: 5500;
+		font-weight: 550;
 	}
 
 	album-title {
