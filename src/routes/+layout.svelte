@@ -55,6 +55,10 @@
 	}
 
 	onMount(async () => {
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('/service-worker.js');
+		}
+
 		const resizeOps = () => {
 			document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
 		};
@@ -96,7 +100,6 @@
 		// Capture the install prompt event
 		window.addEventListener('beforeinstallprompt', (e) => {
 			e.preventDefault();
-			console.log(e);
 			deferredPrompt = e;
 		});
 	});
@@ -235,14 +238,15 @@
 	<InstructionScreen />
 {/if}
 
-<!-- {#if !isPWA && showBanner}
+{#if !isPWA && showBanner}
 	<div id="installBanner" class={bannerVisible ? 'slide-in' : 'slide-out'}>
 		<input type="checkbox" bind:checked={dontShowAgain} /> Don't show me again
 		<p>LNBeats works great as an app. Do you want to install?</p>
 		<button on:click={installPWA}>Yes</button>
 		<button on:click={hideBanner}>No</button>
 	</div>
-{/if} -->
+{/if}
+
 <style>
 	app {
 		height: 100%;
