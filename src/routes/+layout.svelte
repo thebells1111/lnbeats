@@ -12,12 +12,15 @@
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
+	import SmallModal from '$c/Modals/SmallModal.svelte';
+	import Share from '$c/Share/Share.svelte';
 	import {
 		webln,
 		showBoostScreen,
 		showInstructionScreen,
 		remoteServer,
-		selectedAlbum
+		selectedAlbum,
+		shareUrl
 	} from '$/stores';
 
 	let isPWA = false;
@@ -145,7 +148,7 @@
 </script>
 
 <svelte:head>
-	{#if $page.route.id !== '/album/[albumId]'}
+	{#if ['/album/[albumId]', '/album/[albumId]/[songId]'].findIndex((v) => v === $page.route.id) === -1}
 		<!-- Primary Meta Tags -->
 		<title>LN Beats</title>
 		<meta name="title" content="LN Beats" />
@@ -219,6 +222,12 @@
 	<div class="footer-background" />
 	<div class="main-background" />
 </app>
+
+{#if $shareUrl}
+	<SmallModal bind:showModal={$shareUrl}>
+		<Share />
+	</SmallModal>
+{/if}
 
 {#if $showBoostScreen}
 	<BoostScreen />

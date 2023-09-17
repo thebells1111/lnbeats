@@ -52,3 +52,5 @@ export const top100Loop = writable(false);
 
 export const radio = writable([]);
 export const playFeatured = writable(false);
+export const shareUrl = writable(false);
+export const shareText = writable('');

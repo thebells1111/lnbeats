@@ -205,9 +205,6 @@
 		showModal = true;
 		modalType = type;
 	}
-
-	$: console.log($playingSong);
-	$: console.log(song);
 </script>
 
 <li on:click={playSong}>

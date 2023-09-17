@@ -1,21 +1,46 @@
 <script>
+	import { page } from '$app/stores';
 	import {
 		playingSong,
 		playingAlbum,
 		player,
 		posterSwiper,
 		currentPlayingChapter,
-		playingChapters
+		playingChapters,
+		selectedAlbum,
+		selectedSong,
+		shareUrl,
+		shareText
 	} from '$/stores';
+
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
 	import Close from '$icons/Close.svelte';
+	import Share from '$icons/Share.svelte';
+	import { encodeURL } from '$functions/songId';
 
-	$: console.log($playingAlbum);
-	$: console.log($playingChapters);
-	// $: console.log($currentPlayingChapter);
+	function handleShare() {
+		console.log($playingAlbum);
+
+		console.log(
+			$page.url.origin +
+				'/album/' +
+				$playingAlbum['podcastGuid'] +
+				'/' +
+				encodeURL($playingSong.enclosure['@_url'])
+		);
+		$shareText = `Check out this latest banger by ${$playingAlbum.author}\n\n
+		
+		`;
+		$shareUrl =
+			$page.url.origin +
+			'/album/' +
+			$playingAlbum['podcastGuid'] +
+			'/' +
+			encodeURL($playingSong.enclosure['@_url']);
+	}
 </script>
 
 <poster-container>
@@ -31,7 +56,12 @@
 			<Close size={24} />
 		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
-		<!-- <button on:click >Share</button> -->
+		<top-buttons>
+			<button class="share" on:click={handleShare}>
+				<Share size="24" />
+				<p>Share</p>
+			</button>
+		</top-buttons>
 		<img
 			id="poster-image"
 			src={$currentPlayingChapter?.img ||
@@ -178,5 +208,23 @@
 		background-color: transparent;
 		border: none;
 		padding: 0;
+	}
+
+	top-buttons {
+		width: 100%;
+		max-width: 360px;
+	}
+
+	.share {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.share p {
+		font-size: 0.8em;
+		margin: 0;
+		padding: 0;
+		line-height: 0.8em;
+		bottom: 0;
 	}
 </style>

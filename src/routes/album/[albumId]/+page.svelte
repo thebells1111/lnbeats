@@ -11,7 +11,8 @@
 
 	import { selectedAlbum, posterSwiper, library } from '$/stores';
 
-	export let data = {};
+	export let data;
+	export let isSong = false;
 	let expandDescription = false;
 	let descriptionEl;
 	if (browser) {
@@ -25,8 +26,6 @@
 	}
 	$selectedAlbum = data.album;
 
-	let expandMenuOverride = false;
-
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
 		await deleteAlbum(album);
@@ -34,14 +33,12 @@
 	}
 
 	function isOverflowingHorizontally(element) {
-		console.log(element?.scrollWidth);
-		console.log(element?.clientWidth);
 		return element?.scrollHeight > element?.clientHeight;
 	}
 </script>
 
 <svelte:head>
-	{#if data.album}
+	{#if data.album && !isSong}
 		<title>{`${$selectedAlbum.author} - ${data.album.title}`}</title>
 		<meta name="description" content={`${data.album.author} - ${data.album.title}`} />
 		<meta property="og:site_name" content="LN Beats" />
