@@ -6,89 +6,42 @@
 	import extras from './extras.json';
 	import _featured from './featured.json';
 	import Top100 from '$routes/top100/+page.svelte';
+	import PlayArrow from '$icons/PlayArrow.svelte';
+	import FilteredList from './FilteredList.svelte';
 
 	import {
 		discoverList,
 		featuredList,
 		discoverScreen,
 		albumSearch,
-		remoteServer,
-		playingSong
+		playingSong,
+		radio,
+		playFeatured
 	} from '$/stores';
-	let albumList = [];
+
 	let filteredList = [];
-	let extra = [];
-	let wavlake = [];
-	let other = [];
 	onMount(async () => {
-		if (!$discoverList.length) {
+		if (!$featuredList.length) {
 			$featuredList = shuffleArray(_featured);
-			const res = await fetch(
-				remoteServer +
-					`api/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&max=1000&val=lightning'
-					)}`
-			);
-			let data = await res.json();
-			let fetchedFeeds = data.feeds || data.feed || [];
-			const resBB = await fetch(
-				remoteServer + `api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=6562175')}`
-			);
-			let dataBB = await resBB.json();
-			let BBFeed = dataBB.feeds || dataBB.feed || [];
-			console.log(BBFeed);
-
-			fetchedFeeds.forEach((v) => {
-				let addFeed = true;
-				if (
-					//this removes 100% Retro Live Feed
-					[5718023].find((w) => v.id === w) ||
-					v.author === 'Gabe Barrett'
-				) {
-					addFeed = false;
-				}
-				if (addFeed && v.generator === 'Wavlake Studio') {
-					wavlake.push(v);
-				}
-				if (addFeed && v.generator !== 'Wavlake Studio') {
-					other.push(v);
-				}
-			});
-
-			albumList = shuffleArray(other).concat(shuffleArray(wavlake));
-			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
-
-			$discoverList = albumList;
-
-			wavlake.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
-
-			other.sort((a, b) => {
-				return a.title.localeCompare(b.title); // Sort by author
-			});
-
-			// let featured = [];
-			// for (let i = 0; i < other.length; i++) {
-			// 	const res = await fetch(remoteServer + `api/proxy?url=${other[i].originalUrl}`);
-			// 	let data = await res.text();
-			// 	if (data.includes('eChoVKtO1KujpAA5HCoB') || data.includes('UzrnTK2oEHR55gw7Djmb')) {
-			// 		featured.push(other[i]);
-			// 	}
-			// }
-
-			// console.log('Featured: ', featured);
-
-			console.log('Wavlake Feeds: ', wavlake);
-			console.log('Other Feeds: ', other);
+		}
+		if (!$radio.length) {
+			$radio = shuffleArray(extras);
 		}
 
 		if ($albumSearch) {
 			handleInput({ target: { value: $albumSearch } });
 		} else {
-			filteredList = clone($discoverList);
+			showFilteredList();
 		}
 	});
+
+	function showFilteredList() {
+		if ($discoverList.length) {
+			filteredList = clone($discoverList);
+		} else {
+			setTimeout(showFilteredList, 100);
+		}
+	}
 
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -158,6 +111,9 @@
 		class="featured"
 		href={`/album/${$featuredList?.[0]?.podcastGuid}`}
 		class:hide={$playingSong?.enclosure?.['@_url']}
+		on:click={() => {
+			$playFeatured = true;
+		}}
 	>
 		<featurebar>
 			<img
@@ -171,11 +127,18 @@
 				<album-title>{$featuredList?.[0]?.title}</album-title>
 				<album-author>{$featuredList?.[0]?.author}</album-author>
 			</right>
+			<play><PlayArrow size="36" /></play>
 		</featurebar>
 	</a>
 {:else if $discoverScreen === 'radio'}
 	<ul>
-		{#each extras as album}
+		<li>
+			<AlbumCard
+				isRadio={true}
+				album={{ title: 'LN Beats Radio', artwork: '/lnbeats_logo_black_circle_192.png' }}
+			/>
+		</li>
+		{#each $radio as album}
 			<li>
 				<AlbumCard {album} />
 			</li>
@@ -189,21 +152,18 @@
 	<search-header>
 		<SearchBar placeholder="search for album" searchFn={handleSearch} inputFn={handleInput} />
 	</search-header>
-	<ul>
-		{#if filteredList}
-			{#each filteredList as album}
-				<li>
-					<AlbumCard {album} />
-				</li>
-			{/each}
-		{:else}
+
+	{#if filteredList}
+		<FilteredList items={filteredList} />
+	{:else}
+		<ul>
 			{#each $discoverList as album}
 				<li>
 					<AlbumCard {album} />
 				</li>
 			{/each}
-		{/if}
-	</ul>
+		</ul>
+	{/if}
 {/if}
 
 <style>
@@ -268,8 +228,8 @@
 
 		background-image: linear-gradient(
 			180deg,
-			var(--color-bg-context-menu-0) 15%,
-			var(--color-bg-context-menu-1) 66%
+			var(--color-theme-yellow-light) 15%,
+			var(--color-theme-yellow-dark) 66%
 		);
 		box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.75);
 		display: flex;
@@ -344,5 +304,10 @@
 
 	navbar > button.active {
 		border-bottom: 1px solid var(--color-text-0);
+	}
+
+	play {
+		display: flex;
+		align-items: flex-end;
 	}
 </style>

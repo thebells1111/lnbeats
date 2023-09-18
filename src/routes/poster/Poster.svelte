@@ -1,6 +1,8 @@
 <script>
 	import { scale } from 'svelte/transition';
 	import clone from 'just-clone';
+	import { page } from '$app/stores';
+	import toUrlFriendly from '$functions/toUrlFriendly';
 	import {
 		playingSong,
 		playingAlbum,
@@ -9,8 +11,13 @@
 		currentPlayingChapter,
 		playingChapters,
 		favorites,
-		favoritesDB
+		favoritesDB,
+		selectedSong,
+		shareUrl,
+		shareText,
+		currentSplit
 	} from '$/stores';
+
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
@@ -63,10 +70,31 @@
 		$favorites = $favorites;
 		favoritesDB.setItem('favoritesList', $favorites);
 	}
+	import Share from '$icons/Share.svelte';
+	import { encodeURL } from '$functions/songId';
 
-	$: console.log($playingAlbum);
-	$: console.log($playingChapters);
-	// $: console.log($currentPlayingChapter);
+	$: console.log($currentPlayingChapter);
+
+	function handleShare() {
+		console.log($playingAlbum);
+
+		console.log(
+			$page.url.origin +
+				'/album/' +
+				$playingAlbum['podcastGuid'] +
+				'/' +
+				encodeURL($playingSong.enclosure['@_url'])
+		);
+		$shareText = `Check out this latest banger by ${$playingAlbum.author}\n\n
+		
+		`;
+		$shareUrl =
+			$page.url.origin +
+			'/album/' +
+			$playingAlbum['podcastGuid'] +
+			'/' +
+			encodeURL($playingSong.enclosure['@_url']);
+	}
 </script>
 
 <poster-container>
@@ -82,7 +110,12 @@
 			<Close size={24} />
 		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
-		<!-- <button on:click >Share</button> -->
+		<top-buttons>
+			<button class="share" on:click={handleShare}>
+				<Share size="24" />
+				<p>Share</p>
+			</button>
+		</top-buttons>
 		<img
 			id="poster-image"
 			src={$currentPlayingChapter?.img ||
@@ -116,7 +149,16 @@
 						? $currentPlayingChapter.title || ''
 						: $playingSong.title}</song-title
 				>
-				<band-name>{$currentPlayingChapter ? '' : $playingAlbum.author}</band-name>
+				<band-name>
+					<a
+						href={`/artist/${toUrlFriendly(
+							$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''
+						)}
+					`}
+					>
+						{$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''}
+					</a>
+				</band-name>
 			</album-info>
 
 			<BoostButton />
@@ -260,5 +302,21 @@
 	}
 	.filled {
 		color: rgb(249, 24, 128);
+	top-buttons {
+		width: 100%;
+		max-width: 360px;
+	}
+
+	.share {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.share p {
+		font-size: 0.8em;
+		margin: 0;
+		padding: 0;
+		line-height: 0.8em;
+		bottom: 0;
 	}
 </style>

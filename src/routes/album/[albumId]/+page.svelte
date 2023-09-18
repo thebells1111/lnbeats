@@ -11,7 +11,10 @@
 
 	import { selectedAlbum, posterSwiper, library } from '$/stores';
 
-	export let data = {};
+	export let data;
+	export let isSong = false;
+	let expandDescription = false;
+	let descriptionEl;
 	if (browser) {
 		if (data.album) {
 			if (data.redirect) {
@@ -23,17 +26,19 @@
 	}
 	$selectedAlbum = data.album;
 
-	let expandMenuOverride = false;
-
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
 		await deleteAlbum(album);
 		goto('/library', { replaceState: true });
 	}
+
+	function isOverflowingHorizontally(element) {
+		return element?.scrollHeight > element?.clientHeight;
+	}
 </script>
 
 <svelte:head>
-	{#if data.album}
+	{#if data.album && !isSong}
 		<title>{`${$selectedAlbum.author} - ${data.album.title}`}</title>
 		<meta name="description" content={`${data.album.author} - ${data.album.title}`} />
 		<meta property="og:site_name" content="LN Beats" />
@@ -61,6 +66,16 @@
 				</add-button>
 			{/if}
 		</header>
+		<description
+			on:click={() => {
+				expandDescription = !expandDescription;
+			}}
+		>
+			<p bind:this={descriptionEl} class:expand={expandDescription}>{$selectedAlbum.description}</p>
+			{#if isOverflowingHorizontally(descriptionEl)}
+				<p class="arrows" class:expand={expandDescription}>{expandDescription ? '▲' : '▼'}</p>
+			{/if}
+		</description>
 
 		{#if $selectedAlbum.songs.length}
 			{#each $selectedAlbum.songs as song, index}
@@ -91,7 +106,34 @@
 	}
 
 	h2 {
-		flex-grow: 1;
+		flex: 1;
+	}
+
+	description {
+		display: block;
+		position: relative;
+	}
+	p {
+		margin: 0px 20px 4px 8px;
+		line-height: 1.2em;
+		overflow: hidden;
+		height: 1.2em;
+		color: var(--color-theme-yellow-light);
+	}
+	p.expand {
+		overflow: initial;
+		white-space: initial;
+		height: initial;
+		padding-bottom: 8px;
+	}
+
+	p.arrows {
+		width: 20px;
+		height: 1.2em;
+		background-color: transparent;
+		position: absolute;
+		right: -16px;
+		top: 0em;
 	}
 
 	img {
