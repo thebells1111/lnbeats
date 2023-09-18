@@ -20,7 +20,8 @@
 		remoteServer,
 		playingChapters,
 		currentPlayingChapter,
-		top100Playing
+		top100Playing,
+		lnbRadioPlaying
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -44,6 +45,7 @@
 		song = await favoritesDB.getItem(_song.id);
 		console.log(song);
 		$top100Playing = false;
+		$lnbRadioPlaying = false;
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
 				.then((res) => res.json())

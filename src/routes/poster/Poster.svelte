@@ -302,6 +302,7 @@
 	}
 	.filled {
 		color: rgb(249, 24, 128);
+	}
 	top-buttons {
 		width: 100%;
 		max-width: 360px;

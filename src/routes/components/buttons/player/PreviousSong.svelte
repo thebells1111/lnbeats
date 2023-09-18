@@ -14,7 +14,9 @@
 		remoteServer,
 		top100Playing,
 		lnbRadioPlaying,
-		lnbRadio
+		lnbRadio,
+		favorites,
+		favoritesDB
 	} from '$/stores';
 
 	const parserOptions = {
@@ -42,7 +44,7 @@
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
 			if (album?.songs && currentSong?.enclosure) {
-				if ($playingIndex > 0) {
+				if ($playingIndex > 0 || album.favorites) {
 					$playingIndex = $playingIndex - 1;
 					let nextSong;
 					let _nextSong;
@@ -114,10 +116,35 @@
 						} catch (err) {
 							console.log(err);
 						}
+					} else if (album.favorites) {
+						let favs = Object.entries($favorites);
+						let nextIndex = favs.findIndex((v) => v[0] === album.favorites) - 1;
+						let song = await favoritesDB.getItem(favs[nextIndex][0]);
+
+						$playingAlbum = {
+							album: song.album,
+							favorites: favs[nextIndex][0],
+							title: song.album.title,
+							artwork: song.album.artwork || song.album.image,
+							songs: song,
+							author: song.album.author,
+							podcastGuid: song.album.podcastGuid
+						};
+						nextSong = song;
 					} else {
 						nextSong = album.songs[$playingIndex];
 					}
 					loadSong(nextSong);
+
+					if (nextSong.playlist) {
+						$playingAlbum = {
+							...$playingAlbum,
+							album: nextSong.album,
+							title: nextSong.album.title,
+							artwork: nextSong.album.artwork || nextSong.album.image,
+							author: nextSong.album.author
+						};
+					}
 				}
 			}
 		}
