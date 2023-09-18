@@ -47,7 +47,7 @@
 				.then((data) => ($playingChapters = data?.chapters))
 				.then(() => console.log($playingChapters));
 		} else {
-			$playingChapters = [];
+			$playingChapters = undefined;
 			$currentPlayingChapter = undefined;
 		}
 		if (song.playlist) {
@@ -63,7 +63,8 @@
 				title: song.album.title,
 				artwork: song.album.artwork || song.album.image,
 				songs: playlist,
-				author: song.album.author
+				author: song.album.author,
+				podcastGuid: song.album.podcastGuid
 			};
 		} else {
 			$playingAlbum = $selectedAlbum;
