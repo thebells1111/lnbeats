@@ -52,6 +52,9 @@ export const top100Playing = writable(false);
 export const top100Loop = writable(false);
 
 export const radio = writable([]);
+export const lnbRadio = writable([]);
+export const lnbRadioAlbums = writable({});
+export const lnbRadioPlaying = writable(false);
 export const playFeatured = writable(false);
 export const shareUrl = writable(false);
 export const shareText = writable('');

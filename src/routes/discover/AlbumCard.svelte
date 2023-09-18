@@ -1,13 +1,14 @@
 <script>
 	export let album;
+	export let isRadio;
 </script>
 
 {#if album}
-	<a href={`/album/${album.podcastGuid}`}>
+	<a href={isRadio ? '/radio' : `/album/${album.podcastGuid}`}>
 		<card>
 			<img src={album.artwork || album.image} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
-			<album-author>{album.author}</album-author>
+			<album-author>{album.author || ''}</album-author>
 		</card>
 	</a>
 {/if}

@@ -168,12 +168,10 @@
 			);
 			let data = await res.json();
 			let fetchedFeeds = data.feeds || data.feed || [];
-			const resBB = await fetch(
-				remoteServer + `api/queryindex?q=${encodeURIComponent('podcasts/byfeedid?id=6562175')}`
-			);
-			let dataBB = await resBB.json();
-			let BBFeed = dataBB.feeds || dataBB.feed || [];
-			console.log(BBFeed);
+
+			$discoverList = fetchedFeeds;
+
+			console.log($discoverList);
 
 			fetchedFeeds.forEach((v) => {
 				let addFeed = true;
@@ -204,17 +202,6 @@
 			other.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author
 			});
-
-			// let featured = [];
-			// for (let i = 0; i < other.length; i++) {
-			// 	const res = await fetch(remoteServer + `api/proxy?url=${other[i].originalUrl}`);
-			// 	let data = await res.text();
-			// 	if (data.includes('eChoVKtO1KujpAA5HCoB') || data.includes('UzrnTK2oEHR55gw7Djmb')) {
-			// 		featured.push(other[i]);
-			// 	}
-			// }
-
-			// console.log('Featured: ', featured);
 
 			console.log('Wavlake Feeds: ', wavlake);
 			console.log('Other Feeds: ', other);

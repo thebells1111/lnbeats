@@ -31,14 +31,21 @@
 	}
 </script>
 
-<h2>{albumList[0]?.author || ''}</h2>
-<ul>
-	{#each albumList as album}
-		<li>
-			<AlbumCard {album} />
-		</li>
-	{/each}
-</ul>
+{#if $page.params.artist}
+	{#if albumList.length}
+		<h2>{albumList[0]?.author || ''}</h2>
+		<ul>
+			{#each albumList as album}
+				<li>
+					<AlbumCard {album} />
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<p>Looking through the catalog to find the albums.</p>
+		<p>This may take a bit.</p>
+	{/if}
+{/if}
 
 <style>
 	ul {

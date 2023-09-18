@@ -132,6 +132,12 @@
 	</a>
 {:else if $discoverScreen === 'radio'}
 	<ul>
+		<li>
+			<AlbumCard
+				isRadio={true}
+				album={{ title: 'LN Beats Radio', artwork: '/lnbeats_logo_black_circle_192.png' }}
+			/>
+		</li>
 		{#each $radio as album}
 			<li>
 				<AlbumCard {album} />
