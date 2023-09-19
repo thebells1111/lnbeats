@@ -1,6 +1,6 @@
 // Cache Names
 let cacheSuffix = '9.17.23';
-cacheSuffix = new Date().getTime();
+// cacheSuffix = new Date().getTime();
 var cacheName = 'lnbeats-cache-' + cacheSuffix;
 var contentCache = 'content-' + cacheSuffix;
 var mediaCache = 'media-' + cacheSuffix;
