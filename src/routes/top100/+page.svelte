@@ -60,7 +60,7 @@
 				let rank = i + 1;
 				let title = li.querySelector('.title').textContent;
 				let href = li.querySelector('.title').getAttribute('href');
-				let podcastIndexId = href.split('/').pop();
+				let podcastIndexId = href.split('/').pop().split('?').shift();
 				let sats = parseInt(
 					li.querySelector('.sats').textContent.replace(',', '').replace('sats', '').trim()
 				);
@@ -88,6 +88,7 @@
 		$top100Playing = true;
 		console.log(song);
 		console.log($top100Playing);
+
 		const { podcastIndexId, rank, title } = song;
 		if ($playingIndex === rank) {
 			openPoster();

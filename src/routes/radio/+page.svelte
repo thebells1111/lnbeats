@@ -196,14 +196,14 @@
 	</button>
 </div>
 
-<button
+<!-- <button
 	class="support"
 	on:click={() => {
 		showAppSupport = true;
 	}}
 	>I make the app, <br />you send the sats. <br />
 	<p>Support LNBeats</p></button
->
+> -->
 
 {#if showAppSupport}
 	<AppSupport bind:showBoostScreen={showAppSupport} />
