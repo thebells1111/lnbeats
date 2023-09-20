@@ -200,7 +200,6 @@
 	class="support"
 	on:click={() => {
 		showAppSupport = true;
-		thhe;
 	}}
 	>I make the app, <br />you send the sats. <br />
 	<p>Support LNBeats</p></button
