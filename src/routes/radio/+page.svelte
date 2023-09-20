@@ -21,7 +21,11 @@
 		remoteServer,
 		valueTimeSplitBlock,
 		selectedAlbum,
-		posterSwiper
+		posterSwiper,
+		webln,
+		showInstructionScreen,
+		user,
+		discoverList
 	} from '$/stores';
 
 	let showAppSupport = false;
@@ -196,14 +200,23 @@
 	</button>
 </div>
 
-<!-- <button
-	class="support"
-	on:click={() => {
-		showAppSupport = true;
-	}}
-	>I make the app, <br />you send the sats. <br />
-	<p>Support LNBeats</p></button
-> -->
+{#if $discoverList.length}
+	<button
+		class="support"
+		on:click={() => {
+			if (
+				($webln && $user.preferences.wallet === 'webln') ||
+				($user.loggedIn && $user.preferences.wallet === 'albyApi')
+			) {
+				showAppSupport = true;
+			} else {
+				$showInstructionScreen = true;
+			}
+		}}
+		>I make the app, <br />you send the sats. <br />
+		<p>Support LNBeats</p></button
+	>
+{/if}
 
 {#if showAppSupport}
 	<AppSupport bind:showBoostScreen={showAppSupport} />

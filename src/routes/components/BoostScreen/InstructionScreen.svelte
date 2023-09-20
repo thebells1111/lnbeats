@@ -32,7 +32,7 @@
 			<h3>Log In or Create an account using Alby.</h3>
 		</a>
 
-		<p>
+		<!-- <p>
 			You can also use WebLN plus your favorite Client Provider using your Desktop Browser or the
 			<a href="https://kiwibrowser.com/">Kiwi Browser</a> on a mobile device.
 		</p>
@@ -44,7 +44,7 @@
 			<a href="https://bluewallet.io/">BlueWallet</a>,
 			<a href="https://github.com/fiatjaf/kwh/">kwh</a> or
 			<a href="https://blixtwallet.github.io/">Blixt Wallet</a>.
-		</p>
+		</p> -->
 	</card>
 </blurred-background>
 
