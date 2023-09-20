@@ -7,6 +7,9 @@
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	import {
+		favoritesDB,
+		favorites,
+		selectedPlaylist,
 		selectedAlbum,
 		playingAlbum,
 		player,
@@ -16,29 +19,31 @@
 		valueTimeSplitBlock,
 		remoteServer,
 		playingChapters,
-		top100Playing,
-		playFeatured,
 		currentPlayingChapter,
+		top100Playing,
 		lnbRadioPlaying
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
-	export let song;
+	let song;
 	export let index;
 
 	let expandMenu = false;
 	let showModal = false;
 	let modalType;
 
-	onMount(() => {
-		if ($playFeatured && index === 0) {
-			playSong();
-			$playFeatured = false;
+	onMount(async () => {
+		if (!Object.keys($favorites).length) {
+			$favorites = (await favoritesDB.getItem('favoritesList')) || {};
+			console.log($favorites);
 		}
 	});
 
-	async function playSong() {
+	async function playSong(_song, index) {
+		console.log(_song);
+		song = await favoritesDB.getItem(_song.id);
+		console.log(song);
 		$top100Playing = false;
 		$lnbRadioPlaying = false;
 		if (song['podcast:chapters']) {
@@ -50,28 +55,17 @@
 			$playingChapters = undefined;
 			$currentPlayingChapter = undefined;
 		}
-		if (song.playlist) {
-			const playlistDB = localforage.createInstance({
-				name: 'playlistDB'
-			});
-			const playlist = await playlistDB.getItem(song.playlist);
-			// console.log(playlist)
-			// const { artwork, image, podcastGuid, title, author } = song.album;
-			$playingAlbum = {
-				album: song.album,
-				playlist: song.playlist,
-				title: song.album.title,
-				artwork: song.album.artwork || song.album.image,
-				songs: playlist,
-				author: song.album.author,
-				podcastGuid: song.album.podcastGuid
-			};
-		} else {
-			$playingAlbum = $selectedAlbum;
-			$playingAlbum.title = $playingAlbum.title;
-			$playingAlbum.author = $playingAlbum.author;
-			$playingIndex = null;
-		}
+		$playingAlbum = {
+			album: song.album,
+			favorites: _song.id,
+			title: song.album.title,
+			artwork: song.album.artwork || song.album.image,
+			songs: song,
+			author: song.album.author,
+			podcastGuid: song.album.podcastGuid
+		};
+		console.log(song);
+		console.log($playingAlbum);
 
 		if ($playingIndex !== index) {
 			$player.pause();
@@ -181,34 +175,48 @@
 		showModal = true;
 		modalType = type;
 	}
+
+	$: console.log($playingSong);
+	$: console.log(song);
 </script>
 
-<li on:click={playSong}>
-	{#if $player && !$player.paused && index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)}
-		<Pause size="32" />
-	{:else}
-		<Play size="32" />
-	{/if}
+<playlist-container>
+	<h2>Favorites</h2>
 
-	<p>{song.title}</p>
-	<menu-container>
-		<button on:click|stopPropagation|capture={() => (expandMenu = !expandMenu)}>
-			<MoreVert size="24" />
-		</button>
-		{#if expandMenu}
-			<menu>
-				<ul transition:slide>
-					<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
-						Add to Playlist
-					</li>
-					{#if song.playlist}
-						<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>Remove</li>
+	<ul>
+		{#each Object.entries($favorites) || [] as [key, song], index}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li on:click={playSong.bind(this, song)}>
+				{#if $player && !$player.paused && index === $playingIndex}
+					<Pause size="32" />
+				{:else}
+					<Play size="32" />
+				{/if}
+				<img width="40" src={song.artwork} />
+				<p>{song.title}</p>
+				<menu-container>
+					<button on:click|stopPropagation|capture={() => (expandMenu = !expandMenu)}>
+						<MoreVert size="24" />
+					</button>
+					{#if expandMenu}
+						<menu>
+							<ul transition:slide>
+								<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
+									Add to Playlist
+								</li>
+								{#if song.playlist}
+									<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>
+										Remove
+									</li>
+								{/if}
+							</ul>
+						</menu>
 					{/if}
-				</ul>
-			</menu>
-		{/if}
-	</menu-container>
-</li>
+				</menu-container>
+			</li>
+		{/each}
+	</ul>
+</playlist-container>
 
 {#if expandMenu}
 	<closer
@@ -227,6 +235,16 @@
 </Modals>
 
 <style>
+	h2 {
+		padding: 8px;
+		margin: 0;
+		text-align: center;
+	}
+	ul {
+		padding: 0;
+		margin: 4px 0;
+	}
+
 	li {
 		display: flex;
 		list-style: none;

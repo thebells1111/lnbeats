@@ -25,7 +25,9 @@
 		currentSplit,
 		lnbRadioPlaying,
 		lnbRadio,
-		lnbRadioAlbums
+		lnbRadioAlbums,
+		favorites,
+		favoritesDB
 	} from '$/stores';
 
 	const parserOptions = {
@@ -48,13 +50,15 @@
 	async function gotoNextSong() {
 		const album = $playingAlbum ?? {};
 		const currentSong = $playingSong ?? {};
+		console.log(album);
 
 		if ((album.songs || $lnbRadioPlaying) && currentSong.enclosure) {
 			if (
-				$playingIndex >= 0 &&
-				($playingIndex < album?.songs?.length - 1 ||
-					($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-					($lnbRadioPlaying && $playingIndex < $lnbRadio.length - 1))
+				($playingIndex >= 0 &&
+					($playingIndex < album?.songs?.length - 1 ||
+						($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
+						($lnbRadioPlaying && $playingIndex < $lnbRadio.length - 1))) ||
+				album.favorites
 			) {
 				$playingIndex = $playingIndex + 1;
 				let nextSong;
@@ -127,6 +131,21 @@
 					} catch (err) {
 						console.log(err);
 					}
+				} else if (album.favorites) {
+					let favs = Object.entries($favorites);
+					let nextIndex = favs.findIndex((v) => v[0] === album.favorites) + 1;
+					let song = await favoritesDB.getItem(favs[nextIndex][0]);
+
+					$playingAlbum = {
+						album: song.album,
+						favorites: favs[nextIndex][0],
+						title: song.album.title,
+						artwork: song.album.artwork || song.album.image,
+						songs: song,
+						author: song.album.author,
+						podcastGuid: song.album.podcastGuid
+					};
+					nextSong = song;
 				} else {
 					nextSong = album.songs[$playingIndex];
 				}

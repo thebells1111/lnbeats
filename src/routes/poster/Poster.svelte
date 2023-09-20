@@ -1,4 +1,6 @@
 <script>
+	import { scale } from 'svelte/transition';
+	import clone from 'just-clone';
 	import { page } from '$app/stores';
 	import toUrlFriendly from '$functions/toUrlFriendly';
 	import {
@@ -8,7 +10,8 @@
 		posterSwiper,
 		currentPlayingChapter,
 		playingChapters,
-		selectedAlbum,
+		favorites,
+		favoritesDB,
 		selectedSong,
 		shareUrl,
 		shareText,
@@ -19,7 +22,54 @@
 	import Controls from './Controls.svelte';
 	import BoostButton from '$buttons/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
+	import Favorite from '$icons/Favorite.svelte';
+	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 	import Close from '$icons/Close.svelte';
+	$: isFavorite =
+		$favorites[
+			`${$playingAlbum.podcastGuid}::${
+				$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+			}`
+		];
+
+	function toggleFavorite() {
+		console.log($favorites);
+		console.log($playingSong);
+		console.log($playingAlbum);
+		console.log(
+			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+		);
+
+		let id = `${$playingAlbum.podcastGuid || $playingSong?.album?.podcastGuid}::${
+			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
+		}`;
+
+		if ($favorites[id]) {
+			delete $favorites[id];
+			favoritesDB.removeItem(id);
+		} else {
+			const { artwork, image, podcastGuid, title, author } = $playingAlbum;
+			let song = clone($playingSong);
+			song.album = { artwork, image, podcastGuid, title, author };
+			$favorites[id] = {
+				artwork:
+					song.image ||
+					song.artwork ||
+					song?.['itunes:image']?.['@_href'] ||
+					song.album?.image ||
+					song.album?.artwork ||
+					song.album?.['itunes:image']?.['@_href'],
+				title: song.title,
+				album: song.album.title,
+				author: song.album.author,
+				id: id
+			};
+
+			favoritesDB.setItem(id, song);
+		}
+		$favorites = $favorites;
+		favoritesDB.setItem('favoritesList', $favorites);
+	}
 	import Share from '$icons/Share.svelte';
 	import { encodeURL } from '$functions/songId';
 
@@ -78,6 +128,21 @@
 		/>
 
 		<below-poster-container>
+			<button on:click={toggleFavorite} class="favorite-container">
+				{#if isFavorite}
+					<filled-container
+						style={`${isFavorite ? 'display:initial' : 'display:none'}`}
+						class:filled={isFavorite}
+						transition:scale
+					>
+						<FavoriteFilled size="40" />
+					</filled-container>
+				{:else}
+					<unfilled-container style={`${isFavorite ? 'display:none' : 'display:initial'}`}>
+						<Favorite size="40" />
+					</unfilled-container>
+				{/if}
+			</button>
 			<album-info>
 				<song-title
 					>{$currentPlayingChapter
@@ -95,6 +160,7 @@
 					</a>
 				</band-name>
 			</album-info>
+
 			<BoostButton />
 		</below-poster-container>
 		{#if $player?.src}
@@ -198,6 +264,7 @@
 		flex-direction: column;
 		width: 100%;
 		align-items: flex-start;
+		margin-left: 44px;
 	}
 
 	song-title {
@@ -223,6 +290,19 @@
 		padding: 0;
 	}
 
+	button.favorite-container {
+		display: flex;
+		padding: 4px;
+		margin-top: 16px;
+	}
+
+	filled-container,
+	unfilled-container {
+		position: absolute;
+	}
+	.filled {
+		color: rgb(249, 24, 128);
+	}
 	top-buttons {
 		width: 100%;
 		max-width: 360px;

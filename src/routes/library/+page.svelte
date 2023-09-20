@@ -7,7 +7,7 @@
 	import CreatePlaylistButton from '$c/CreatePlaylist/CreatePlaylistButton.svelte';
 	import OptionsMenu from './OptionsMenu.svelte';
 
-	import { library, playlists, albumSearch } from '$/stores';
+	import { library, playlists, albumSearch, favoritesDB, favorites } from '$/stores';
 
 	let closerActive = false;
 
@@ -25,6 +25,10 @@
 			});
 			$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
 		}
+
+		if (!Object.keys($favorites).length) {
+			$favorites = (await favoritesDB.getItem('favoritesList')) || {};
+		}
 	});
 </script>
 
@@ -38,6 +42,11 @@
 	</header>
 
 	<ul>
+		<li>
+			<a href={`/playlist/favorites`}>
+				<AlbumCard {favorites} />
+			</a>
+		</li>
 		{#each [...$playlists] as playlist}
 			<li>
 				<a href={`/playlist/${encodeURL(playlist)}`}>
