@@ -4,24 +4,20 @@
 	import sendBoost from '$functions/sendBoost';
 
 	import {
-		posterSwiper,
 		satsPerSong,
 		senderName,
 		satsPerBoost,
 		user,
 		webln,
-		showBoostScreen,
 		currentBoostDestinations
 	} from '$/stores';
 	import Close from '$icons/CancelFilled.svelte';
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 
-	let showAppSupport = false;
+	export let showBoostScreen = false;
 
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
-
-	$: console.log('appSupport: ', showAppSupport);
 
 	let appDestination = [
 		{
@@ -37,19 +33,17 @@
 	async function handleBoost() {
 		try {
 			throwConfetti();
-			console.log(showAppSupport ? appDestination : $currentBoostDestinations);
 			sendBoost({
 				webln: $webln,
-				destinations: showAppSupport ? appDestination : $currentBoostDestinations,
+				destinations: appDestination,
 				satAmount: satAmount,
 				boostagram: boostagram,
 				wallet: $user.preferences.wallet
 			});
 			await saveBoostData();
 			$currentBoostDestinations = null;
-			$posterSwiper.enabled = true;
 			boostagram = '';
-			$showBoostScreen = false;
+			showBoostScreen = false;
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(
@@ -72,25 +66,22 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <blurred-background
 	on:click|self={() => {
-		$showBoostScreen = false;
-		$posterSwiper.enabled = true;
+		showBoostScreen = false;
 		boostagram = '';
 	}}
 >
 	<button
 		class="close"
 		on:click={() => {
-			$showBoostScreen = false;
-			$posterSwiper.enabled = true;
+			showBoostScreen = false;
 			boostagram = '';
 		}}
 	>
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
-		{#if showAppSupport}
-			<h2>Thanks for Supporting<br />LN Beats</h2>
-		{/if}
+		<h2>Thanks for Supporting<br />LN Beats</h2>
+
 		<boostagram>
 			<label>
 				<p>Sender Name</p>
@@ -110,43 +101,13 @@
 				<textarea placeholder="message" bind:value={boostagram} />
 			</label>
 			<boost-actions>
-				{#if !showAppSupport}
-					<button
-						on:click={() => {
-							showAppSupport = true;
-						}}
-						class="support-button"
-					>
-						<span>Support</span> <span>LNBeats</span>
-					</button>
-				{:else}
-					<support-placeholder />
-				{/if}
+				<support-placeholder />
+
 				<button class="send" on:click={handleBoost}> <RocketLaunch size={35} /></button>
 			</boost-actions>
 		</boostagram>
-		{#if !showAppSupport}
-			<sats-per-song>
-				<label>
-					<p>Send this many sats after a song ends.</p>
-					<input
-						type="number"
-						name="sats-per-song"
-						placeholder="send sats per song"
-						bind:value={$satsPerSong}
-					/>
-				</label>
-				<button
-					class="save"
-					on:click={async () => {
-						await saveBoostData();
-						$showBoostScreen = false;
-					}}>Save</button
-				>
-			</sats-per-song>
-		{:else}
-			<p class="support">Send us your praise, complaints, and suggestions.</p>
-		{/if}
+
+		<p class="support">Send us your praise, complaints, and suggestions.</p>
 	</card>
 </blurred-background>
 
@@ -202,21 +163,6 @@
 		flex-grow: 1;
 	}
 
-	sats-per-song {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	sats-per-song label {
-		text-align: right;
-	}
-
-	sats-per-song input {
-		text-align: right;
-		width: 50%;
-	}
-
 	button.close {
 		position: absolute;
 		top: max(2px, env(safe-area-inset-top));
@@ -231,16 +177,6 @@
 		/* background-color: red; */
 	}
 
-	button.save {
-		background-color: var(--color-bg-boost-button);
-		background-color: var(--color-progressbar-0);
-		color: var(--color-text-boost-button);
-		width: 50px;
-		height: 50px;
-		border-radius: 50px;
-		font-weight: 600;
-	}
-
 	button.send {
 		display: flex;
 		align-items: center;
@@ -253,31 +189,6 @@
 		width: 60px;
 		height: 60px;
 		border-radius: 50px;
-	}
-
-	button.support-button {
-		margin: 0;
-		padding: 8px;
-		width: 60px;
-		height: 60px;
-		border-radius: 50px;
-		font-weight: 550;
-		background-color: var(--color-bg-support-button);
-		color: var(--color-text-support-button);
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.support-button span {
-		font-size: 0.8em;
-		color: var(--color-text-0);
-	}
-
-	.support-button span:first-of-type {
-		margin-top: 1.5px;
 	}
 
 	input {

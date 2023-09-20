@@ -5,6 +5,7 @@
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
 	import PlayArrow from '$icons/PlayArrow.svelte';
+	import AppSupport from './AppSupport.svelte';
 
 	import {
 		lnbRadio,
@@ -22,6 +23,8 @@
 		selectedAlbum,
 		posterSwiper
 	} from '$/stores';
+
+	let showAppSupport = false;
 
 	if (!$lnbRadio.length) {
 		$lnbRadio = shuffleArray(songs);
@@ -187,11 +190,24 @@
 </script>
 
 <div>
-	<h3>Randomly playing every v4v track available</h3>
-	<button on:click={handlePlay}>
+	<h3>Randomly playing every <br /> v4v track available</h3>
+	<button class="play" on:click={handlePlay}>
 		<PlayArrow size="120" />
 	</button>
 </div>
+
+<button
+	class="support"
+	on:click={() => {
+		showAppSupport = true;
+	}}
+	>I make the app, <br />you send some sats. <br />
+	<p>Support LNBeats</p></button
+>
+
+{#if showAppSupport}
+	<AppSupport bind:showBoostScreen={showAppSupport} />
+{/if}
 
 <style>
 	div {
@@ -199,9 +215,33 @@
 		flex-direction: column;
 		align-items: center;
 	}
-	button {
+	button.play {
 		width: 150px;
 		color: var(--color-text-0);
 		background-color: transparent;
+	}
+
+	h3 {
+		text-align: center;
+	}
+
+	.support {
+		margin: 24px auto 8px auto;
+		width: 180px;
+		border-radius: 90px;
+		padding: 8px;
+		background-color: var(--color-theme-yellow-light);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-theme-yellow-light) 15%,
+			var(--color-theme-yellow-dark) 66%
+		);
+		color: var(--color-text-0);
+	}
+
+	.support p {
+		margin: 0;
+		font-size: 1.1em;
+		font-weight: 550;
 	}
 </style>
