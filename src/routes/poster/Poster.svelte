@@ -236,6 +236,8 @@
 		width: calc(100% - 16px);
 		border-radius: 8px;
 		max-width: 360px;
+		max-height: 360px;
+		object-fit: contain;
 	}
 
 	audio-progress {

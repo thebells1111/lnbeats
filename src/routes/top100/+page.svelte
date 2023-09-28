@@ -105,12 +105,14 @@
 				throw error(404, 'Not found');
 			}
 
+			console.log(albumData.feed.url);
 			const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 			let data = await res.text();
 
 			let xml2Json = parse(data, parserOptions);
 
 			let feed = xml2Json.rss.channel;
+			console.log(feed);
 
 			if (feed) {
 				if (feed.item?.[0]?.['podcast:episode']) {
@@ -122,11 +124,12 @@
 			}
 
 			$playingAlbum = albumData.feed;
+			console.log($playingAlbum);
 			$playingAlbum.title = $playingAlbum.title;
 			$playingAlbum.author = $playingAlbum.author;
 
 			const foundSong = $playingAlbum.songs.find((v) => {
-				return v.title == title;
+				return v.title.trim() == title.trim();
 			});
 
 			$player.pause();
