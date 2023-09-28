@@ -31,39 +31,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 0,
-		"imageUrlHash": 831919587,
-		"value": {
-			"model": { "type": "lightning", "method": "keysend", "suggested": "0.00000005000" },
-			"destinations": [
-				{
-					"name": "Boostagram Ball",
-					"type": "node",
-					"address": "021f548a8ab5eb8e7cf91e4c9777c388463e213485ece9a1808e3c6850084ee630",
-					"split": 90
-				},
-				{
-					"name": "IPFSPodcasting.net",
-					"type": "node",
-					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
-					"split": 5
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB"
-				},
-				{
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"type": "node",
-					"fee": true,
-					"split": 1
-				}
-			]
-		}
+		"imageUrlHash": 831919587
 	},
 	{
 		"id": 6562175,
@@ -97,43 +65,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 0,
-		"imageUrlHash": 3387580645,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "Mike Neumann",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 95,
-					"customKey": "696969",
-					"customValue": "a3Yee23J6ggBqc2RNwGr"
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 10,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB",
-					"fee": true
-				},
-				{
-					"name": "Podcastindex.org",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 5
-				}
-			]
-		},
-		"funding": {
-			"url": "https://www.buymeacoffee.com/mikeneumann",
-			"message": "Support the show! You know you want to!"
-		}
+		"imageUrlHash": 3387580645
 	},
 	{
 		"id": 6582415,
@@ -167,38 +99,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 0,
-		"imageUrlHash": 2657628547,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "ryley",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 90,
-					"customKey": "696969",
-					"customValue": "kUg25ls0Ge0jieVEyxT4"
-				},
-				{
-					"name": "Podcasting 2.0",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 5
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB"
-				}
-			]
-		}
+		"imageUrlHash": 2657628547
 	},
 	{
 		"id": 6567390,
@@ -232,53 +133,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 0,
-		"imageUrlHash": 4083949214,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "silasonlinux@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 99,
-					"customKey": "696969",
-					"customValue": "CJQy23zX5FanmqYAivXQ"
-				},
-				{
-					"name": "IPFS Podcasting",
-					"type": "node",
-					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
-					"split": 5,
-					"fee": true
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB",
-					"fee": true
-				},
-				{
-					"name": "Silas Node Test",
-					"type": "node",
-					"address": "023d53a588b9f5d50d3b9f10f1c780dc29992755c4674311aa78fb94488670efc4",
-					"split": 1
-				},
-				{
-					"name": "Podcastindex",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 1,
-					"fee": true
-				}
-			]
-		}
+		"imageUrlHash": 4083949214
 	},
 	{
 		"id": 6594066,
@@ -314,98 +169,7 @@
 			"53": "Music"
 		},
 		"locked": 0,
-		"imageUrlHash": 2971241280,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.0000100000"
-			},
-			"destinations": [
-				{
-					"name": "lavish@fountain.fm",
-					"type": "node",
-					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
-					"split": 38,
-					"customKey": "112111100",
-					"customValue": "o8Zpqqre1SWyIYPOCCPb"
-				},
-				{
-					"name": "ThunderRoad",
-					"type": "node",
-					"address": "03589f3ddb81f3802f3fc9aaa359b684ed19840b55db88f7c9c2cc671e74ac93e2",
-					"split": 36
-				},
-				{
-					"name": "SirVoBlitz",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 7,
-					"customKey": "696969",
-					"customValue": "wTNpYiVzK1EqHwFuK4kY"
-				},
-				{
-					"name": "cottongin",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 7,
-					"customKey": "696969",
-					"customValue": "5mZYvK0KkmbXcam43VC6"
-				},
-				{
-					"name": "SirBemrose",
-					"type": "node",
-					"address": "035df303dcc65edcf4965960be85c2f65b7910d253a7d6a52dd3768018a83f016a",
-					"split": 6
-				},
-				{
-					"name": "BoostBot",
-					"type": "node",
-					"address": "03d55f4d4c870577e98ac56605a54c5ed20c8897e41197a068fd61bdb580efaa67",
-					"split": 1
-				},
-				{
-					"name": "Podcast Index",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 1
-				},
-				{
-					"name": "Podverse - Mitch Downey",
-					"type": "node",
-					"address": "02b92193a4c9d035c81f8076ae4a4aba04b7ea8e04058eb3296f894e6ccd5f2e6e",
-					"split": 1
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 1,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB"
-				},
-				{
-					"name": "boobury@fountain.fm",
-					"type": "node",
-					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
-					"split": 1,
-					"customKey": "112111100",
-					"customValue": "OzNAzO9LHnky6T0Jm43S"
-				},
-				{
-					"name": "boobury@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 1,
-					"customKey": "696969",
-					"customValue": "unLU40SXU1G1iFYM7oqB"
-				}
-			]
-		},
-		"funding": {
-			"url": "https://www.paypal.com/paypalme/behindthesch3m3s",
-			"message": "Support Public Radio Tonight!!!"
-		}
+		"imageUrlHash": 2971241280
 	},
 	{
 		"id": 6602210,
@@ -439,42 +203,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 1,
-		"imageUrlHash": 1392327012,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "Dirty_Jersey_Whore",
-					"type": "node",
-					"address": "0219665f869cf7d915aff3293dcc9a99d7ab86ccd9ebb1cebd028fc67040a5ef73",
-					"split": 85
-				},
-				{
-					"name": "IPFS Podcasting",
-					"type": "node",
-					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
-					"split": 5
-				},
-				{
-					"name": "Podcastindex.org",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 5
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB"
-				}
-			]
-		}
+		"imageUrlHash": 1392327012
 	},
 	{
 		"id": 6602228,
@@ -510,40 +239,7 @@
 			"53": "Music"
 		},
 		"locked": 0,
-		"imageUrlHash": 4283414307,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "phantompowermusic@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 100,
-					"customKey": "696969",
-					"customValue": "7oMmuEhZ2MjZoJqqgcuH"
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB",
-					"fee": true
-				},
-				{
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"type": "node",
-					"fee": true,
-					"split": 1
-				}
-			]
-		}
+		"imageUrlHash": 4283414307
 	},
 	{
 		"id": 6602332,
@@ -577,48 +273,7 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 0,
-		"imageUrlHash": 2548554425,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "kolomona@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 92,
-					"customKey": "696969",
-					"customValue": "912ezE5oAMbMPuxCiHq8"
-				},
-				{
-					"name": "IPFS Podcasting",
-					"type": "node",
-					"address": "028eb5be336f7fdf2a4e40c57ff55d3d5d71277bb4197ea14957f756bff249e623",
-					"split": 5
-				},
-				{
-					"name": "Sovereign Feeds-TheSplitKit",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 2,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB"
-				},
-				{
-					"name": "Podcastindex.org",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 1
-				}
-			]
-		},
-		"funding": {
-			"url": "https://sirlibre.com/donate",
-			"message": "Send some value back!"
-		}
+		"imageUrlHash": 2548554425
 	},
 	{
 		"id": 6578610,
@@ -652,42 +307,42 @@
 		"parseErrors": 0,
 		"categories": null,
 		"locked": 1,
-		"imageUrlHash": 2819064982,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "Sats and Sounds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 95,
-					"customKey": "696969",
-					"customValue": "GkJTb8WljzkN1fZQ6B9X"
-				},
-				{
-					"name": "Podcast Index",
-					"type": "node",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 5
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB",
-					"fee": true
-				}
-			]
+		"imageUrlHash": 2819064982
+	},
+	{
+		"id": 6611624,
+		"podcastGuid": "ac746d09-7c3b-5bcd-b28a-f12d6456ca8f",
+		"medium": "podcast",
+		"title": "Homegrown Hits",
+		"url": "https://feed.homegrownhits.xyz/feed.xml",
+		"originalUrl": "https://feed.homegrownhits.xyz/feed.xml",
+		"link": "https://homegrownhits.xyz",
+		"description": "You host it, we toast it.",
+		"author": "DuhLaurien",
+		"ownerName": "Homegrown Hits",
+		"image": "https://bowlafterbowl.com/wp-content/uploads/2023/09/HomegrownHitsArt.png",
+		"artwork": "",
+		"lastUpdateTime": 1695353475,
+		"lastCrawlTime": 1695868510,
+		"lastParseTime": 1695868532,
+		"lastGoodHttpStatusTime": 1695868510,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "",
+		"language": "en",
+		"explicit": true,
+		"type": 0,
+		"dead": 0,
+		"chash": "4cd54370cac6ea5bc293f66bbf625e1c",
+		"episodeCount": 3,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
 		},
-		"funding": {
-			"url": "https://www.paypal.com/donate/?hosted_button_id=QP85HP4N8JGLL",
-			"message": "Donate to the show!"
-		}
+		"locked": 0,
+		"imageUrlHash": 2598331068
 	}
 ]

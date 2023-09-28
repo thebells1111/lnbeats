@@ -73,8 +73,6 @@
 	import Share from '$icons/Share.svelte';
 	import { encodeURL } from '$functions/songId';
 
-	$: console.log($currentPlayingChapter);
-
 	function handleShare() {
 		console.log($playingAlbum);
 
