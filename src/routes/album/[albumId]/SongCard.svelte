@@ -86,6 +86,15 @@
 			handleSplit(splits[0]).then((splitInfo) => {
 				$valueTimeSplitBlock[0] = splitInfo;
 			});
+			let dbSplits = splits.map((v) => {
+				return {
+					title: $playingAlbum.title,
+					podcastGuid: $playingAlbum.podcastGuid,
+					remoteFeedGuid: v['podcast:remoteItem']['@_feedGuid'],
+					remoteItemGuid: v['podcast:remoteItem']['@_itemGuid']
+				};
+			});
+			console.log(dbSplits);
 		}
 
 		$player.play();
