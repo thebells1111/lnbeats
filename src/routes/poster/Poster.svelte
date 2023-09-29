@@ -73,8 +73,6 @@
 	import Share from '$icons/Share.svelte';
 	import { encodeURL } from '$functions/songId';
 
-	$: console.log($currentPlayingChapter);
-
 	function handleShare() {
 		console.log($playingAlbum);
 
@@ -236,6 +234,8 @@
 		width: calc(100% - 16px);
 		border-radius: 8px;
 		max-width: 360px;
+		max-height: 360px;
+		object-fit: contain;
 	}
 
 	audio-progress {

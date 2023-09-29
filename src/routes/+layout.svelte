@@ -24,6 +24,7 @@
 	} from '$/stores';
 	let albumList = [];
 	let wavlake = [];
+	let rssblue = [];
 	let other = [];
 
 	let isPWA = false;
@@ -61,7 +62,6 @@
 		getDisoverList();
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/serviceworker.js');
-			console.log(navigator);
 		}
 
 		// Check if PWA is already installed
@@ -173,6 +173,8 @@
 
 			console.log($discoverList);
 
+			const generators = new Set();
+
 			fetchedFeeds.forEach((v) => {
 				let addFeed = true;
 				if (
@@ -182,15 +184,20 @@
 				) {
 					addFeed = false;
 				}
+
+				generators.add(v.generator);
 				if (addFeed && v.generator === 'Wavlake Studio') {
 					wavlake.push(v);
-				}
-				if (addFeed && v.generator !== 'Wavlake Studio') {
+				} else if (addFeed && v.generator.includes('RSS Blue')) {
+					rssblue.push(v);
+				} else if (addFeed) {
 					other.push(v);
 				}
 			});
 
-			albumList = shuffleArray(other).concat(shuffleArray(wavlake));
+			console.log(generators);
+
+			albumList = shuffleArray(other.concat(rssblue)).concat(shuffleArray(wavlake));
 			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
 
 			$discoverList = albumList;
@@ -204,6 +211,7 @@
 			});
 
 			console.log('Wavlake Feeds: ', wavlake);
+			console.log('RSS Blue Feeds', rssblue);
 			console.log('Other Feeds: ', other);
 		}
 	}
