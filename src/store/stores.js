@@ -27,6 +27,7 @@ export const player = writable();
 export const playerTime = writable(0);
 export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
+export const mediaSession = writable();
 export const posterSwiper = writable();
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);
