@@ -196,8 +196,11 @@
 		};
 		$player.onended = async () => {
 			gotoNextSong();
+			console.log($playingSong?.['podcast:value']?.['podcast:valueRecipient']);
+			console.log($playingAlbum);
 			handleAutoBoost(
-				$playingSong?.['@_value']?.destinations || $playingAlbum?.['@_value']?.destinations
+				$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
+					$playingAlbum?.['podcast:value']?.['podcast:valueRecipient']
 			);
 		};
 	}
@@ -360,6 +363,7 @@
 	}
 
 	async function handleAutoBoost(destinations) {
+		console.log(destinations);
 		if ($satsPerSong > 0 && destinations) {
 			try {
 				sendBoost({
