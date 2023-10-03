@@ -45,7 +45,10 @@
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
-			if ((album.songs || $lnbRadioPlaying) && currentSong.enclosure) {
+			if (
+				(album.songs || $lnbRadioPlaying) &&
+				(currentSong?.enclosure || currentSong?.enclosure?.['@_url'])
+			) {
 				if (
 					($playingIndex >= 0 &&
 						($playingIndex < album?.songs?.length - 1 ||

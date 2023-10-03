@@ -23,7 +23,8 @@
 		playingIndex,
 		playingSong,
 		sortedTop100,
-		top100Loop
+		top100Loop,
+		valueTimeSplitBlock
 	} from '$/stores';
 
 	let expandMenu = false;
@@ -47,35 +48,12 @@
 
 	async function getTop() {
 		if (!$top100.length) {
-			let res = await fetch('https://stats.podcastindex.org/v4vmusic.html');
-			let data = await res.text();
+			let res = await fetch('https://stats.podcastindex.org/v4vmusic.json');
+			let data = await res.json();
 
-			let parser = new DOMParser();
-			let doc = parser.parseFromString(data, 'text/html');
+			console.log(data);
 
-			let listItems = doc.querySelectorAll('.chart li');
-			let dataArray = [];
-
-			listItems.forEach((li, i) => {
-				let rank = i + 1;
-				let title = li.querySelector('.title').textContent;
-				let href = li.querySelector('.title').getAttribute('href');
-				let podcastIndexId = href.split('/').pop().split('?').shift();
-				let sats = parseInt(
-					li.querySelector('.sats').textContent.replace(',', '').replace('sats', '').trim()
-				);
-				let artist = li.querySelector('.artist').textContent.replace('by ', '');
-				let imageURL = li.querySelector('.cover').src;
-
-				dataArray.push({
-					rank: parseInt(rank),
-					title,
-					podcastIndexId,
-					sats,
-					artist,
-					imageURL
-				});
-			});
+			let dataArray = data.items;
 
 			$top100 = dataArray.sort((a, b) => a.rank - b.rank);
 			$sortedTop100 = clone($top100);
@@ -86,17 +64,18 @@
 
 	async function playSong(song) {
 		$top100Playing = true;
+		$valueTimeSplitBlock = [];
 		console.log(song);
 		console.log($top100Playing);
 
-		const { podcastIndexId, rank, title } = song;
+		const { feedGuid, rank, title } = song;
+
 		if ($playingIndex === rank) {
 			openPoster();
 			return;
 		}
 		const feedUrl =
-			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${podcastIndexId}`)}`;
+			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 
 		try {
 			const albumRes = await fetch(feedUrl);
@@ -196,13 +175,17 @@
 		<li on:click={playSong.bind(this, song)}>
 			<p class="rank">#{song.rank}</p>
 
-			<img width="60" src={song.imageURL} />
+			<img width="60" src={song.image} />
+
+			<song-info>
+				<p>{song.title}</p>
+				<p>{song.author}</p>
+			</song-info>
 			{#if $player && !$player.paused && song.rank === $playingIndex && $top100Playing}
 				<Pause size="48" />
 			{:else}
 				<Play size="48" />
 			{/if}
-			<p>{song.title}</p>
 			<!-- <menu-container>
 				<button on:click|stopPropagation|capture={() => (expandMenu = song.rank)}>
 					<MoreVert size="24" />
@@ -245,6 +228,17 @@
 </button>
 
 <style>
+	song-info {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	song-info > p:nth-of-type(2) {
+		padding-left: 12px;
+		font-size: 0.9em;
+		font-style: italic;
+	}
 	ol {
 		padding: 0;
 		margin: 0;
@@ -252,7 +246,7 @@
 	li {
 		display: flex;
 		list-style: none;
-		justify-content: space-between;
+		justify-content: flex-start;
 		border-bottom: 1px solid var(--color-text-2);
 		padding: 8px;
 		align-items: center;

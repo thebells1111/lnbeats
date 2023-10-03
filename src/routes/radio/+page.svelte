@@ -55,6 +55,7 @@
 
 	function handlePlay() {
 		$lnbRadioPlaying = true;
+		$valueTimeSplitBlock = [];
 		$lnbRadio = shuffleArray(songs);
 		$playingIndex = 0;
 		playRadioSong($lnbRadio[$playingIndex]);
@@ -97,7 +98,7 @@
 		$player.src = song.enclosure['@_url'];
 		$playingSong = song;
 
-		const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
+		const splits = [] || song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
 
 		if (splits.length > 0) {
 			handleSplit(splits[0]).then((splitInfo) => {

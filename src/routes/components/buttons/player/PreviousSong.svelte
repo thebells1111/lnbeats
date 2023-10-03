@@ -43,7 +43,7 @@
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
-			if (album?.songs && currentSong?.enclosure) {
+			if (album?.songs && (currentSong?.enclosure || currentSong?.enclosure?.['@_url'])) {
 				if ($playingIndex > 0 || album.favorites) {
 					$playingIndex = $playingIndex - 1;
 					let nextSong;

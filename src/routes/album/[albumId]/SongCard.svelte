@@ -41,6 +41,7 @@
 	async function playSong() {
 		$top100Playing = false;
 		$lnbRadioPlaying = false;
+		$valueTimeSplitBlock = [];
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
 				.then((res) => res.json())

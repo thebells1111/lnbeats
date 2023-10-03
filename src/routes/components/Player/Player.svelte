@@ -439,7 +439,10 @@
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
-			if ((album.songs || $lnbRadioPlaying) && currentSong.enclosure) {
+			if (
+				(album.songs || $lnbRadioPlaying) &&
+				(currentSong?.enclosure || currentSong?.enclosure?.['@_url'])
+			) {
 				if (
 					($playingIndex >= 0 &&
 						($playingIndex < album?.songs?.length - 1 ||
@@ -561,7 +564,7 @@
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
-			if (album?.songs && currentSong?.enclosure) {
+			if (album?.songs && (currentSong?.enclosure || currentSong?.enclosure?.['@_url'])) {
 				if ($playingIndex > 0 || album.favorites) {
 					$playingIndex = $playingIndex - 1;
 					let nextSong;
@@ -668,6 +671,14 @@
 		}
 	}
 </script>
+
+<svelte:head>
+	<title
+		>Playing:
+		{$playingSong.title} -
+		{$playingAlbum.author}</title
+	>
+</svelte:head>
 
 <audio playsinline preload="metadata" bind:this={$player} />
 
