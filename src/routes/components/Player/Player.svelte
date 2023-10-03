@@ -80,10 +80,10 @@
 						}
 
 						_nextSong = $top100[$playingIndex - 1];
-						let podcastIndexId = _nextSong.podcastIndexId;
+						let feedGuid = _nextSong.feedGuid;
 						feedUrl =
 							remoteServer +
-							`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${podcastIndexId}`)}`;
+							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 					}
 					console.log(_nextSong);
 
@@ -473,10 +473,10 @@
 							}
 
 							_nextSong = $top100[$playingIndex - 1];
-							let podcastIndexId = _nextSong.podcastIndexId;
+							let feedGuid = _nextSong.feedGuid;
 							feedUrl =
 								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${podcastIndexId}`)}`;
+								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 						}
 						console.log(_nextSong);
 
@@ -589,10 +589,10 @@
 							}
 
 							_nextSong = $top100[$playingIndex - 1];
-							let podcastIndexId = _nextSong.podcastIndexId;
+							let feedGuid = _nextSong.feedGuid;
 							feedUrl =
 								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${podcastIndexId}`)}`;
+								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 						}
 						console.log(_nextSong);
 
