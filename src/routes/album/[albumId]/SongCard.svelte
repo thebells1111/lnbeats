@@ -94,7 +94,17 @@
 					remoteItemGuid: v['podcast:remoteItem']['@_itemGuid']
 				};
 			});
-			console.log(dbSplits);
+			// fetch(remoteServer + 'api/lb/save_featured_on', {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	body: JSON.stringify(data)
+			// })
+			// 	.then((response) => response.json())
+			// 	.then((data) => console.log('Success:', data))
+			// 	.catch((error) => console.error('Error:', error));
+			// console.log(dbSplits);
 		}
 
 		$player.play();
