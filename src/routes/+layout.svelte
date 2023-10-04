@@ -161,7 +161,10 @@
 	async function getDisoverList() {
 		if (!$discoverList.length) {
 			const res = await fetch(
-				remoteServer + `api/queryindex?q=podcasts/bymedium?medium=music&max=1500&val=lightning`
+				remoteServer +
+					`api/queryindex?q=${encodeURIComponent(
+						'podcasts/bymedium?medium=music&val=lightning&max=1500'
+					)}`
 			);
 			let data = await res.json();
 			let fetchedFeeds = data.feeds || data.feed || [];
