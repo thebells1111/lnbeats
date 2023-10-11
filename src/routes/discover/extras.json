@@ -344,5 +344,152 @@
 		},
 		"locked": 0,
 		"imageUrlHash": 2598331068
+	},
+	{
+		"id": 6594523,
+		"podcastGuid": "8d3aa9e5-1e42-5108-a7e0-463883d35e14",
+		"medium": "podcast",
+		"title": "Mutton, Mead & Music",
+		"url": "https://mmmusic-project.ams3.cdn.digitaloceanspaces.com/Mutton_Mead__Music/feed.xml",
+		"originalUrl": "https://mmmusic-project.ams3.cdn.digitaloceanspaces.com/Mutton_Mead__Music/feed.xml",
+		"link": "https://mmmusic.show",
+		"description": "A music show playing Value4Value music.",
+		"author": "Øystein Berge",
+		"ownerName": "Øystein Berge",
+		"image": "https://mmmusic-project.ams3.cdn.digitaloceanspaces.com/Mutton_Mead__Music/6th_Edition/art/mmmusic_06_art_final.jpg",
+		"artwork": "https://mmmusic-project.ams3.cdn.digitaloceanspaces.com/Mutton_Mead__Music/6th_Edition/art/mmmusic_06_art_final.jpg",
+		"lastUpdateTime": 1696625346,
+		"lastCrawlTime": 1696989069,
+		"lastParseTime": 1696989071,
+		"lastGoodHttpStatusTime": 1696989069,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "871b7becd2aab72b2e09c812f78517c4",
+		"episodeCount": 6,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
+		},
+		"locked": 0,
+		"imageUrlHash": 3358153084,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "Mutton, Mead & Music",
+					"type": "node",
+					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
+					"split": 100,
+					"customKey": "112111100",
+					"customValue": "BmkF2Ah5ekTVGsGLz1N4"
+				},
+				{
+					"name": "Sovereign Feeds",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 5,
+					"customKey": "696969",
+					"customValue": "eChoVKtO1KujpAA5HCoB",
+					"fee": true
+				},
+				{
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"type": "node",
+					"fee": true,
+					"split": 1
+				}
+			]
+		}
+	},
+	{
+		"id": 6643768,
+		"podcastGuid": "f20a6d00-9ab4-5b96-9b8e-a2d19498520b",
+		"medium": "podcast",
+		"title": "Rolling On Show",
+		"url": "https://www.rollingon.show/feed/podcast/",
+		"originalUrl": "https://www.rollingon.show/feed/podcast/",
+		"link": "https://www.rollingon.show",
+		"description": "A Value for Value Music Podcast",
+		"author": "Rolling On Show",
+		"ownerName": "Rolling On Show",
+		"image": "https://www.rollingon.show/wp-content/uploads/2023/10/2-1610295201-smiling-earth-face1400x1400.jpg",
+		"artwork": "https://www.rollingon.show/wp-content/uploads/2023/10/2-1610295201-smiling-earth-face1400x1400.jpg",
+		"lastUpdateTime": 1696908656,
+		"lastCrawlTime": 1696993265,
+		"lastParseTime": 1696993267,
+		"lastGoodHttpStatusTime": 1696993265,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Blubrry PowerPress/11.0.14",
+		"language": "en-US",
+		"explicit": true,
+		"type": 0,
+		"dead": 0,
+		"chash": "77210192b86a04534e6917990dc3466a",
+		"episodeCount": 3,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music",
+			"54": "Commentary"
+		},
+		"locked": 0,
+		"imageUrlHash": 3306193138,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"name": "sirtruckdriver@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 98,
+					"customKey": "696969",
+					"customValue": "iGHdKEJXWSqDR8nDMJla"
+				},
+				{
+					"name": "blubrry@getalby.com",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 3,
+					"customKey": "696969",
+					"customValue": "qAHJuqKLmMhTNFualcIj",
+					"fee": true
+				},
+				{
+					"name": "boostbot@fountain.fm",
+					"type": "node",
+					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
+					"split": 2,
+					"customKey": "112111100",
+					"customValue": "IMQkt4BFzAiSynxcQQqd"
+				},
+				{
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"type": "node",
+					"fee": true,
+					"split": 1
+				}
+			]
+		}
 	}
 ]
