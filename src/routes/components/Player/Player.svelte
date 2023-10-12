@@ -17,6 +17,9 @@
 		playingChapters,
 		currentPlayingChapter,
 		currentChapterIndex,
+		playingTranscript,
+		playingTranscriptText,
+		currentTranscriptIndex,
 		chapterBoostBypass,
 		remoteServer,
 		top100Playing,
@@ -210,6 +213,7 @@
 	function updatePlayerTime() {
 		const currentTime = $player.currentTime;
 		findCurrentChapter(currentTime);
+		findCurrentTranscript(currentTime);
 		$currentSplit = findCurrentSplit(currentTime);
 		$player.currentTime = $player.currentTime;
 
@@ -222,6 +226,23 @@
 			}
 		} else if (previousSplit?.duration) {
 			handleNewSplit(currentTime);
+		}
+	}
+
+	function findCurrentTranscript(currentTime) {
+		if ($playingTranscript?.length) {
+			if (currentTime < $playingTranscript[0]) {
+				$currentTranscriptIndex = undefined;
+			} else {
+				$currentTranscriptIndex = $currentTranscriptIndex || 0;
+			}
+			while (currentTime >= $playingTranscript?.[$currentTranscriptIndex + 1]?.start) {
+				$currentTranscriptIndex++;
+			}
+
+			while (currentTime < $playingTranscript?.[$currentTranscriptIndex]?.start) {
+				$currentTranscriptIndex--;
+			}
 		}
 	}
 

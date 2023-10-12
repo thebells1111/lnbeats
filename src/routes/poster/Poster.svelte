@@ -1,4 +1,6 @@
 <script>
+	import parseSRT from 'parse-srt';
+	import VirtualList from 'svelte-tiny-virtual-list';
 	import { scale } from 'svelte/transition';
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
@@ -15,7 +17,10 @@
 		selectedSong,
 		shareUrl,
 		shareText,
-		currentSplit
+		currentSplit,
+		playingTranscript,
+		playingTranscriptText,
+		currentTranscriptIndex
 	} from '$/stores';
 
 	import AudioProgressBar from './AudioProgressBar.svelte';
@@ -25,12 +30,30 @@
 	import Favorite from '$icons/Favorite.svelte';
 	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 	import Close from '$icons/Close.svelte';
+
 	$: isFavorite =
 		$favorites[
 			`${$playingAlbum.podcastGuid}::${
 				$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
 			}`
 		];
+
+	$: if ($playingTranscriptText) {
+		console.log($playingTranscriptText);
+		$playingTranscript = parseSRT($playingTranscriptText);
+		let t = $playingTranscript
+			.map((v) => v.text)
+			.join(' ')
+			.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, ' ');
+
+		$playingTranscript.full = t.split('|-|').join(' ');
+	} else {
+		$playingTranscript = [];
+	}
+
+	$: console.log($playingTranscript);
+
+	$: console.log($playingTranscript?.[$currentTranscriptIndex]);
 
 	function toggleFavorite() {
 		console.log($favorites);

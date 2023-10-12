@@ -25,7 +25,10 @@
 		webln,
 		showInstructionScreen,
 		user,
-		discoverList
+		discoverList,
+		playingTranscript,
+		playingTranscriptText,
+		currentTranscriptIndex
 	} from '$/stores';
 
 	let showAppSupport = false;
@@ -89,6 +92,23 @@
 		} else {
 			$playingChapters = [];
 			$currentPlayingChapter = undefined;
+		}
+
+		if (
+			song['podcast:transcript'] &&
+			(song['podcast:transcript']['@_type'] === 'application/srt' ||
+				song['podcast:transcript']['@_type'] === 'application/x-rip')
+		) {
+			fetch(
+				remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
+			)
+				.then((res) => res.text())
+				.then((data) => ($playingTranscriptText = data))
+				.then(() => console.log($playingTranscriptText));
+		} else {
+			$playingTranscript = [];
+			$playingTranscriptText = '';
+			$currentTranscriptIndex = undefined;
 		}
 
 		$playingAlbum.title = $playingAlbum.title;

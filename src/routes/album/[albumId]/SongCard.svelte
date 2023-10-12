@@ -19,7 +19,10 @@
 		top100Playing,
 		playFeatured,
 		currentPlayingChapter,
-		lnbRadioPlaying
+		lnbRadioPlaying,
+		playingTranscript,
+		playingTranscriptText,
+		currentTranscriptIndex
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -51,6 +54,23 @@
 			$playingChapters = undefined;
 			$currentPlayingChapter = undefined;
 		}
+
+		if (
+			song['podcast:transcript'] &&
+			(song['podcast:transcript']['@_type'] === 'application/srt' ||
+				song['podcast:transcript']['@_type'] === 'application/x-rip')
+		) {
+			fetch(
+				remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
+			)
+				.then((res) => res.text())
+				.then((data) => ($playingTranscriptText = data));
+		} else {
+			$playingTranscript = [];
+			$playingTranscriptText = '';
+			$currentTranscriptIndex = undefined;
+		}
+
 		if (song.playlist) {
 			const playlistDB = localforage.createInstance({
 				name: 'playlistDB'
