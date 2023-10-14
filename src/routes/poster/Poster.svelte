@@ -239,7 +239,7 @@
 
 	.cc-container {
 		position: absolute;
-		top: 400px;
+		top: 384px;
 		width: 100%;
 		display: flex;
 		align-items: flex-start;
@@ -254,17 +254,6 @@
 		display: inline-block;
 		padding: 4px 8px;
 		text-align: center;
-	}
-
-	@media (min-width: 722px) {
-		poster-container {
-			border-radius: 8px;
-			height: calc(100vh - 16px);
-			height: calc(var(--vh, 1vh) * 100 - 16px);
-		}
-		poster {
-			border-radius: 8px;
-		}
 	}
 
 	time-display {
@@ -364,5 +353,19 @@
 		padding: 0;
 		line-height: 0.8em;
 		bottom: 0;
+	}
+
+	@media (min-width: 722px) {
+		poster-container {
+			border-radius: 8px;
+			height: calc(100vh - 16px);
+			height: calc(var(--vh, 1vh) * 100 - 16px);
+		}
+		poster {
+			border-radius: 8px;
+		}
+		.cc-container {
+			top: 416px;
+		}
 	}
 </style>
