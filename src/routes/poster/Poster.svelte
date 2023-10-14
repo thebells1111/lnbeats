@@ -147,6 +147,13 @@
 				$playingAlbum.artwork ||
 				$playingAlbum?.['itunes:image']?.['@_href']}
 		/>
+		{#if $playingTranscript?.[$currentTranscriptIndex]}
+			<div class="cc-container">
+				<div class="cc">
+					{@html $playingTranscript?.[$currentTranscriptIndex]?.text || ''}
+				</div>
+			</div>
+		{/if}
 
 		<below-poster-container>
 			<button on:click={toggleFavorite} class="favorite-container">
@@ -232,6 +239,25 @@
 			var(--color-poster-bg-0) 33%,
 			var(--color-poster-bg-1) 66%
 		);
+	}
+
+	.cc-container {
+		position: absolute;
+		top: 400px;
+		width: 100%;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		z-index: 9;
+	}
+
+	.cc {
+		color: white;
+		background-color: rgba(0, 0, 0, 0.75);
+		margin: 0 auto;
+		display: inline-block;
+		padding: 4px 8px;
+		text-align: center;
 	}
 
 	@media (min-width: 722px) {
