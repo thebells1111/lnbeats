@@ -51,10 +51,6 @@
 		$playingTranscript = [];
 	}
 
-	$: console.log($playingTranscript);
-
-	$: console.log($playingTranscript?.[$currentTranscriptIndex]);
-
 	function toggleFavorite() {
 		console.log($favorites);
 		console.log($playingSong);
