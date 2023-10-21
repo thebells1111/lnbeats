@@ -698,11 +698,13 @@
 </script>
 
 <svelte:head>
-	<title
-		>Playing:
-		{$playingSong.title} -
-		{$playingAlbum.author}</title
-	>
+	{#if $playingSong.title}
+		<title
+			>Playing:
+			{$playingSong.title} -
+			{$playingAlbum.author}</title
+		>
+	{/if}
 </svelte:head>
 
 <audio playsinline preload="metadata" bind:this={$player} />
