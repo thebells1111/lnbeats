@@ -163,15 +163,12 @@
 			const res = await fetch(
 				remoteServer +
 					`api/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&val=lightning&max=1500'
+						'podcasts/bymedium?medium=music&val=lightning&max=2000'
 					)}`
 			);
 			let data = await res.json();
 			let fetchedFeeds = data.feeds || data.feed || [];
-
-			$discoverList = fetchedFeeds;
-
-			console.log($discoverList);
+			let filteredFeeds = [];
 
 			const generators = new Set();
 
@@ -186,18 +183,22 @@
 				}
 
 				generators.add(v.generator);
-				if (addFeed && v.generator === 'Wavlake Studio') {
-					wavlake.push(v);
-				} else if (addFeed && v.generator.includes('RSS Blue')) {
-					rssblue.push(v);
-				} else if (addFeed) {
-					other.push(v);
+				if (addFeed) {
+					filteredFeeds.push(v);
+					if (v.generator === 'Wavlake Studio') {
+						wavlake.push(v);
+					} else if (v.generator.includes('RSS Blue')) {
+						rssblue.push(v);
+					} else {
+						other.push(v);
+					}
 				}
 			});
 
 			console.log(generators);
 
-			albumList = shuffleArray(other.concat(rssblue)).concat(shuffleArray(wavlake));
+			albumList = sortByPubDate(filteredFeeds);
+			// albumList = shuffleArray(other.concat(rssblue)).concat(shuffleArray(wavlake));
 			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
 
 			$discoverList = albumList;
@@ -214,6 +215,13 @@
 			console.log('RSS Blue Feeds', rssblue);
 			console.log('Other Feeds: ', other);
 		}
+	}
+
+	function sortByPubDate(arr) {
+		console.log(arr);
+		arr.sort((a, b) => (a.newestItemPubdate < b.newestItemPubdate ? 1 : -1));
+		console.log(arr);
+		return arr;
 	}
 </script>
 
