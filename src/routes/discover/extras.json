@@ -491,5 +491,134 @@
 				}
 			]
 		}
+	},
+	{
+		"id": 6665702,
+		"podcastGuid": "3aebb7a8-5942-5ee7-a148-8bdc14f1f3d4",
+		"medium": "podcast",
+		"title": "UpBEATs",
+		"url": "https://feeds.rssblue.com/upbeats",
+		"originalUrl": "https://feeds.rssblue.com/upbeats",
+		"link": "",
+		"description": "\"UpBeats with Salty Crayon\" is a Value4Value music podcast that gives back to the artists in real time while introducing the world to a wide range of musical talent that takes you on a emotional and upbeat journey through their music and my commentary.",
+		"author": "Salty Crayon",
+		"ownerName": "Salty Crayon",
+		"image": "https://rssblue.com/podcasts/upbeats/cover-art.rss-blue-1.png",
+		"artwork": "https://rssblue.com/podcasts/upbeats/cover-art.rss-blue-1.png",
+		"lastUpdateTime": 1698944209,
+		"lastCrawlTime": 1698944177,
+		"lastParseTime": 1698944211,
+		"lastGoodHttpStatusTime": 1698944177,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "RSS Blue v1.14.61",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "250e1a04d4ce3df47c0003bea0ebfb0a",
+		"episodeCount": 1,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
+		},
+		"locked": 0,
+		"imageUrlHash": 363530054,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend",
+				"suggested": "0.00000005000"
+			},
+			"destinations": [
+				{
+					"type": "node",
+					"name": "UpBEATs ",
+					"address": "03d937372ceaea5f57462a845c3bdd2b0254ecb07b8b9f9a30a605043bee178c4a",
+					"split": 95
+				},
+				{
+					"type": "node",
+					"name": "Podcaster (on Alby)",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 4,
+					"customKey": "696969",
+					"customValue": "eS2POXF8jvxVYd6kwhti"
+				},
+				{
+					"type": "node",
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"split": 1,
+					"fee": true
+				}
+			]
+		},
+		"funding": {
+			"url": "https://www.paypal.com/donate?token=rVxVLWOjhiB0gn30Yrzce8CnoU-A8xiruiiAELsqZ6pLhZaU0qm6j-x7lqon0noMseNYMSG3GsY703Wn",
+			"message": "Support \"UpBEATs\""
+		}
+	},
+	{
+		"id": 6670466,
+		"podcastGuid": "3d61eeb5-e8db-5f20-a6aa-6f67924120f4",
+		"medium": "podcast",
+		"title": "THE SIDESTREAM MUSIC PODCAST",
+		"url": "https://feeds.rssblue.com/sidestream-music-podcast",
+		"originalUrl": "https://feeds.rssblue.com/sidestream-music-podcast",
+		"link": "",
+		"description": "Enjoy new music discovery, artist interviews, and more as radio vet Cody Christopherr delivers a new show each week!  SIDESTREAM originally made it's debut in 1993, on radio station KCDD 103.7 FM in Abilene, Texas.  While the other rock stations were still playing The Doobie Brothers and AC/DC and the such, Cody was bringin' a totally new sound and vibe to the West Texas airwaves. Breaking artists on the FM such as: WEEZER, BECK, THE NIXONS, RADIOHEAD, POP POPPINS, WHITE ZOMBIE, MACHINES OF LOVING GRACE, KoЯn, ELEVEN, etc. etc. etc. blah-blah-blah. The show would air LIVE every Friday night, with a...",
+		"author": "Cody Christopherr",
+		"ownerName": "Cody Christopherr",
+		"image": "https://rssblue.com/podcasts/sidestream-music-podcast/cover-art.sidestream-square-stacked-color-y-blkbg.png",
+		"artwork": "https://rssblue.com/podcasts/sidestream-music-podcast/cover-art.sidestream-square-stacked-color-y-blkbg.png",
+		"lastUpdateTime": 1698900879,
+		"lastCrawlTime": 1698900875,
+		"lastParseTime": 1698900879,
+		"lastGoodHttpStatusTime": 1698900875,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "RSS Blue v1.14.70",
+		"language": "en",
+		"explicit": false,
+		"type": 0,
+		"dead": 0,
+		"chash": "abe72a1f716abb189c71c8dc39649957",
+		"episodeCount": 1,
+		"crawlErrors": 0,
+		"parseErrors": 0,
+		"categories": {
+			"53": "Music"
+		},
+		"locked": 0,
+		"imageUrlHash": 216477340,
+		"value": {
+			"model": {
+				"type": "lightning",
+				"method": "keysend"
+			},
+			"destinations": [
+				{
+					"name": "Cody (host)",
+					"type": "node",
+					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+					"split": 100,
+					"customKey": "696969",
+					"customValue": "bjAbMD5UDbmF4X4zJMaS"
+				},
+				{
+					"name": "Podcastindex.org",
+					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
+					"type": "node",
+					"fee": true,
+					"split": 1
+				}
+			]
+		}
 	}
 ]
