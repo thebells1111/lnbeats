@@ -40,6 +40,16 @@
 		if ($currentChapterIndex < $playingChapters?.length - 1) {
 			$currentChapterIndex++;
 			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			while (
+				$currentPlayingChapter.hasOwnProperty('toc') &&
+				$currentPlayingChapter.toc !== true &&
+				$currentChapterIndex < $playingChapters?.length - 1
+			) {
+				$currentChapterIndex++;
+				$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			}
+
+			console.log($currentPlayingChapter);
 			$player.currentTime = $currentPlayingChapter.startTime;
 			$chapterBoostBypass = true;
 		} else {
