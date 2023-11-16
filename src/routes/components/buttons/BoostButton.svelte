@@ -21,7 +21,7 @@
 			$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 		if (
 			($webln && $user.preferences.wallet === 'webln') ||
-			($user.loggedIn && $user.preferences.wallet === 'albyApi')
+			$user.preferences.wallet === 'albyApi'
 		) {
 			$showBoostScreen = true;
 			$posterSwiper.enabled = false;

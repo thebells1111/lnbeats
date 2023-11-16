@@ -1,7 +1,17 @@
-import { playingAlbum, playingSong, player, senderName, remoteServer } from '$/stores';
+import {
+	playingAlbum,
+	playingSong,
+	player,
+	senderName,
+	currentSplit,
+	remoteServer
+} from '$/stores';
 import { get } from 'svelte/store';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
+	console.log(get(playingSong));
+	console.log(get(playingAlbum));
+	console.log(get(currentSplit));
 	destinations = [].concat(destinations);
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
@@ -27,7 +37,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 	let splitsDestinations = destinations?.filter((v) => !v['@_fee']) || [];
 
 	for (const dest of feesDestinations) {
-		let feeRecord = getBaseRecord(satAmount, boostagram);
+		let feeRecord = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
 
 		let amount = Math.round((dest['@_split'] / 100) * satAmount);
 		if (amount > 0) {
@@ -59,8 +69,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 	}
 
 	for (const dest of splitsDestinations) {
-		let record = getBaseRecord(satAmount, boostagram);
-		console.log(runningTotal);
+		let record = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
 		let amount = Math.round((dest['@_split'] / 100) * runningTotal);
 		record.name = dest['@_name'];
 		record.value_msat = amount * 1000;
@@ -104,12 +113,18 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 }
 
 const getBaseRecord = (satAmount, boostagram) => {
-	return {
+	let record = {
 		podcast: get(playingAlbum)?.title,
 		feedID: get(playingAlbum)?.id,
-		itemID: get(playingSong)?.id,
+		guid: get(playingAlbum)?.podcastGuid,
+		episode_guid:
+			get(playingSong)?.guid?.['#text'] ||
+			get(playingSong)?.guid ||
+			get(playingSong)?.enclosure?.['@_url'],
 		episode: get(playingSong)?.title,
 		ts: Math.trunc(player.currentTime),
+		remote_feed_guid: get(currentSplit)?.feedGuid,
+		remote_item_guid: get(currentSplit)?.itemGuid,
 		action: 'boost',
 		app_name: 'LN Beats',
 		value_msat: 0,
@@ -118,4 +133,14 @@ const getBaseRecord = (satAmount, boostagram) => {
 		message: boostagram,
 		sender_name: get(senderName)
 	};
+	return record;
 };
+
+function filterEmptyKeys(obj) {
+	return Object.entries(obj).reduce((acc, [key, value]) => {
+		if (value !== null && value !== undefined && value !== '') {
+			acc[key] = value;
+		}
+		return acc;
+	}, {});
+}
