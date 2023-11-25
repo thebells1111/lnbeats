@@ -88,6 +88,8 @@
 							if (feed) {
 								if (feed.item?.[0]?.['podcast:episode']) {
 									feed.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
+								} else if (feed.item?.[0]?.['itunes:episode']) {
+									feed.item.sort((a, b) => (a['itunes:episode'] > b['itunes:episode'] ? 1 : -1));
 								}
 
 								albumData.feed.songs = [].concat(feed.item);
