@@ -69,6 +69,8 @@ export default async function loadSong(song) {
 			});
 
 			let feed = feedData?.feed;
+			splitInfo.feedGuid = feedGuid;
+			splitInfo.itemGuid = itemGuid;
 			splitInfo.album = feed?.title;
 			splitInfo.artist = feed?.author;
 			splitInfo.startTime = startTime;

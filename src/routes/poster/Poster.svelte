@@ -39,7 +39,6 @@
 		];
 
 	$: if ($playingTranscriptText) {
-		console.log($playingTranscriptText);
 		$playingTranscript = parseSRT($playingTranscriptText);
 		let t = $playingTranscript
 			.map((v) => v.text)
@@ -52,13 +51,6 @@
 	}
 
 	function toggleFavorite() {
-		console.log($favorites);
-		console.log($playingSong);
-		console.log($playingAlbum);
-		console.log(
-			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
-		);
-
 		let id = `${$playingAlbum.podcastGuid || $playingSong?.album?.podcastGuid}::${
 			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
 		}`;

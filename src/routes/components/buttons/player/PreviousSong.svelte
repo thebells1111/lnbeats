@@ -38,6 +38,12 @@
 		if ($currentChapterIndex > 0) {
 			$currentChapterIndex--;
 			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			while ($currentPlayingChapter.hasOwnProperty('toc') && $currentPlayingChapter.toc !== true) {
+				if ($currentChapterIndex > 0) {
+					$currentChapterIndex--;
+					$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+				}
+			}
 			$player.currentTime = $currentPlayingChapter.startTime;
 			$chapterBoostBypass = true;
 		} else {
