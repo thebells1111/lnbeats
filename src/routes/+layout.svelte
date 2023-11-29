@@ -35,7 +35,7 @@
 
 	// Function to trigger PWA installation
 	function installPWA() {
-		console.log(deferredPrompt);
+		// console.log(deferredPrompt);
 		if (deferredPrompt) {
 			deferredPrompt.prompt();
 			deferredPrompt.userChoice.then((choiceResult) => {
@@ -195,7 +195,7 @@
 				}
 			});
 
-			console.log(generators);
+			// console.log(generators);
 
 			albumList = sortByPubDate(filteredFeeds);
 			// albumList = shuffleArray(other.concat(rssblue)).concat(shuffleArray(wavlake));
@@ -211,16 +211,15 @@
 				return a.title.localeCompare(b.title); // Sort by author
 			});
 
-			console.log('Wavlake Feeds: ', wavlake);
-			console.log('RSS Blue Feeds', rssblue);
-			console.log('Other Feeds: ', other);
+			// console.log('Wavlake Feeds: ', wavlake);
+			// console.log('RSS Blue Feeds', rssblue);
+			// console.log('Other Feeds: ', other);
 		}
 	}
 
 	function sortByPubDate(arr) {
-		console.log(arr);
 		arr.sort((a, b) => (a.newestItemPubdate < b.newestItemPubdate ? 1 : -1));
-		console.log(arr);
+
 		return arr;
 	}
 </script>
@@ -279,8 +278,7 @@
 			simulateTouch={false}
 			on:slideChange={() => {
 				// document.getElementById('poster-swiper').style.display = 'none';
-				console.log('slide change');
-				console.log($posterSwiper.activeIndex);
+
 				if ($posterSwiper.activeIndex === 0) {
 					setTimeout(
 						() => (document.getElementById('poster-swiper').style.visibility = 'hidden'),

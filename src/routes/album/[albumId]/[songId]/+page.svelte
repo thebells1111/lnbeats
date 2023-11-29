@@ -7,13 +7,22 @@
 
 	import { playingAlbum, player, playingSong, posterSwiper } from '$/stores';
 	import { decodeURL } from '$functions/songId';
-	export let data;
-	console.log(data.album);
-	console.log(data.songId);
 
-	const songURL = decodeURL(data.songId);
-	const song = data.album.songs.find((v) => v.enclosure['@_url'] === songURL);
-	console.log(song);
+	function isValidGuid(str) {
+		const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+		return regex.test(str);
+	}
+
+	export let data;
+	let song;
+
+	if (isValidGuid(data.songId)) {
+		song = data.album.songs.find((v) => v.guid['#text'] === data.songId);
+		console.log(data.album.songs.find((v) => v.guid['#text'] === 'data.songId'));
+	} else {
+		const songURL = decodeURL(data.songId);
+		song = data.album.songs.find((v) => v.enclosure['@_url'] === songURL);
+	}
 
 	function loadSong(song) {
 		console.log(song);
@@ -45,7 +54,7 @@
 </script>
 
 <svelte:head>
-	{#if data.album}
+	{#if data.album && song}
 		<title>{`${data.album.author} - ${data.album.title} - ${song.title}`}</title>
 		<meta
 			name="description"

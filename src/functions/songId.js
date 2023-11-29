@@ -10,13 +10,18 @@ export function decodeURL(encodedURL) {
 	let padding = '='.repeat((4 - (encodedURL.length % 4)) % 4);
 	let base64 = (encodedURL + padding).replace(/-/g, '+').replace(/_/g, '/');
 
-	if (typeof Buffer !== 'undefined') {
-		// Node.js
-		return Buffer.from(base64, 'base64').toString('utf-8');
-	} else if (typeof window !== 'undefined' && 'atob' in window) {
-		// Browser
-		return window.atob(base64);
-	} else {
-		throw new Error('Environment not supported');
+	try {
+		if (typeof Buffer !== 'undefined') {
+			// Node.js
+			return Buffer.from(base64, 'base64').toString('utf-8');
+		} else if (typeof window !== 'undefined' && 'atob' in window) {
+			// Browser
+			return window.atob(base64);
+		} else {
+			throw new Error('Environment not supported');
+		}
+	} catch (e) {
+		// If an error is caught, return undefined
+		return undefined;
 	}
 }
