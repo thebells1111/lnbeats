@@ -211,9 +211,9 @@
 				return a.title.localeCompare(b.title); // Sort by author
 			});
 
-			// console.log('Wavlake Feeds: ', wavlake);
-			// console.log('RSS Blue Feeds', rssblue);
-			// console.log('Other Feeds: ', other);
+			console.log('Wavlake Feeds: ', wavlake);
+			console.log('RSS Blue Feeds', rssblue);
+			console.log('Other Feeds: ', other);
 		}
 	}
 
