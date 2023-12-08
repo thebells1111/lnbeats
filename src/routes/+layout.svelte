@@ -185,7 +185,7 @@
 				generators.add(v.generator);
 				if (addFeed) {
 					filteredFeeds.push(v);
-					if (v.generator === 'Wavlake Studio') {
+					if (v.generator === 'Wavlake Studio' || v.generator === 'Wavlake') {
 						wavlake.push(v);
 					} else if (v.generator.includes('RSS Blue')) {
 						rssblue.push(v);
