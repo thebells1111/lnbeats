@@ -88,7 +88,7 @@
 		on:click={() => {
 			$discoverScreen = 'radio';
 		}}
-		class:active={$discoverScreen === 'radio'}>Radio</button
+		class:active={$discoverScreen === 'radio'}>Music Shows</button
 	>
 	<button
 		on:click={() => {
