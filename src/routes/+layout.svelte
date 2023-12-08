@@ -25,6 +25,7 @@
 	let albumList = [];
 	let wavlake = [];
 	let rssblue = [];
+	let msp = [];
 	let other = [];
 
 	let isPWA = false;
@@ -185,8 +186,10 @@
 				generators.add(v.generator);
 				if (addFeed) {
 					filteredFeeds.push(v);
-					if (v.generator === 'Wavlake Studio' || v.generator === 'Wavlake') {
+					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);
+					} else if (v.generator.includes('Music Side Project')) {
+						msp.push(v);
 					} else if (v.generator.includes('RSS Blue')) {
 						rssblue.push(v);
 					} else {
@@ -211,6 +214,7 @@
 				return a.title.localeCompare(b.title); // Sort by author
 			});
 
+			console.log('Music Side Project Feeds: ', msp);
 			console.log('Wavlake Feeds: ', wavlake);
 			console.log('RSS Blue Feeds', rssblue);
 			console.log('Other Feeds: ', other);
