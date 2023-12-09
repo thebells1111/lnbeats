@@ -342,7 +342,6 @@
 		}
 
 		previousSplit = $currentSplit;
-		console.log($currentSplit);
 	}
 
 	function buildDestinations(split) {
@@ -361,18 +360,19 @@
 		return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== undefined));
 	}
 
-	function updateSplits(array, remotePercentage) {
+	function updateSplits(_array, remotePercentage) {
+		const array = clone(_array);
 		const newArray = [].concat(array);
-		const totalSplit = newArray.reduce((acc, item) => {
-			return acc + (item?.['@_fee'] !== true && item?.['@_fee'] !== 'true' ? item['@_split'] : 0);
+		const totalSplit = newArray.reduce((accumulator, currentItem) => {
+			const splitValue = currentItem?.['@_fee'] !== true ? Number(currentItem['@_split']) : 0;
+			return accumulator + splitValue;
 		}, 0);
 		const remotePercentagePercentage = Number(remotePercentage) / 100;
 
 		newArray.forEach((item) => {
-			if (item?.['@_fee'] !== true && item?.['@_fee'] !== 'true') {
-				item['@_split'] = Math.floor(
-					(item['@_split'] / totalSplit) * remotePercentagePercentage * 100
-				);
+			if (item?.['@_fee'] !== true) {
+				item['@_split'] =
+					Math.round((item['@_split'] / totalSplit) * remotePercentagePercentage * 100 * 100) / 100;
 			}
 		});
 

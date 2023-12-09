@@ -97,6 +97,8 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 		}
 	}
 
+	console.log(payments);
+
 	if (wallet === 'albyApi') {
 		let res = await fetch(remoteServer + 'api/alby/boost', {
 			method: 'POST',
@@ -109,6 +111,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 		let data = await res.json();
 		console.log(data);
+		return data;
 	}
 }
 
