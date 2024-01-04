@@ -19,19 +19,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "025b52a62037336491ae3e0dc9ccdd1d",
-		"episodeCount": 4,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 0,
-		"imageUrlHash": 831919587
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6562175,
@@ -53,19 +41,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en-us",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "b5cd33bb3378478842d9c0a738d46765",
-		"episodeCount": 3,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 0,
-		"imageUrlHash": 3387580645
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6582415,
@@ -87,19 +63,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "798d00010d1f81302f20b09e0a732e45",
-		"episodeCount": 2,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 0,
-		"imageUrlHash": 2657628547
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6567390,
@@ -121,19 +85,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "f443b2bf4969d66c55d679780ad1ea95",
-		"episodeCount": 2,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 0,
-		"imageUrlHash": 4083949214
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6594066,
@@ -146,8 +98,8 @@
 		"description": "The BTS preshow featuring nothing but boostable value time split enabled music!! Follow https://mk.spook.social/@behindthesch3m3s for updates. Live every Monday night at https://behindthesch3m3s.com/thescalyshow/",
 		"author": "Boo Bury",
 		"ownerName": "Boo Bury",
-		"image": "https://media.podserve.fm/media/user_3398/logos/makeheroism_before_the_sch3m3s_cassette_ZdIFhQm.jpg",
-		"artwork": "https://media.podserve.fm/media/user_3398/logos/makeheroism_before_the_sch3m3s_cassette_ZdIFhQm.jpg",
+		"image": "https://behindthesch3m3s.com/wp-content/uploads/2023/12/b4ts-feed-art-laurien.png",
+		"artwork": "https://behindthesch3m3s.com/wp-content/uploads/2023/12/b4ts-feed-art-laurien.png",
 		"lastUpdateTime": 1694508771,
 		"lastCrawlTime": 1694822333,
 		"lastParseTime": 1694822341,
@@ -155,21 +107,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en-us",
-		"explicit": true,
-		"type": 0,
-		"dead": 0,
-		"chash": "8cf1dfa222f2f8dadf05aa5a349f2d85",
-		"episodeCount": 5,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 2971241280
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6602210,
@@ -191,19 +129,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "f9c2d5fdec1f4470940a3faf9fadf6b3",
-		"episodeCount": 3,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 1,
-		"imageUrlHash": 1392327012
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6602228,
@@ -225,21 +151,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "e98ad40cb86dc7d33c5b852339462442",
-		"episodeCount": 3,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 4283414307
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6602332,
@@ -261,19 +173,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "ac2427b1ef35f6c2743338115cdd0ad0",
-		"episodeCount": 2,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 0,
-		"imageUrlHash": 2548554425
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6578610,
@@ -296,18 +196,7 @@
 		"contentType": "",
 		"itunesId": null,
 		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "b0c9f9d0f978b6436873e376ece1bd46",
-		"episodeCount": 4,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": null,
-		"locked": 1,
-		"imageUrlHash": 2819064982
+		"generator": "Sovereign Feeds"
 	},
 	{
 		"id": 6611624,
@@ -320,8 +209,8 @@
 		"description": "You host it, we toast it.",
 		"author": "DuhLaurien",
 		"ownerName": "Homegrown Hits",
-		"image": "https://bowlafterbowl.com/wp-content/uploads/2023/09/HomegrownHitsArt.png",
-		"artwork": "",
+		"image": "https://behindthesch3m3s.com/wp-content/uploads/2023/12/hgh-lava.gif",
+		"artwork": "https://behindthesch3m3s.com/wp-content/uploads/2023/12/hgh-lava.gif",
 		"lastUpdateTime": 1695353475,
 		"lastCrawlTime": 1695868510,
 		"lastParseTime": 1695868532,
@@ -329,21 +218,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "",
-		"language": "en",
-		"explicit": true,
-		"type": 0,
-		"dead": 0,
-		"chash": "4cd54370cac6ea5bc293f66bbf625e1c",
-		"episodeCount": 3,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 2598331068
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6594523,
@@ -365,54 +240,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Sovereign Feeds",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "871b7becd2aab72b2e09c812f78517c4",
-		"episodeCount": 6,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 3358153084,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "Mutton, Mead & Music",
-					"type": "node",
-					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
-					"split": 100,
-					"customKey": "112111100",
-					"customValue": "BmkF2Ah5ekTVGsGLz1N4"
-				},
-				{
-					"name": "Sovereign Feeds",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 5,
-					"customKey": "696969",
-					"customValue": "eChoVKtO1KujpAA5HCoB",
-					"fee": true
-				},
-				{
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"type": "node",
-					"fee": true,
-					"split": 1
-				}
-			]
-		}
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6643768,
@@ -434,63 +262,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "Blubrry PowerPress/11.0.14",
-		"language": "en-US",
-		"explicit": true,
-		"type": 0,
-		"dead": 0,
-		"chash": "77210192b86a04534e6917990dc3466a",
-		"episodeCount": 3,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music",
-			"54": "Commentary"
-		},
-		"locked": 0,
-		"imageUrlHash": 3306193138,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"name": "sirtruckdriver@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 98,
-					"customKey": "696969",
-					"customValue": "iGHdKEJXWSqDR8nDMJla"
-				},
-				{
-					"name": "blubrry@getalby.com",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 3,
-					"customKey": "696969",
-					"customValue": "qAHJuqKLmMhTNFualcIj",
-					"fee": true
-				},
-				{
-					"name": "boostbot@fountain.fm",
-					"type": "node",
-					"address": "0332d57355d673e217238ce3e4be8491aa6b2a13f95494133ee243e57df1653ace",
-					"split": 2,
-					"customKey": "112111100",
-					"customValue": "IMQkt4BFzAiSynxcQQqd"
-				},
-				{
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"type": "node",
-					"fee": true,
-					"split": 1
-				}
-			]
-		}
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6665702,
@@ -512,55 +284,7 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
-		"itunesType": "episodic",
-		"generator": "RSS Blue v1.14.61",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "250e1a04d4ce3df47c0003bea0ebfb0a",
-		"episodeCount": 1,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 363530054,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend",
-				"suggested": "0.00000005000"
-			},
-			"destinations": [
-				{
-					"type": "node",
-					"name": "UpBEATs ",
-					"address": "03d937372ceaea5f57462a845c3bdd2b0254ecb07b8b9f9a30a605043bee178c4a",
-					"split": 95
-				},
-				{
-					"type": "node",
-					"name": "Podcaster (on Alby)",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 4,
-					"customKey": "696969",
-					"customValue": "eS2POXF8jvxVYd6kwhti"
-				},
-				{
-					"type": "node",
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"split": 1,
-					"fee": true
-				}
-			]
-		},
-		"funding": {
-			"url": "https://www.paypal.com/donate?token=rVxVLWOjhiB0gn30Yrzce8CnoU-A8xiruiiAELsqZ6pLhZaU0qm6j-x7lqon0noMseNYMSG3GsY703Wn",
-			"message": "Support \"UpBEATs\""
-		}
+		"itunesType": "episodic"
 	},
 	{
 		"id": 6670466,
@@ -582,43 +306,29 @@
 		"lastHttpStatus": 200,
 		"contentType": "",
 		"itunesId": null,
+		"itunesType": "episodic"
+	},
+	{
+		"id": 6739035,
+		"podcastGuid": "413fd8ca-3450-59eb-a249-073a6b530089",
+		"medium": "podcast",
+		"title": "Outside In with Jimmy V",
+		"url": "https://music.jimmyv4v.com/podcasts/outside-in/outside_in-rss.xml",
+		"originalUrl": "https://music.jimmyv4v.com/podcasts/outside-in/outside_in-rss.xml",
+		"link": "https://jimmyv4v.com",
+		"description": "A podcast about stuff",
+		"author": "Jimmy V",
+		"ownerName": "Jimmy V",
+		"image": "https://music.jimmyv4v.com/podcasts/outside-in/001/001-outside_in_jimmy_v-1000.jpg",
+		"artwork": "https://music.jimmyv4v.com/podcasts/outside-in/001/001-outside_in_jimmy_v-1000.jpg",
+		"lastUpdateTime": 1704362729,
+		"lastCrawlTime": 1704362713,
+		"lastParseTime": 1704362729,
+		"lastGoodHttpStatusTime": 1704362713,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
 		"itunesType": "episodic",
-		"generator": "RSS Blue v1.14.70",
-		"language": "en",
-		"explicit": false,
-		"type": 0,
-		"dead": 0,
-		"chash": "abe72a1f716abb189c71c8dc39649957",
-		"episodeCount": 1,
-		"crawlErrors": 0,
-		"parseErrors": 0,
-		"categories": {
-			"53": "Music"
-		},
-		"locked": 0,
-		"imageUrlHash": 216477340,
-		"value": {
-			"model": {
-				"type": "lightning",
-				"method": "keysend"
-			},
-			"destinations": [
-				{
-					"name": "Cody (host)",
-					"type": "node",
-					"address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-					"split": 100,
-					"customKey": "696969",
-					"customValue": "bjAbMD5UDbmF4X4zJMaS"
-				},
-				{
-					"name": "Podcastindex.org",
-					"address": "03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a",
-					"type": "node",
-					"fee": true,
-					"split": 1
-				}
-			]
-		}
+		"generator": "Sovereign Feeds"
 	}
 ]
