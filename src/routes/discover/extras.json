@@ -330,5 +330,28 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "Sovereign Feeds"
+	},
+	{
+		"id": 6765659,
+		"podcastGuid": "5b7383ad-5ec0-5292-80d0-d4ac2937a17b",
+		"medium": "podcast",
+		"title": "Mixtape by Wavlake",
+		"url": "https://www.wavlake.com/feed/show/efe2742c-4b4b-4089-89c7-436c0b65ec44",
+		"originalUrl": "https://www.wavlake.com/feed/show/efe2742c-4b4b-4089-89c7-436c0b65ec44",
+		"link": "https://wavlake.com/show/mixtape-by-wavlake",
+		"description": "Mixtape is a bi-weekly show highlighting nine Wavlake staff favorites.\nThis program is brought to you by Wavlake, the easiest way to distribute and stream music using bitcoin.\nBeta test the iOS player\nhttps://app.wavlake.com\nUpload Music & Podcasts\nhttps://wavlake.com/studio\nMixtape is produced by Michael Rhee and Sam Means. Theme by Vertigo Kidd.",
+		"author": "Mixtape by Wavlake",
+		"ownerName": "Wavlake",
+		"image": "https://d12wklypp119aj.cloudfront.net/image/efe2742c-4b4b-4089-89c7-436c0b65ec44.jpg",
+		"artwork": "https://d12wklypp119aj.cloudfront.net/image/efe2742c-4b4b-4089-89c7-436c0b65ec44.jpg",
+		"lastUpdateTime": 1706113315,
+		"lastCrawlTime": 1706113311,
+		"lastParseTime": 1706113320,
+		"lastGoodHttpStatusTime": 1706113311,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Wavlake"
 	}
 ]
