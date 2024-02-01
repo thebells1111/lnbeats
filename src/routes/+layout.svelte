@@ -214,6 +214,7 @@
 				return a.title.localeCompare(b.title); // Sort by author
 			});
 
+			console.log($discoverList);
 			console.log('Music Side Project Feeds: ', msp);
 			console.log('Wavlake Feeds: ', wavlake);
 			console.log('RSS Blue Feeds', rssblue);
