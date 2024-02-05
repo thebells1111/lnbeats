@@ -26,6 +26,7 @@
 	let wavlake = [];
 	let rssblue = [];
 	let msp = [];
+	let sf = [];
 	let other = [];
 
 	let isPWA = false;
@@ -190,6 +191,8 @@
 						wavlake.push(v);
 					} else if (v.generator.includes('Music Side Project')) {
 						msp.push(v);
+					} else if (v.generator.includes('Sovereign Feeds')) {
+						sf.push(v);
 					} else if (v.generator.includes('RSS Blue')) {
 						rssblue.push(v);
 					} else {
@@ -215,6 +218,7 @@
 			});
 
 			console.log('Music Side Project Feeds: ', msp);
+			console.log('Sovereign Feeds', sf);
 			console.log('Wavlake Feeds: ', wavlake);
 			console.log('RSS Blue Feeds', rssblue);
 			console.log('Other Feeds: ', other);
