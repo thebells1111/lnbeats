@@ -45,7 +45,7 @@ export async function load({ params, fetch }) {
 		let feed = xml2Json.rss.channel;
 
 		if (feed) {
-			if (feed.medium === 'music') {
+			if (feed?.['podcast:medium'] === 'music') {
 				if (feed.item?.[0]?.['podcast:episode']) {
 					feed.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
 				} else if (feed.item?.[0]?.['itunes:episode']) {
