@@ -353,5 +353,28 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "Wavlake"
+	},
+	{
+		"id": 6623871,
+		"podcastGuid": "e80f6329-3831-5650-ba78-6bc92d3fbed4",
+		"medium": "podcast",
+		"title": "Radio Stereon",
+		"url": "https://feeds.rssblue.com/radio-stereon",
+		"originalUrl": "https://feeds.rssblue.com/radio-stereon",
+		"link": "",
+		"description": "V4V Electronic Music Podcast by Stereon, coming to you from the heart of Athens, in a DJ mixed fashion.\nNo talk, only music. \nBoosting is loving.\n",
+		"author": "Stereon",
+		"ownerName": "Stereon",
+		"image": "https://media.rssblue.com/podcasts/radio-stereon/cover-art.radio-stereon-v4v.jpg",
+		"artwork": "https://media.rssblue.com/podcasts/radio-stereon/cover-art.radio-stereon-v4v.jpg",
+		"lastUpdateTime": 1707409609,
+		"lastCrawlTime": 1707409587,
+		"lastParseTime": 1707409609,
+		"lastGoodHttpStatusTime": 1707409587,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "RSS Blue v1.18.98"
 	}
 ]
