@@ -1,5 +1,5 @@
 <script>
-	import localforage from 'localforage';
+	import localforage, { keys } from 'localforage';
 	import { onMount } from 'svelte';
 	import { encodeURL } from '$functions/songId';
 
@@ -24,6 +24,8 @@
 				name: 'playlistDB'
 			});
 			$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
+
+			console.log($playlists);
 		}
 
 		if (!Object.keys($favorites).length) {
@@ -47,9 +49,12 @@
 				<AlbumCard {favorites} />
 			</a>
 		</li>
-		{#each [...$playlists] as playlist}
+		{#each [...$playlists].map((v) => {
+			let [[key, value]] = Object.entries(v);
+			return { guid: key, title: value };
+		}) as playlist}
 			<li>
-				<a href={`/playlist/${encodeURL(playlist)}`}>
+				<a href={`/playlist/${playlist.guid}`}>
 					<AlbumCard {playlist} />
 				</a>
 				<OptionsMenu itemType="playlist" item={playlist} bind:closerActive />

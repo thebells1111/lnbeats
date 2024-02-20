@@ -10,12 +10,20 @@ export async function addPlaylistToMasterList(playlistArgs) {
 
 	let pLists = get(playlists);
 
-	if (pLists.has(name)) {
-		return { success: false, message: 'This play list already exists' };
-	}
-	pLists.add(name);
+	const newGuid = generateV4Guid();
+	let pL = {};
+
+	pLists.add({ [newGuid]: name });
 	playlists.set(pLists);
 	playlistDB.setItem('msp-playlist-db', pLists);
-	playlistDB.setItem(name, []);
+	playlistDB.setItem(newGuid, { title: name, remoteItems: [] });
 	return { success: true, message: 'Play list created' };
+}
+
+function generateV4Guid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		const r = (Math.random() * 16) | 0;
+		const v = c === 'x' ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
 }

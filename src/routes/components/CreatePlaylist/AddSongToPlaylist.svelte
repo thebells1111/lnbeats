@@ -6,25 +6,28 @@
 	export let song;
 	let successList = '';
 
-	async function addSongToPlaylist(list) {
+	async function addSongToPlaylist(guid) {
 		const playlistDB = localforage.createInstance({
 			name: 'playlistDB'
 		});
 
+		console.log(guid);
+
 		const { artwork, image, podcastGuid, title, author } = song.album;
 		song.album = { artwork, image, podcastGuid, title, author };
-		song.playlist = list;
+		song.playlist = guid;
 
-		let playlist = await playlistDB.getItem(list);
-		playlist.push(song);
-		playlistDB.setItem(list, playlist);
-		if ($playingAlbum.playlist === list) {
-			$playingAlbum.songs = playlist;
+		let playlist = (await playlistDB.getItem(guid)) || [];
+		console.log(playlist);
+		playlist.remoteItems = (playlist.remoteItems || []).concat(song);
+		playlistDB.setItem(guid, playlist);
+		if ($playingAlbum.playlist === guid) {
+			$playingAlbum.songs = playlist.remoteItems;
 		}
-		if ($selectedPlaylist.playlist === list) {
-			$selectedPlaylist.songs = playlist;
+		if ($selectedPlaylist.playlist === guid) {
+			$selectedPlaylist.songs = playlist.remoteItems;
 		}
-		successList = list;
+		successList = playlist.title;
 		setTimeout(() => (successList = ''), 1000);
 	}
 </script>
@@ -34,12 +37,15 @@
 	<CreatePlaylistButton />
 </header>
 <ul>
-	{#each [...$playlists] as list}
-		<li on:click={addSongToPlaylist.bind(this, list)}>
+	{#each [...$playlists].map((v) => {
+		let [[key, value]] = Object.entries(v);
+		return { guid: key, title: value };
+	}) as list}
+		<li on:click={addSongToPlaylist.bind(this, list.guid)}>
 			<queue-icon>
 				<QueueMusic size="55" />
 			</queue-icon>
-			<list-name>{list}</list-name>
+			<list-name>{list.title}</list-name>
 		</li>
 	{/each}
 </ul>

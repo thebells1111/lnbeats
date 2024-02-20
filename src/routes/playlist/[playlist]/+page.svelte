@@ -6,18 +6,21 @@
 
 	export let data = {};
 
+	let playlist = '';
+
 	onMount(async () => {
 		const playlistDB = localforage.createInstance({
 			name: 'playlistDB'
 		});
 
-		($selectedPlaylist.playlist = data.playlist),
-			($selectedPlaylist.songs = (await playlistDB.getItem(data.playlist)) || []);
+		$selectedPlaylist.playlist = data.playlist;
+		playlist = await playlistDB.getItem(data.playlist);
+		$selectedPlaylist.songs = (await playlistDB.getItem(data.playlist))?.remoteItems || [];
 	});
 </script>
 
 <playlist-container>
-	<h2>{data.playlist || ''}</h2>
+	<h2>{playlist?.title || ''}</h2>
 	<ul>
 		{#each $selectedPlaylist.songs || [] as song, index}
 			<SongCard {song} {index} />

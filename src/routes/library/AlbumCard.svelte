@@ -22,7 +22,7 @@
 	{/if}
 
 	<album-info>
-		<p>{album.title || playlist || 'Favorites'}</p>
+		<p>{album?.title || playlist?.title || 'Favorites'}</p>
 	</album-info>
 </album>
 
