@@ -24,6 +24,7 @@
 		<a href="/"><HomeIcon size={27} />Home</a>
 		<!-- <a href="/search"><SearchIcon size={27} />Search</a> -->
 		<button
+			class:active={$user.loggedIn}
 			on:click={async () => {
 				if ($user.loggedIn) {
 					showWallet = true;
@@ -72,5 +73,13 @@
 		font-size: 0.6em;
 		background-color: transparent;
 		text-decoration: underline;
+	}
+
+	button {
+		color: hsl(0, 76%, 55%);
+	}
+
+	.active {
+		color: var(--color-text-0);
 	}
 </style>

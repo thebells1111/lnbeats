@@ -11,6 +11,7 @@
 		playingAlbum,
 		currentBoostDestinations
 	} from '$/stores';
+	import AlbumCard from '../../discover/AlbumCard.svelte';
 </script>
 
 <button
@@ -20,8 +21,9 @@
 			$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
 			$playingAlbum?.['podcast:value']?.['podcast:valueRecipient'];
 		if (
-			($webln && $user.preferences.wallet === 'webln') ||
-			$user.preferences.wallet === 'albyApi'
+			(($webln && $user.preferences.wallet === 'webln') ||
+				$user.preferences.wallet === 'albyApi') &&
+			$user.loggedIn
 		) {
 			$showBoostScreen = true;
 			$posterSwiper.enabled = false;

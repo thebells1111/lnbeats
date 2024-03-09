@@ -39,7 +39,7 @@
 				<div class="row" style="--grid-columns: {rowColumns};">
 					{#each Array(rowColumns) as _, i}
 						{#if items[index * rowColumns + i]}
-							<AlbumCard album={items[index * rowColumns + i]} />
+							<AlbumCard album={items[index * rowColumns + i]} fromSearch={true} />
 						{/if}
 					{/each}
 				</div>

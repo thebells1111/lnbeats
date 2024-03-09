@@ -4,7 +4,6 @@
 	import SearchBar from './SearchBar.svelte';
 	import clone from 'just-clone';
 	import extras from './extras.json';
-	import _featured from './featured.json';
 	import Top100 from '$routes/top100/+page.svelte';
 	import PlayArrow from '$icons/PlayArrow.svelte';
 	import FilteredList from './FilteredList.svelte';
@@ -14,18 +13,30 @@
 		featuredList,
 		discoverScreen,
 		albumSearch,
-		playingSong,
 		radio,
-		playFeatured
+		remoteServer
 	} from '$/stores';
 
 	let filteredList = [];
 	onMount(async () => {
-		if (!$featuredList.length) {
-			$featuredList = shuffleArray(_featured);
-		}
 		if (!$radio.length) {
 			$radio = shuffleArray(extras);
+			$radio = await Promise.all(
+				$radio.map(async (v) => {
+					const feedGuidUrl =
+						remoteServer +
+						`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${v.id}`)}`;
+
+					const res = await fetch(feedGuidUrl);
+					const data = await res.json();
+					console.log(data);
+					if (data.status === 'true') {
+						return data.feed;
+					}
+					return v;
+				})
+			);
+			console.log($radio);
 		}
 
 		if ($albumSearch) {
@@ -106,30 +117,6 @@
 			</li>
 		{/each}
 	</ul>
-
-	<a
-		class="featured"
-		href={`/album/${$featuredList?.[0]?.podcastGuid}`}
-		class:hide={$playingSong?.enclosure?.['@_url']}
-		on:click={() => {
-			$playFeatured = true;
-		}}
-	>
-		<featurebar>
-			<img
-				src={$featuredList?.[0]?.artwork || $featuredList?.[0]?.image}
-				loading="lazy"
-				width="100"
-				height="100"
-			/>
-			<right>
-				<featuring>Featuring</featuring>
-				<album-title>{$featuredList?.[0]?.title}</album-title>
-				<album-author>{$featuredList?.[0]?.author}</album-author>
-			</right>
-			<play><PlayArrow size="36" /></play>
-		</featurebar>
-	</a>
 {:else if $discoverScreen === 'radio'}
 	<ul>
 		<li>
@@ -159,7 +146,7 @@
 		<ul>
 			{#each $discoverList as album}
 				<li>
-					<AlbumCard {album} />
+					<AlbumCard {album} fromSearch={true} />
 				</li>
 			{/each}
 		</ul>
@@ -221,68 +208,6 @@
 
 	li {
 		list-style: none;
-	}
-
-	featurebar {
-		width: calc(100% - 24px);
-
-		background-image: linear-gradient(
-			180deg,
-			var(--color-theme-yellow-light) 15%,
-			var(--color-theme-yellow-dark) 66%
-		);
-		box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.75);
-		display: flex;
-		padding: 4px;
-		margin: 8px;
-		border-radius: 8px;
-	}
-
-	featurebar > img {
-		width: 100px;
-		border-radius: 4px;
-		margin: 0 auto;
-	}
-
-	featurebar > right {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		margin-left: 8px;
-		overflow: hidden;
-	}
-
-	featuring,
-	album-title,
-	album-author {
-		width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		padding: 1px;
-		font-size: 1.1em;
-		font-weight: 550;
-	}
-	featuring {
-		font-size: 1.2em;
-		font-weight: 800;
-	}
-
-	album-title {
-		margin-top: 4px;
-	}
-
-	album-author {
-		padding-left: 6px;
-		font-style: italic;
-		font-size: 0.9em;
-	}
-
-	a,
-	a:hover {
-		text-decoration: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 
 	navbar {

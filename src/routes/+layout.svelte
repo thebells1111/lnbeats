@@ -10,6 +10,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
+	import clone from 'just-clone';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
@@ -20,7 +21,8 @@
 		showInstructionScreen,
 		remoteServer,
 		shareUrl,
-		discoverList
+		discoverList,
+		featuredList
 	} from '$/stores';
 	let albumList = [];
 	let wavlake = [];
@@ -171,6 +173,7 @@
 			let data = await res.json();
 			let fetchedFeeds = data.feeds || data.feed || [];
 			let filteredFeeds = [];
+			let _featuredList = [];
 
 			const generators = new Set();
 
@@ -183,15 +186,16 @@
 				) {
 					addFeed = false;
 				}
-
 				generators.add(v.generator);
 				if (addFeed) {
 					filteredFeeds.push(v);
 					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);
 					} else if (v.generator.includes('Music Side Project')) {
+						_featuredList = _featuredList.concat(v);
 						msp.push(v);
 					} else if (v.generator.includes('Sovereign Feeds')) {
+						_featuredList = _featuredList.concat(v);
 						sf.push(v);
 					} else if (v.generator.includes('RSS Blue')) {
 						rssblue.push(v);
@@ -204,8 +208,18 @@
 			// console.log(generators);
 
 			albumList = sortByPubDate(filteredFeeds);
-			// albumList = shuffleArray(other.concat(rssblue)).concat(shuffleArray(wavlake));
-			// albumList = shuffleArray(other).concat(shuffleArray(wavlake));
+			_featuredList = shuffleArray(_featuredList);
+			addToFeaturedList(_featuredList);
+			setTimeout(addToFeaturedList, 1000);
+
+			function addToFeaturedList() {
+				console.log(_featuredList);
+				const newItems = _featuredList.splice(0, 20);
+				$featuredList = $featuredList.concat(newItems);
+				if (_featuredList.length > 0) {
+					setTimeout(addToFeaturedList, 1000);
+				}
+			}
 
 			$discoverList = albumList;
 

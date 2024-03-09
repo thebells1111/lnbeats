@@ -21,7 +21,6 @@
 		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
 	</button>
 	<card>
-		<h2>You don't have a wallet enabled!!!</h2>
 		<a
 			class="alby-login"
 			href={`https://getalby.com/oauth?client_id=${
@@ -63,7 +62,7 @@
 	}
 
 	card {
-		height: calc(100% - 48px);
+		height: calc(100%);
 		width: calc(100% - 36px);
 		max-width: 380px;
 		max-height: 660px;
@@ -73,17 +72,15 @@
 		color: var(--color-text-0);
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 
-	h2,
 	h3 {
 		text-align: center;
-		margin: 0;
+		margin: 0 0 80px 0;
 	}
 
-	h2 {
-		margin-top: 8px;
-	}
 	.alby-login {
 		display: flex;
 		flex-direction: column;
@@ -93,10 +90,6 @@
 
 	img {
 		width: 200px;
-	}
-
-	p {
-		margin: 8px 16px;
 	}
 
 	a {
