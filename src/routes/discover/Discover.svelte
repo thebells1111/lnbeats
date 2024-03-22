@@ -18,6 +18,8 @@
 	} from '$/stores';
 
 	let filteredList = [];
+	let demuList = [];
+	let filterDemu = false;
 	onMount(async () => {
 		if (!$radio.length) {
 			$radio = shuffleArray(extras);
@@ -44,6 +46,7 @@
 		} else {
 			showFilteredList();
 		}
+		filteredList = $discoverList;
 	});
 
 	function showFilteredList() {
@@ -74,6 +77,10 @@
 				)
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
 		} else filteredList = $discoverList;
+	}
+
+	$: if (filterDemu) {
+		demuList = filteredList.filter((v) => !v.generator.includes('Wavlake'));
 	}
 </script>
 
@@ -137,19 +144,16 @@
 	</top100>
 {:else}
 	<search-header>
-		<SearchBar placeholder="search for album" searchFn={handleSearch} inputFn={handleInput} />
+		<SearchBar
+			placeholder="search for album"
+			searchFn={handleSearch}
+			inputFn={handleInput}
+			bind:filterDemu
+		/>
 	</search-header>
 
 	{#if filteredList}
-		<FilteredList items={filteredList} />
-	{:else}
-		<ul>
-			{#each $discoverList as album}
-				<li>
-					<AlbumCard {album} fromSearch={true} />
-				</li>
-			{/each}
-		</ul>
+		<FilteredList items={filterDemu ? demuList : filteredList} />
 	{/if}
 {/if}
 

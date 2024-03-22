@@ -1,0 +1,27 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+    xmlns:podcast="https://podcastindex.org/namespace/1.0" version="2.0">
+    <channel>
+        <description>
+    <![CDATA[ <p>In a world dominated by overnight internet sensations and one-hit-wonders, emerging star Ainsley Costello has her eyes set on creating a legacy that stands the test of time. Delicately delivered yet powerfully profound, Costello's heartfelt and personal approach to lyricism translates into a seraphic, easily digestible, and heartwarming listening experience.</p> <p>At only 15, the Seattle native now based in Nashville released a strikingly diverse debut album titled ‘You Know I Am’ – on the surface, a collection of country pop songs but dig deeper and you’ll unravel a multitude of diverse influences that speak to the insecurities of today’s teen.</p> <p>In February 2020, Ainsley and her family relocated to Nashville, TN. just as the world and the music industry shut down due to the global pandemic. Throughout quarantine, Ainsley used this time to write new material, releasing a song each month known as the 'Quarantine Singles' but essentially her second album of work, by the age of 17.</p> <p>Ironically, after moving to Nashville (the country music capital of the world) Ainsley pivoted towards a more pop-rock vibe. Inspired by rock influences such as Paramore and Kings of Leon also hailing from Nashville. Ainsley has managed to take a strain of LA pop and bring it down south, turning heads and amassing a dedicated fanbase in the process.</p> <p>Ainsley got her start in school talent shows and musical theater productions. She began guitar and vocal lessons at the age of 7, and has since gone on to professionally study piano, guitar, vocal performance, and songwriting. At just 15 years old, Ainsley began taking classes at the prestigious Berklee College of Music while simultaneously working on her high-school finals. She graduated from high school at 16 and was accepted to the Berklee College of Music's Business Degree program. This Spring, Ainsley graduated from Berklee College of Music with a B.A. in Music Business at the age of 19.</p> <p>Ainsley began performing live with a full band of adult professional-level musicians at 13 years old, regularly holding down a 3-hour set. Ainsley has performed over 1200 shows in 20 states. Notable performances included shows at NAMM the music industry’s largest trade show, Americana Fest, and she was also involved with both The Voice and American Idol when she was just 13.</p> <p>At 14, Ainsley became one of Breedlove Guitars youngest endorsed artists and has also since been endorsed by Mackie Audio, Sennheiser Microphones, and Aurora Strings.</p> <p>A new album is coming in 2024 so stay tuned for more from this impressive young artist.</p> ]]>
+    </description>
+        <generator>RSS Blue v1.17.16</generator>
+        <lastBuildDate>Fri, 22 Dec 2023 17:01:18 GMT</lastBuildDate>
+        <title>Ainsley Costello</title>
+        <itunes:image
+            href="https://pub-8d939b3e7ed646f59b36158693390509.r2.dev/publishers/ainsleycostello/cover-art.profile-picture.jpg" />
+        <podcast:guid>023a1b78-0e85-5adf-ae61-4f2ef59f9c71</podcast:guid>
+        <podcast:medium>publisher</podcast:medium>
+        <podcast:remoteItem feedGuid="c58e87a0-dc16-5b1f-9987-5089e0c3d146" medium="music" />
+        <podcast:remoteItem feedGuid="a24fe7d6-3bce-50ef-90d8-62b40794c00d" medium="music" />
+        <podcast:remoteItem feedGuid="5ffbb078-b21b-545a-b01e-d3aaa3b3b4c5" medium="music" />
+        <podcast:remoteItem feedGuid="b55c93d2-4571-55fd-9562-7966beaa7ea2" medium="music" />
+        <podcast:remoteItem feedGuid="c59cad2b-1733-5806-83ad-3c53bbda4630" medium="music" />
+        <podcast:remoteItem feedGuid="38ae1424-20b4-5478-a847-670734fcfb80" medium="podcast" />
+        <podcast:value type="lightning" method="keysend">
+            <podcast:valueRecipient name="Ainsley Costello" customKey="696969"
+                customValue="N8eb5S6YAcbI55uRKwOm" type="node"
+                address="030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3"
+                split="100" />
+        </podcast:value>
+    </channel>
+</rss>

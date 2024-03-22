@@ -26,6 +26,7 @@
 	};
 
 	export let inputFn = () => {};
+	export let filterDemu = false;
 
 	function checkEnter(e) {
 		if (e.key === 'Enter') {
@@ -49,6 +50,7 @@
 
 	{#if searchQuery}
 		<button
+			class="cancel"
 			on:click={() => {
 				$albumSearch = '';
 				searchQuery = '';
@@ -56,6 +58,13 @@
 			}}><CancelFilled size="24" /></button
 		>
 	{/if}
+	<button
+		class="demu"
+		class:active={filterDemu}
+		on:click={() => {
+			filterDemu = !filterDemu;
+		}}>DeMu</button
+	>
 </div>
 
 <style>
@@ -65,6 +74,7 @@
 		min-height: 28px;
 		margin: 0 16px;
 		position: relative;
+		display: flex;
 	}
 	input {
 		width: calc(100% - 4px);
@@ -85,13 +95,26 @@
 	}
 
 	button {
-		position: absolute;
 		background-color: transparent;
-		right: 2px;
-		top: 2px;
-		color: var(--color-bg-2);
+		color: var(--color-text-0);
 		height: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	button.demu {
+		margin-left: 12px;
+	}
+
+	button.cancel {
+		position: absolute;
+		right: 56px;
+		top: 2px;
+	}
+
+	button.demu.active {
+		text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500, 0 0 40px #ffa500,
+			0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
+		color: #fff6a9;
 	}
 </style>

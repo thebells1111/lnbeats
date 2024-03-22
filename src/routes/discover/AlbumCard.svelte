@@ -92,8 +92,8 @@
 		width: 50%;
 		border-radius: 0;
 		position: relative;
-		bottom: 1px;
-		left: 1px;
+		bottom: 0px;
+		left: 0px;
 	}
 
 	.sf > img {

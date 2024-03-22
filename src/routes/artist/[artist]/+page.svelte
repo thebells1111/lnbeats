@@ -1,65 +1,17 @@
 <script>
-	import { discoverList, posterSwiper } from '$/stores';
-	import { browser } from '$app/environment';
-	import AlbumCard from '$routes/discover/AlbumCard.svelte';
-	import toUrlFriendly from '$functions/toUrlFriendly';
 	import { page } from '$app/stores';
+	import GuidPage from './GuidPage.svelte';
+	import NamePage from './NamePage.svelte';
 
-	$: console.log($page.params.artist);
-
-	let albumList = [];
-
-	loadAlbumList();
-
-	$: if ($page.params.artist) {
-		loadAlbumList();
-	}
-
-	function loadAlbumList() {
-		if (browser) {
-			if ($discoverList.length) {
-				albumList = $discoverList.filter((v) => toUrlFriendly(v.author) === $page.params.artist);
-				console.log(albumList);
-				$posterSwiper.slideTo(0);
-				setTimeout(() => {
-					document.getElementById('poster-swiper').style.visibility = 'hidden';
-				}, 500);
-			} else {
-				setTimeout(loadAlbumList, 100);
-			}
-		}
+	function isValidGuid(guid) {
+		const regex =
+			/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+		return regex.test(guid);
 	}
 </script>
 
-{#if $page.params.artist}
-	{#if albumList.length}
-		<h2>{albumList[0]?.author || ''}</h2>
-		<ul>
-			{#each albumList as album}
-				<li>
-					<AlbumCard {album} />
-				</li>
-			{/each}
-		</ul>
-	{:else}
-		<p>Looking through the catalog to find the albums.</p>
-		<p>This may take a bit.</p>
-	{/if}
+{#if isValidGuid($page.params.artist) || true}
+	<GuidPage />
+{:else}
+	<NamePage />
 {/if}
-
-<style>
-	ul {
-		display: flex;
-		padding: 0;
-		margin: 8px 0 0 8px;
-		flex: 1;
-		width: calc(100% - 8px);
-		flex-wrap: wrap;
-		justify-content: center;
-		overflow: auto;
-	}
-
-	li {
-		list-style: none;
-	}
-</style>
