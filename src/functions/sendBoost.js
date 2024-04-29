@@ -7,12 +7,13 @@ import {
 	remoteServer
 } from '$/stores';
 import { get } from 'svelte/store';
+import clone from 'just-clone';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
 	console.log(get(playingSong));
 	console.log(get(playingAlbum));
 	console.log(get(currentSplit));
-	destinations = [].concat(destinations);
+	destinations = clone(destinations);
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
@@ -26,6 +27,8 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 			'@_fee': 'true'
 		});
 	}
+
+	destinations = normalizeSplits(destinations);
 
 	console.log(destinations);
 
@@ -113,6 +116,28 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 		console.log(data);
 		return data;
 	}
+}
+
+function normalizeSplits(destinations) {
+	let runningTotal = 0;
+
+	// Calculate the running total
+	for (let destination of destinations) {
+		if (destination['@_fee'] !== 'true') {
+			runningTotal += Number(destination['@_split']);
+		}
+	}
+
+	// Normalize the @_split values
+	for (let destination of destinations) {
+		if (destination['@_fee'] !== 'true') {
+			let split = Number(destination['@_split']);
+			let normalizedSplit = (split / runningTotal) * 100;
+			destination['@_split'] = normalizedSplit.toFixed(2);
+		}
+	}
+
+	return destinations;
 }
 
 const getBaseRecord = (satAmount, boostagram) => {
