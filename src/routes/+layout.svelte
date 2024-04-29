@@ -159,7 +159,6 @@
 				$user.name = data.lightning_address;
 				$user.balance = data.balance;
 			}
-			$user.loggedIn = true;
 		}
 	}
 
