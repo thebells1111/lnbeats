@@ -7,12 +7,12 @@ import {
 	remoteServer
 } from '$/stores';
 import { get } from 'svelte/store';
+import clone from 'just-clone';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
 	console.log(get(playingSong));
 	console.log(get(playingAlbum));
 	console.log(get(currentSplit));
-	destinations = [].concat(destinations);
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
@@ -27,14 +27,11 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 		});
 	}
 
-	console.log(destinations);
-
 	let runningTotal = satAmount;
 
 	let payments = [];
 
-	let feesDestinations = destinations?.filter((v) => v['@_fee']) || [];
-	let splitsDestinations = destinations?.filter((v) => !v['@_fee']) || [];
+	let { feesDestinations, splitsDestinations } = normalizeSplits(destinations);
 
 	for (const dest of feesDestinations) {
 		let feeRecord = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
@@ -99,7 +96,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 	console.log(payments);
 
-	if (wallet === 'albyApi') {
+	if (wallet === 'albyApi' || false) {
 		let res = await fetch(remoteServer + 'api/alby/boost', {
 			method: 'POST',
 			credentials: 'include',
@@ -113,6 +110,29 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 		console.log(data);
 		return data;
 	}
+}
+
+function normalizeSplits(destinations) {
+	let feesDestinations = [];
+	let splitsDestinations = [];
+	let splitTotal = 0;
+	destinations.forEach((v) => {
+		if ((!v['@_fee'] || v['@_fee'] === false) && Number(v['@_split'])) {
+			splitTotal += Number(v['@_split']);
+		}
+	});
+	destinations.forEach((v) => {
+		if (!v['@_fee'] || v['@_fee'] === false) {
+			if (Number(v['@_split'])) {
+				v['@_split'] = (Number(v['@_split']) / splitTotal) * 100;
+			}
+			splitsDestinations.push(clone(v));
+		} else {
+			feesDestinations.push(clone(v));
+		}
+	});
+
+	return { feesDestinations, splitsDestinations };
 }
 
 const getBaseRecord = (satAmount, boostagram) => {
