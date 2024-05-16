@@ -376,5 +376,28 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "RSS Blue v1.18.98"
+	},
+	{
+		"id": 6641191,
+		"podcastGuid": "72816866-317e-5e48-8895-8193d58e5b57",
+		"medium": "podcast",
+		"title": "Mike's Mix Tape",
+		"url": "https://mikesmixtape.com/mikesmixtaperss.xml",
+		"originalUrl": "https://mikesmixtape.com/mikesmixtaperss.xml",
+		"link": "https://mikesmixtape.com",
+		"description": "A value4value old school mix tape podcast of value4value music.",
+		"author": "Mike Neumann",
+		"ownerName": "Mike Neumann",
+		"image": "https://mikesmixtape.com/assets/static/mmt-logo2-512.jpg",
+		"artwork": "https://mikesmixtape.com/assets/static/mmt-logo2-512.jpg",
+		"lastUpdateTime": 1715827175,
+		"lastCrawlTime": 1715877384,
+		"lastParseTime": 1715827180,
+		"lastGoodHttpStatusTime": 1715827172,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "Sovereign Feeds"
 	}
 ]
