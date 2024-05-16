@@ -10,9 +10,6 @@ import { get } from 'svelte/store';
 import clone from 'just-clone';
 
 export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
-	console.log(get(playingSong));
-	console.log(get(playingAlbum));
-	console.log(get(currentSplit));
 	destinations = clone(destinations);
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
@@ -97,7 +94,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 	console.log(payments);
 
-	if (wallet === 'albyApi' || false) {
+	if (wallet === 'albyApi') {
 		let res = await fetch(remoteServer + 'api/alby/boost', {
 			method: 'POST',
 			credentials: 'include',
