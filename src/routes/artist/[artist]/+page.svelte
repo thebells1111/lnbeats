@@ -10,7 +10,7 @@
 	}
 </script>
 
-{#if isValidGuid($page.params.artist) || true}
+{#if isValidGuid($page.params.artist)}
 	<GuidPage />
 {:else}
 	<NamePage />
