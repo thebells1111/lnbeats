@@ -167,7 +167,7 @@
 			const res = await fetch(
 				remoteServer +
 					`api/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&val=lightning&max=2750'
+						'podcasts/bymedium?medium=music&val=lightning&max=10000'
 					)}`
 			);
 			let data = await res.json();

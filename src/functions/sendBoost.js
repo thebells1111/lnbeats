@@ -28,16 +28,11 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 		});
 	}
 
-	destinations = normalizeSplits(destinations);
-
-	console.log(destinations);
-
 	let runningTotal = satAmount;
 
 	let payments = [];
 
-	let feesDestinations = destinations?.filter((v) => v['@_fee']) || [];
-	let splitsDestinations = destinations?.filter((v) => !v['@_fee']) || [];
+	let { feesDestinations, splitsDestinations } = normalizeSplits(destinations);
 
 	for (const dest of feesDestinations) {
 		let feeRecord = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
@@ -102,7 +97,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 
 	console.log(payments);
 
-	if (wallet === 'albyApi') {
+	if (wallet === 'albyApi' || false) {
 		let res = await fetch(remoteServer + 'api/alby/boost', {
 			method: 'POST',
 			credentials: 'include',
@@ -119,25 +114,26 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 }
 
 function normalizeSplits(destinations) {
-	let runningTotal = 0;
-
-	// Calculate the running total
-	for (let destination of destinations) {
-		if (destination['@_fee'] !== 'true') {
-			runningTotal += Number(destination['@_split']);
+	let feesDestinations = [];
+	let splitsDestinations = [];
+	let splitTotal = 0;
+	destinations.forEach((v) => {
+		if ((!v['@_fee'] || v['@_fee'] === false) && Number(v['@_split'])) {
+			splitTotal += Number(v['@_split']);
 		}
-	}
-
-	// Normalize the @_split values
-	for (let destination of destinations) {
-		if (destination['@_fee'] !== 'true') {
-			let split = Number(destination['@_split']);
-			let normalizedSplit = (split / runningTotal) * 100;
-			destination['@_split'] = normalizedSplit.toFixed(2);
+	});
+	destinations.forEach((v) => {
+		if (!v['@_fee'] || v['@_fee'] === false) {
+			if (Number(v['@_split'])) {
+				v['@_split'] = (Number(v['@_split']) / splitTotal) * 100;
+			}
+			splitsDestinations.push(clone(v));
+		} else {
+			feesDestinations.push(clone(v));
 		}
-	}
+	});
 
-	return destinations;
+	return { feesDestinations, splitsDestinations };
 }
 
 const getBaseRecord = (satAmount, boostagram) => {
