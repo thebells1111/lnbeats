@@ -399,5 +399,27 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "Sovereign Feeds"
+	},
+	{
+		"id": 6924372,
+		"podcastGuid": "96dbfaf3-edf3-51a3-b489-3bdb63b159a5",
+		"medium": "podcast",
+		"title": "fregadero",
+		"url": "https://feeds.rssblue.com/kitchen-sink",
+		"originalUrl": "https://feeds.rssblue.com/kitchen-sink",
+		"link": "",
+		"description": "fregadero = kitchen sink ||\ncome in and get a snack!\n",
+		"author": "zsoerez",
+		"ownerName": "",
+		"image": "https://media.rssblue.com/podcasts/kitchen-sink/cover-art.sinky.jpg",
+		"artwork": "https://media.rssblue.com/podcasts/kitchen-sink/cover-art.sinky.jpg",
+		"lastUpdateTime": 1717095353,
+		"lastCrawlTime": 1717095350,
+		"lastParseTime": 1717095354,
+		"lastGoodHttpStatusTime": 1717095350,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic"
 	}
 ]
