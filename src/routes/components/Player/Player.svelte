@@ -198,13 +198,13 @@
 			}
 		};
 		$player.onended = async () => {
-			gotoNextSong();
-			console.log($playingSong?.['podcast:value']?.['podcast:valueRecipient']);
-			console.log($playingAlbum);
 			handleAutoBoost(
 				$playingSong?.['podcast:value']?.['podcast:valueRecipient'] ||
 					$playingAlbum?.['podcast:value']?.['podcast:valueRecipient']
 			);
+			gotoNextSong();
+			console.log($playingSong?.['podcast:value']?.['podcast:valueRecipient']);
+			console.log($playingAlbum);
 		};
 	}
 
