@@ -421,5 +421,28 @@
 		"contentType": "",
 		"itunesId": null,
 		"itunesType": "episodic"
+	},
+	{
+		"id": 6925070,
+		"podcastGuid": "0f95e7e3-7ec5-5b18-a31a-c17d86a73b0b",
+		"medium": "podcast",
+		"title": "Keep The Music Playing",
+		"url": "https://feeds.rssblue.com/keep-the-music-playing",
+		"originalUrl": "https://feeds.rssblue.com/keep-the-music-playing",
+		"link": "http://keepthemusicplaying.fm",
+		"description": "Connecting brilliant, independent artists in groove, jazz, soul, blues, hip-hop, R&B and beyond with the people who love the music they make.\n",
+		"author": "Allen C. Paul",
+		"ownerName": "Allen C. Paul",
+		"image": "https://media.rssblue.com/podcasts/keep-the-music-playing/cover-art.bw-ktmp-logo-3000-x-3000-px.png",
+		"artwork": "https://media.rssblue.com/podcasts/keep-the-music-playing/cover-art.bw-ktmp-logo-3000-x-3000-px.png",
+		"lastUpdateTime": 1717589071,
+		"lastCrawlTime": 1717589038,
+		"lastParseTime": 1717589075,
+		"lastGoodHttpStatusTime": 1717589038,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "RSS Blue v1.20.159"
 	}
 ]
