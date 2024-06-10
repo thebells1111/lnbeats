@@ -277,6 +277,8 @@
 	function findCurrentSplit(currentTime) {
 		let activeItem = null;
 
+		console.log($valueTimeSplitBlock);
+
 		$valueTimeSplitBlock.forEach((item) => {
 			let startTime = parseFloat(item.startTime);
 			let duration = parseFloat(item.duration);
@@ -287,6 +289,7 @@
 				}
 			}
 		});
+		console.log(activeItem);
 
 		return activeItem;
 	}
@@ -310,7 +313,7 @@
 		startSplitTime = currentTime;
 		runningSplitTime = 0;
 
-		if ($currentSplit) {
+		if ($currentSplit?.valueBlock) {
 			const destinations = buildDestinations($currentSplit);
 
 			let feedValue = clone(
@@ -329,7 +332,6 @@
 			// 		'@_fee': true
 			// 	}
 			// ].concat(feedValue);
-			// console.log(feedValue);
 			const feedDestinations = updateSplits(feedValue, 100 - $currentSplit.remotePercentage);
 
 			const remoteDestinations = updateSplits(destinations, $currentSplit.remotePercentage);
@@ -384,7 +386,6 @@
 	}
 
 	async function handleAutoBoost(destinations) {
-		console.log(destinations);
 		if ($satsPerSong > 0 && destinations) {
 			try {
 				sendBoost({
