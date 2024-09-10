@@ -2,6 +2,7 @@
 	import localforage from 'localforage';
 	import throwConfetti from '$functions/throwConfetti';
 	import sendBoost from '$functions/sendBoost';
+	import clone from 'just-clone';
 
 	import {
 		posterSwiper,
@@ -11,7 +12,9 @@
 		user,
 		webln,
 		showBoostScreen,
-		currentBoostDestinations
+		currentBoostDestinations,
+		playingAlbum,
+		playingSong
 	} from '$/stores';
 	import Close from '$icons/CancelFilled.svelte';
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
@@ -22,6 +25,7 @@
 	let satAmount = $satsPerBoost;
 
 	$: console.log('appSupport: ', showAppSupport);
+	$: console.log($currentBoostDestinations);
 
 	let appDestination = [
 		{
@@ -43,7 +47,9 @@
 				destinations: showAppSupport ? appDestination : $currentBoostDestinations,
 				satAmount: satAmount,
 				boostagram: boostagram,
-				wallet: $user.preferences.wallet
+				wallet: $user.preferences.wallet,
+				lockedAlbum: clone($playingAlbum),
+				lockedSong: clone($playingSong)
 			});
 			await saveBoostData();
 			$currentBoostDestinations = null;
@@ -71,7 +77,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <blurred-background
-	on:click|self={() => {
+	on:mousedown|self={() => {
 		$showBoostScreen = false;
 		$posterSwiper.enabled = true;
 		boostagram = '';

@@ -277,8 +277,6 @@
 	function findCurrentSplit(currentTime) {
 		let activeItem = null;
 
-		console.log($valueTimeSplitBlock);
-
 		$valueTimeSplitBlock.forEach((item) => {
 			let startTime = parseFloat(item.startTime);
 			let duration = parseFloat(item.duration);
@@ -289,7 +287,6 @@
 				}
 			}
 		});
-		console.log(activeItem);
 
 		return activeItem;
 	}

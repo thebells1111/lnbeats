@@ -11,7 +11,6 @@
 		playingAlbum,
 		currentBoostDestinations
 	} from '$/stores';
-	import AlbumCard from '../../discover/AlbumCard.svelte';
 </script>
 
 <button

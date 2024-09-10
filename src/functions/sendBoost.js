@@ -9,8 +9,16 @@ import {
 import { get } from 'svelte/store';
 import clone from 'just-clone';
 
-export default async function sendBoost({ webln, destinations, satAmount, boostagram, wallet }) {
+export default async function sendBoost({
+	webln,
+	destinations,
+	satAmount,
+	boostagram,
+	wallet,
+	lockedSplit
+}) {
 	destinations = clone(destinations);
+	console.log(destinations);
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
@@ -32,7 +40,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 	let { feesDestinations, splitsDestinations } = normalizeSplits(destinations);
 
 	for (const dest of feesDestinations) {
-		let feeRecord = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
+		let feeRecord = filterEmptyKeys(getBaseRecord({ satAmount, boostagram, lockedSplit }));
 
 		let amount = Math.round((dest['@_split'] / 100) * satAmount);
 		if (amount > 0) {
@@ -64,7 +72,7 @@ export default async function sendBoost({ webln, destinations, satAmount, boosta
 	}
 
 	for (const dest of splitsDestinations) {
-		let record = filterEmptyKeys(getBaseRecord(satAmount, boostagram));
+		let record = filterEmptyKeys(getBaseRecord({ satAmount, boostagram, lockedSplit }));
 		let amount = Math.round((dest['@_split'] / 100) * runningTotal);
 		record.name = dest['@_name'];
 		record.value_msat = amount * 1000;
@@ -133,7 +141,7 @@ function normalizeSplits(destinations) {
 	return { feesDestinations, splitsDestinations };
 }
 
-const getBaseRecord = (satAmount, boostagram) => {
+const getBaseRecord = ({ satAmount, boostagram, lockedSplit }) => {
 	let record = {
 		podcast: get(playingAlbum)?.title,
 		feedID: get(playingAlbum)?.id,
@@ -144,8 +152,8 @@ const getBaseRecord = (satAmount, boostagram) => {
 			get(playingSong)?.enclosure?.['@_url'],
 		episode: get(playingSong)?.title,
 		ts: Math.trunc(player.currentTime),
-		remote_feed_guid: get(currentSplit)?.feedGuid,
-		remote_item_guid: get(currentSplit)?.itemGuid,
+		remote_feed_guid: (lockedSplit || get(currentSplit))?.feedGuid,
+		remote_item_guid: (lockedSplit || get(currentSplit))?.itemGuid,
 		action: 'boost',
 		app_name: 'LN Beats',
 		value_msat: 0,
