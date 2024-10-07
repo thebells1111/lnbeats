@@ -467,5 +467,28 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "Oncetold Hammer API v1"
+	},
+	{
+		"id": 6954580,
+		"podcastGuid": "36909558-fe6a-5b1e-b28c-04f08af5397c",
+		"medium": "podcast",
+		"title": "Radio Detox",
+		"url": "https://feeds.rssblue.com/radio-detox",
+		"originalUrl": "https://feeds.rssblue.com/radio-detox",
+		"link": "",
+		"description": "Radio detox is a V4V show for plebs that brings the artists to you.\n",
+		"author": "Heather Larson",
+		"ownerName": "Heather Larson",
+		"image": "https://media.rssblue.com/podcasts/radio-detox/cover-art.radio-detox-1400-x-1400-px.jpg",
+		"artwork": "https://media.rssblue.com/podcasts/radio-detox/cover-art.radio-detox-1400-x-1400-px.jpg",
+		"lastUpdateTime": 1728309072,
+		"lastCrawlTime": 1728309058,
+		"lastParseTime": 1728309108,
+		"lastGoodHttpStatusTime": 1728309058,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": null,
+		"itunesType": "episodic",
+		"generator": "RSS Blue v1.20.363"
 	}
 ]
