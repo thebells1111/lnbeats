@@ -97,7 +97,7 @@
 		if ($playingIndex !== index) {
 			$player.pause();
 			$player.src = song.enclosure['@_url'];
-			$player.volume = 0;
+			// $player.volume = 0;
 			$playingSong = song;
 			$playingIndex = index;
 		}
