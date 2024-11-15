@@ -8,6 +8,7 @@
 
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 	import SongCard from './SongCard.svelte';
+	import RemoteSongCard from './RemoteSongCard.svelte';
 
 	import { selectedAlbum, posterSwiper, library } from '$/stores';
 
@@ -80,6 +81,10 @@
 		{#if $selectedAlbum.songs.length}
 			{#each $selectedAlbum.songs as song, index}
 				<SongCard {song} {index} />
+			{/each}
+		{:else if $selectedAlbum.remoteSongs.length}
+			{#each $selectedAlbum.remoteSongs as remoteSong, index}
+				<RemoteSongCard {remoteSong} {index} />
 			{/each}
 		{:else}
 			<p style="text-align:center">This album has no songs.</p>

@@ -52,8 +52,18 @@ export async function load({ params, fetch }) {
 					feed.item.sort((a, b) => (a['itunes:episode'] > b['itunes:episode'] ? 1 : -1));
 				}
 			}
-			albumData.feed.songs = feed.item ? [].concat(feed.item) : [];
-			albumData.feed.live = [].concat(data.liveItem);
+
+			if (feed?.['podcast:medium'] === 'musicL') {
+				// music playlist feeds (musicL) can only contain remoteItems
+				albumData.feed.remoteSongs = [].concat(feed?.['podcast:remoteItem'] || []);
+				albumData.feed.songs = [];
+				albumData.feed.live = [];
+			} else {
+				albumData.feed.remoteSongs = [];
+				albumData.feed.songs = feed.item ? [].concat(feed.item) : [];
+				albumData.feed.live = [].concat(data.liveItem);
+			}
+
 			return { album: albumData.feed, redirect };
 		}
 	} catch (err) {

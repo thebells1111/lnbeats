@@ -23,7 +23,9 @@
 		lnbRadioPlaying,
 		top100Loop,
 		favorites,
-		favoritesDB
+		favoritesDB,
+		remotePlaylistPlaying,
+		remotePlaylist,
 	} from '$/stores';
 
 	const parserOptions = {
@@ -53,21 +55,23 @@
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
+
 			if (
-				(album.songs || $lnbRadioPlaying) &&
+				(album.songs || $lnbRadioPlaying || $remotePlaylistPlaying) &&
 				(currentSong?.enclosure || currentSong?.enclosure?.['@_url'])
 			) {
 				if (
 					($playingIndex >= 0 &&
 						($playingIndex < album?.songs?.length - 1 ||
 							($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-							($lnbRadioPlaying && $playingIndex < $lnbRadio.length - 1))) ||
+							($lnbRadioPlaying && $playingIndex < $lnbRadio.length - 1) ||
+							($remotePlaylistPlaying && $playingIndex < $remotePlaylist.length - 1))) ||
 					album.favorites
 				) {
 					$playingIndex = $playingIndex + 1;
 					let nextSong;
 					let _nextSong;
-					if ($top100Playing || $lnbRadioPlaying) {
+					if ($top100Playing || $lnbRadioPlaying || $remotePlaylistPlaying) {
 						let feedUrl;
 						if ($lnbRadioPlaying) {
 							_nextSong = $lnbRadio[$playingIndex];
@@ -84,6 +88,16 @@
 
 							_nextSong = $top100[$playingIndex - 1];
 							let feedGuid = _nextSong.feedGuid;
+							feedUrl =
+								remoteServer +
+								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+						} else if ($remotePlaylistPlaying) {
+							if ($playingIndex === $remotePlaylist.length) {
+								$playingIndex = 1;
+							}
+
+							_nextSong = $remotePlaylist[$playingIndex];
+							let feedGuid = _nextSong['@_feedGuid'];
 							feedUrl =
 								remoteServer +
 								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
@@ -131,6 +145,10 @@
 								foundSong = $playingAlbum.songs.find((v) => {
 									return v.title == _nextSong.title;
 								});
+							} else if ($remotePlaylist) {
+								foundSong = $playingAlbum.songs.find(
+									(v) => v.guid['#text'] == _nextSong['@_itemGuid']
+								);
 							}
 
 							nextSong = foundSong;

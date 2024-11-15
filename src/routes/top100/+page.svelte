@@ -24,7 +24,8 @@
 		playingSong,
 		sortedTop100,
 		top100Loop,
-		valueTimeSplitBlock
+		valueTimeSplitBlock,
+		remotePlaylistPlaying,
 	} from '$/stores';
 
 	let expandMenu = false;
@@ -64,6 +65,7 @@
 
 	async function playSong(song) {
 		$top100Playing = true;
+		$remotePlaylistPlaying = false;
 		$valueTimeSplitBlock = [];
 		console.log(song);
 		console.log($top100Playing);

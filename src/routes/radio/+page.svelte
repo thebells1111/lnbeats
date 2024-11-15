@@ -28,7 +28,8 @@
 		discoverList,
 		playingTranscript,
 		playingTranscriptText,
-		currentTranscriptIndex
+		currentTranscriptIndex,
+		remotePlaylistPlaying,
 	} from '$/stores';
 
 	let showAppSupport = false;
@@ -84,6 +85,8 @@
 		}
 
 		$top100Playing = false;
+		$remotePlaylistPlaying = false;
+
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
 				.then((res) => res.json())

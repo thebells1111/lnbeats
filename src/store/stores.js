@@ -69,3 +69,6 @@ export const lnbRadioPlaying = writable(false);
 export const playFeatured = writable(false);
 export const shareUrl = writable(false);
 export const shareText = writable('');
+
+export const remotePlaylist = writable([]);
+export const remotePlaylistPlaying = writable(false);
