@@ -18,7 +18,7 @@
 		playFeatured,
 		lnbRadioPlaying,
 		remotePlaylistPlaying,
-		remotePlaylist,
+		remotePlaylist
 	} from '$/stores';
 
 	export let remoteSong;
@@ -38,16 +38,9 @@
 		tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
 	};
 
-	let observer = new IntersectionObserver((entries) => {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				loadRemoteInfo(); // load info if within the viewport
-				observer.disconnect();
-			}
-		});
-	});
-
+	let observer = null;
 	onMount(async () => {
+		observer = initialIntersectionObserver();
 		observer.observe(root);
 
 		if ($playFeatured && index === 0) {
@@ -57,8 +50,19 @@
 	});
 
 	onDestroy(() => {
-		observer.disconnect();
+		observer?.disconnect();
 	});
+
+	function initialIntersectionObserver() {
+		return new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					loadRemoteInfo(); // load info if within the viewport
+					observer.disconnect();
+				}
+			});
+		});
+	}
 
 	async function loadRemoteInfo() {
 		if (!remoteSong['@_feedGuid']) {
@@ -68,14 +72,14 @@
 		let remoteInfo = await fetchRemoteItem(remoteSong['@_feedGuid'], remoteSong['@_itemGuid']);
 
 		if (!remoteInfo.episode || remoteInfo.episode.length === 0) {
-			let feedInfo = await fetchRemoteFeed(remoteSong['@_feedGuid'])
+			let feedInfo = await fetchRemoteFeed(remoteSong['@_feedGuid']);
 
 			remoteInfo = {
 				episode: {
-					title: "Unknown",
+					title: 'Unknown',
 					feedTitle: feedInfo.feed.title,
 					image: feedInfo.feed.image,
-					podcastGuid: feedInfo.feed.podcastGuid,
+					podcastGuid: feedInfo.feed.podcastGuid
 				}
 			};
 		}
@@ -87,15 +91,16 @@
 	async function fetchRemoteItem(feedGuid, itemGuid) {
 		const itemsUrl =
 			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(`episodes/byguid?podcastguid=${feedGuid}&guid=${itemGuid}`)}`;
+			`api/queryindex?q=${encodeURIComponent(
+				`episodes/byguid?podcastguid=${feedGuid}&guid=${itemGuid}`
+			)}`;
 		const res = await fetch(itemsUrl);
 		return await res.json();
 	}
 
 	async function fetchRemoteFeed(feedGuid) {
 		const itemsUrl =
-			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 		const res = await fetch(itemsUrl);
 		return await res.json();
 	}
@@ -113,7 +118,8 @@
 		}
 
 		const feedUrl =
-			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${podcastGuid}`)}`;
+			remoteServer +
+			`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${podcastGuid}`)}`;
 
 		try {
 			const albumRes = await fetch(feedUrl);
@@ -174,7 +180,6 @@
 		$posterSwiper.slideTo(1);
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
 	}
-
 </script>
 
 <li bind:this={root} on:click={playSong}>
@@ -229,5 +234,4 @@
 	img {
 		margin-left: 8px;
 	}
-
 </style>

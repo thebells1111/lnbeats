@@ -14,6 +14,7 @@ const parserOptions = {
 };
 
 export async function load({ params, fetch }) {
+	console.log(params);
 	try {
 		let redirect;
 		let albumUrl =
