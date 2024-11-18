@@ -47,6 +47,7 @@
 
 		$playingTranscript.full = t.split('|-|').join(' ');
 	} else {
+		console.log('dude');
 		$playingTranscript = [];
 	}
 

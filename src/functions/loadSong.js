@@ -6,7 +6,9 @@ import {
 	currentPlayingChapter,
 	currentChapterIndex,
 	currentSplitDestinations,
-	valueTimeSplitBlock
+	valueTimeSplitBlock,
+	playingTranscript,
+	playingTranscriptText
 } from '$/stores';
 import { get } from 'svelte/store';
 const $valueTimeSplitBlock = get(valueTimeSplitBlock);
@@ -20,12 +22,21 @@ export default async function loadSong(song) {
 	currentSplitDestinations.set(null);
 	currentChapterIndex.set(0);
 
-	if (song['podcast:chapters']) {
+	if (song?.['podcast:chapters']) {
 		let res = await fetch(
 			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`
 		);
 		let data = await res.json();
 		playingChapters.set(data?.chapters);
+	}
+
+	if (song?.['podcast:transcript']) {
+		let res = await fetch(
+			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
+		);
+		let data = await res.text();
+		playingTranscriptText.set(data);
+		// playingChapters.set(data?.chapters);
 	}
 
 	const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
