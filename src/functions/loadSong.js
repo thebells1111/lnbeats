@@ -38,7 +38,7 @@ export default async function loadSong(song) {
 		let res = await fetch(
 			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
 		);
-		let data = await res.text();
+		let data = (res.ok ? await res.text() : '');
 		playingTranscriptText.set(data);
 		// playingChapters.set(data?.chapters);
 	}
