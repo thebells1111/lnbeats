@@ -18,7 +18,15 @@ export default async function sendBoost({
 	lockedSplit
 }) {
 	destinations = clone(destinations);
+
+	// the xml parser returns an object if the feed has one split and an array if the feed has multiple splits
+	// check if destinations is an object and convert it to an array
+	if (typeof destinations === 'object' && !Array.isArray(destinations) && destinations !== null) {
+		destinations = [destinations];
+	}
+
 	console.log(destinations);
+
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
