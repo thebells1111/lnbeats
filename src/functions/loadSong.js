@@ -30,13 +30,20 @@ export default async function loadSong(song) {
 		playingChapters.set(data?.chapters);
 	}
 
-	if (song?.['podcast:transcript']) {
+	if (
+		song?.['podcast:transcript'] &&
+		(song?.['podcast:transcript']['@_type'] === 'application/srt' ||
+			song?.['podcast:transcript']['@_type'] === 'application/x-rip')
+	) {
 		let res = await fetch(
 			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
 		);
 		let data = await res.text();
 		playingTranscriptText.set(data);
 		// playingChapters.set(data?.chapters);
+	}
+	else {
+		playingTranscriptText.set('');
 	}
 
 	const splits = song?.['podcast:value']?.['podcast:valueTimeSplit'] || [];
