@@ -69,7 +69,7 @@
 			fetch(
 				remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
 			)
-				.then((res) => res.text())
+				.then((res) => (res.ok ? res.text() : ''))
 				.then((data) => ($playingTranscriptText = data))
 				.then(() => console.log($playingTranscriptText));
 		} else {
