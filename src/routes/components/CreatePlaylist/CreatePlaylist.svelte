@@ -5,7 +5,7 @@
 	let displayText = '';
 
 	async function handleNewPlaylist() {
-		if (name && name !== 'msp-playlist-db') {
+		if (name && name !== 'msp-playlist-db' && name !== 'guids') {
 			const { success, message } = await addPlaylistToMasterList({ name });
 
 			displayText = message;

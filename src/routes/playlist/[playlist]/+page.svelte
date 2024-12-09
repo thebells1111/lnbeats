@@ -3,6 +3,7 @@
 	import SongCard from '$routes/album/[albumId]/SongCard.svelte';
 	import { onMount } from 'svelte';
 	import { selectedPlaylist } from '$/stores';
+	import publishPlaylist from '$functions/publishPlaylist.js';
 
 	export let data = {};
 
@@ -18,6 +19,9 @@
 
 <playlist-container>
 	<h2>{data.playlist || ''}</h2>
+	{#if $selectedPlaylist?.songs?.length}
+		<button on:click={publishPlaylist.bind(this, $selectedPlaylist)}>Publish</button>
+	{/if}
 	<ul>
 		{#each $selectedPlaylist.songs || [] as song, index}
 			<SongCard {song} {index} />
