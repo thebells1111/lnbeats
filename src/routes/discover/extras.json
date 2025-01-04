@@ -490,5 +490,28 @@
 		"itunesId": null,
 		"itunesType": "episodic",
 		"generator": "RSS Blue v1.20.363"
+	},
+	{
+		"id": 6936952,
+		"podcastGuid": "cc53d03a-3e90-5285-a256-3cb641ab9ae0",
+		"medium": "podcast",
+		"title": "M2H2 (Mountain Music Happy Hour)",
+		"url": "https://serve.podhome.fm/rss/cc53d03a-3e90-5285-a256-3cb641ab9ae0",
+		"originalUrl": "https://feeds.rssblue.com/m2h2",
+		"link": "https://m2h2music.com",
+		"description": "M2H2, the Mountain Music Happy Hour, is a V4V Music show coming from the Mountain State and recorded at Johns Creek Studios in Milton, WV with host Randy Black.",
+		"author": "Johns Creek Studios",
+		"ownerName": "Randall \"Randy\" Black",
+		"image": "https://assets.podhome.fm/d28821fb-166b-4771-a1a9-08dcd5184066/638669740922511307M2H2.Cover.jpg",
+		"artwork": "https://assets.podhome.fm/d28821fb-166b-4771-a1a9-08dcd5184066/638669740922511307M2H2.Cover.jpg",
+		"lastUpdateTime": 1736007080,
+		"lastCrawlTime": 1736007049,
+		"lastParseTime": 1736007082,
+		"lastGoodHttpStatusTime": 1736007049,
+		"lastHttpStatus": 200,
+		"contentType": "",
+		"itunesId": 1751941547,
+		"itunesType": "episodic",
+		"generator": "Podhome (https://www.podhome.fm)"
 	}
 ]
