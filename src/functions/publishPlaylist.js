@@ -4,7 +4,7 @@ import blankplaylist from './blankplaylist.json';
 import clone from 'just-clone';
 
 import generateValidGuid from './generateValidGuid';
-import { user, remoteServer } from '$/stores';
+import { user, remoteServer, publishingDisplay } from '$/stores';
 import { get } from 'svelte/store';
 
 const escapeAttr = (str) =>
@@ -47,88 +47,140 @@ let rss = {
 	'@_xmlns:podcast': 'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md',
 	'@_xmlns:media': 'http://search.yahoo.com/mrss/'
 };
-
+let response = {
+	status: 'true',
+	feedId: 7157117,
+	existed: 'false',
+	description:
+		'Feed added successfully. Please allow 15-20 minutes for it to be searchable in the index.'
+};
 export default async function publishPlaylist(list) {
-	const playlistDB = localforage.createInstance({
-		name: 'playlistDB'
-	});
-	let guids = (await playlistDB.getItem('guids')) || [];
+	console.log(list);
+	publishingDisplay.set('Publishing Playlist');
+
 	let $user = get(user);
 
 	let playlist = clone(blankplaylist);
-	let title = list.playlist;
-	let guid = Object.entries(guids).find(([key, value]) => value === title)?.[0];
-	if (!guid) {
-		guid = await generateValidGuid();
-		guids[guid] = title;
-		await playlistDB.setItem('guids', guids);
-	}
-	playlist['podcast:guid'] = guid;
+	playlist['podcast:guid'] = list.guid;
 
-	playlist.link = 'https://lnbeats.com/album/' + guid;
-	playlist['podcast:remoteItem'] = list.songs.map((v) => {
-		return { '@_feedGuid': v.album.podcastGuid, '@_itemGuid': v?.guid?.['#text'] || v.guid };
-	});
+	playlist.link = 'https://lnbeats.com/album/' + list.guid;
+	playlist['podcast:remoteItem'] = list.remoteSongs;
 	playlist['itunes:owner'] = {
 		'itunes:email': $user.name,
-		'itunes:name': `Steven B.`
+		'itunes:name': $user.name
 	};
-	playlist.title = title;
-	playlist.description = 'A test feed to see if I can host LN Beats playlists.';
+	playlist.title = list.title;
+	delete playlist.description;
 
 	console.log(playlist);
-	console.log(guids);
 
 	rss.channel = playlist;
 
 	let xmlJson = { rss: rss };
 	let xmlFile = js2xml.parse(xmlJson);
 	console.log(xmlFile);
-
-	return { success: true, message: 'Play list published' };
-}
-
-async function checkPodcastIndex(guid) {
-	const guidUrl =
-		remoteServer +
-		`api/queryindex?q=podcasts/byguid?guid=${encodeURIComponent($editingFeed['podcast:guid'])}`;
-	const guidRes = await fetch(guidUrl);
-	const guidData = await guidRes.json();
-	console.log(guidData);
-
-	if (guidData.status === 'true' && guidData.feed.length) {
+	if (xmlFile) {
+		try {
+			await uploadFile(xmlFile, list.guid);
+		} catch (error) {
+			publishingDisplay.set('Failed Publishing Playlist');
+		}
 	}
 
-	if (data?.status === 'true') {
-		console.log('podping');
-		podping();
-	} else if (data?.status === 'false' && !guidData?.feed?.length) {
-		console.log('addFeed');
-		addFeed();
+	setTimeout(() => {
+		publishingDisplay.set('');
+	}, 1000);
+
+	// return { success: true, message: 'Play list published' };
+}
+
+async function uploadFile(xmlFile, guid) {
+	var blob = new Blob([xmlFile], { type: 'text/xml;charset=utf-8' });
+	let folderName = 'playlists';
+
+	const formData = new FormData();
+
+	// Append common fields
+	formData.append('folderName', folderName);
+	formData.append('fileName', `${guid}.xml`); // Constructed file name
+
+	// Log the file name for debugging
+	console.log('Uploading file with name:', formData.get('fileName'));
+
+	try {
+		// Add the file field last
+		formData.append('file', blob);
+		const response = await fetch(`${remoteServer}api/lnb/saveplaylist`, {
+			method: 'POST',
+			body: formData,
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			const result = await response.json();
+			console.log(result);
+		}
+
+		const result = await response.json();
+
+		console.log('Uploaded:', result);
+		if (result.url) {
+			console.log(result.url);
+			await checkPodcastIndex(guid, result.url);
+		}
+	} catch (error) {
+		console.error('Upload error:', error);
 	}
 }
 
-async function podping() {
+async function checkPodcastIndex(guid, feedUrl) {
+	const url = remoteServer + `api/queryindex?q=podcasts/byguid?guid=${guid}`;
+	const res = await fetch(url);
+	const data = await res.json();
+	console.log(data);
+
+	if (data.status === 'true' && data?.feed?.id) {
+		console.log('podpinging feed');
+		await podping(feedUrl);
+	} else {
+		console.log('adding feed');
+		await addFeed(feedUrl);
+	}
+}
+
+async function podping(feedUrl) {
 	let url =
-		remoteServer + `api/podping?url=${encodeURIComponent(feedUrl)}&reason=update&medium=music`;
+		remoteServer + `api/sf/podping?url=${encodeURIComponent(feedUrl)}&reason=update&medium=music`;
 
 	console.log(url);
-
-	const res = await fetch(url);
-	const data = await res.text();
-	if (data === 'Success!') {
-		displayText =
-			'Feed successfully updated. Please wait a few minutes for your changes to appear in the player.';
-	} else {
-		displayText = data;
+	try {
+		const res = await fetch(url);
+		const data = await res.text();
+		if (data === 'Success!') {
+			console.log('Podpinged');
+			publishingDisplay.set('Playlist Successfully Updated');
+		} else {
+			publishingDisplay.set('Failed Publishing Playlist');
+		}
+	} catch (error) {
+		publishingDisplay.set('Failed Publishing Playlist');
 	}
 }
 
-async function addFeed() {
-	let feed = remoteServer + `api/queryindex?q=add/byfeedurl?url=${encodeURIComponent(feedUrl)}`;
+async function addFeed(feedUrl) {
+	try {
+		let feed = remoteServer + `api/queryindex?q=add/byfeedurl?url=${encodeURIComponent(feedUrl)}`;
 
-	const res = await fetch(feed);
-	const data = await res.json();
-	displayText = data.description;
-	console.log(data);
+		const res = await fetch(feed);
+		const data = await res.json();
+		console.log(data);
+		publishingDisplay.set(
+			'Playlist added to the Index. It will be available to all the apps in a few minutes'
+		);
+	} catch (error) {
+		publishingDisplay.set('Failed Publishing Playlist');
+	}
 }

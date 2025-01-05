@@ -9,13 +9,18 @@ export const favoritesDB = localforage.createInstance({
 	name: 'favoritesDB'
 });
 
+export const playlistDB = localforage.createInstance({
+	name: 'playlistDB'
+});
+
 export const indexSearchResults = writable([]);
 export const albumSearch = writable('');
 export const library = writable({});
 export const discoverList = writable([]);
 export const featuredList = writable([]);
 export const discoverScreen = writable('featured');
-export const playlists = writable(new Set());
+export const publishingDisplay = writable('');
+export const playlists = writable({});
 export const favorites = writable({});
 export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});

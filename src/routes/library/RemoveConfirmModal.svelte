@@ -1,20 +1,20 @@
 <script>
 	import { deleteAlbum } from '$functions/deleteAlbum';
-	import { deletePlaylistFromMasterList } from '$functions/deletePlaylistFromMasterList';
+	import { deletePlaylist } from '$functions/deletePlaylist';
 	import { deleteSongFromPlaylist } from '$functions/deleteSongFromPlaylist';
 
 	export let showModal = false;
 	export let item;
 	export let itemType;
-	export let index;
+	export let playlist;
 
 	function handleRemoveConfirm() {
 		if (itemType === 'album') {
 			deleteAlbum(item);
 		} else if (itemType === 'playlist') {
-			deletePlaylistFromMasterList(item);
+			deletePlaylist(item);
 		} else if (itemType === 'playlist-song') {
-			deleteSongFromPlaylist(item, index);
+			deleteSongFromPlaylist(item, playlist);
 		}
 
 		showModal = false;

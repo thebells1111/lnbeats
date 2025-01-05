@@ -10,7 +10,6 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
-	import clone from 'just-clone';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
@@ -213,7 +212,6 @@
 			setTimeout(addToFeaturedList, 1000);
 
 			function addToFeaturedList() {
-				console.log(_featuredList);
 				const newItems = _featuredList.splice(0, 20);
 				$featuredList = $featuredList.concat(newItems);
 				if (_featuredList.length > 0) {

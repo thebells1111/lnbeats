@@ -33,7 +33,7 @@
 		favoritesDB,
 		mediaSession,
 		remotePlaylistPlaying,
-		remotePlaylist,
+		remotePlaylist
 	} from '$/stores';
 
 	const parserOptions = {
@@ -56,7 +56,6 @@
 	async function gotoNextSong() {
 		const album = $playingAlbum ?? {};
 		const currentSong = $playingSong ?? {};
-		console.log(album);
 
 		if ((album.songs || $lnbRadioPlaying) && currentSong.enclosure) {
 			if (
@@ -220,8 +219,6 @@
 					$playingAlbum?.['podcast:value']?.['podcast:valueRecipient']
 			);
 			gotoNextSong();
-			console.log($playingSong?.['podcast:value']?.['podcast:valueRecipient']);
-			console.log($playingAlbum);
 		};
 	}
 
@@ -640,7 +637,6 @@
 							if ($playingIndex - 1 === $top100.length) {
 								$playingIndex = 1;
 							}
-
 
 							_nextSong = $top100[$playingIndex - 1];
 							let feedGuid = _nextSong.feedGuid;

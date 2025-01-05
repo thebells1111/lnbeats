@@ -1,6 +1,9 @@
 <script>
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
+	import { slide } from 'svelte/transition';
+	import Modals from '$c/Modals/Modals.svelte';
+	import MoreVert from '$icons/MoreVert.svelte';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	import { onMount, onDestroy } from 'svelte';
@@ -21,12 +24,19 @@
 		remotePlaylist
 	} from '$/stores';
 
+	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
+	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
+
 	export let remoteSong;
+	export let playlist = '';
 	export let index;
 
 	let root;
 	let songInfo = {};
 	let loaded = false;
+	let expandMenu = false;
+	let showModal = false;
+	let modalType;
 
 	const parserOptions = {
 		attributeNamePrefix: '@_',
@@ -69,10 +79,14 @@
 			return;
 		}
 
+		console.log(remoteSong);
+
 		let remoteInfo = await fetchRemoteItem(remoteSong['@_feedGuid'], remoteSong['@_itemGuid']);
 
 		if (!remoteInfo.episode || remoteInfo.episode.length === 0) {
 			let feedInfo = await fetchRemoteFeed(remoteSong['@_feedGuid']);
+
+			console.log(feedInfo.feed);
 
 			remoteInfo = {
 				episode: {
@@ -85,6 +99,7 @@
 		}
 
 		songInfo = remoteInfo.episode || {};
+		console.log(songInfo);
 		loaded = true;
 	}
 
@@ -110,7 +125,7 @@
 		$lnbRadioPlaying = false;
 		$valueTimeSplitBlock = [];
 
-		const { podcastGuid, title } = songInfo;
+		const { podcastGuid } = songInfo;
 
 		if ($playingIndex === index) {
 			openPoster();
@@ -135,8 +150,6 @@
 			let xml2Json = parse(data, parserOptions);
 			let feed = xml2Json.rss.channel;
 
-			console.log(feed);
-
 			if (feed) {
 				if (feed.item?.[0]?.['podcast:episode']) {
 					feed.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
@@ -149,7 +162,6 @@
 			}
 
 			$playingAlbum = albumData.feed;
-			console.log($playingAlbum);
 			$playingAlbum.title = $playingAlbum.title;
 			$playingAlbum.author = $playingAlbum.author;
 
@@ -161,7 +173,6 @@
 			$player.src = foundSong.enclosure['@_url'];
 			$playingSong = foundSong;
 			$playingIndex = index;
-
 			$remotePlaylist = $selectedAlbum.remoteSongs;
 			$remotePlaylistPlaying = true;
 
@@ -180,10 +191,20 @@
 		$posterSwiper.slideTo(1);
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
 	}
+
+	function handleShowModal(type) {
+		expandMenu = false;
+		showModal = true;
+		modalType = type;
+	}
+
+	$: isSongPlaying =
+		songInfo.podcastGuid === $playingAlbum.podcastGuid &&
+		songInfo.guid === ($playingSong?.guid?.['#text'] || $playingSong?.guid);
 </script>
 
 <li bind:this={root} on:click={playSong}>
-	{#if $player && !$player.paused && index === $playingIndex && $remotePlaylistPlaying}
+	{#if $player && !$player.paused && $remotePlaylistPlaying && isSongPlaying}
 		<Pause size="48" />
 	{:else}
 		<Play size="48" />
@@ -199,8 +220,44 @@
 			<p>{songInfo.title || remoteSong['@_itemGuid']}</p>
 			<p>{songInfo.feedTitle || remoteSong['@_feedGuid']}</p>
 		</song-info>
+
+		<menu-container>
+			<button on:click|stopPropagation|capture={() => (expandMenu = !expandMenu)}>
+				<MoreVert size="24" />
+			</button>
+			{#if expandMenu}
+				<menu>
+					<ul transition:slide>
+						<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
+							Add to Playlist
+						</li>
+						{#if playlist}
+							<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>
+								Remove
+							</li>
+						{/if}
+					</ul>
+				</menu>
+			{/if}
+		</menu-container>
 	{/if}
 </li>
+
+{#if expandMenu}
+	<closer
+		on:click={() => {
+			expandMenu = false;
+		}}
+	/>
+{/if}
+
+<Modals bind:showModal>
+	{#if modalType === 'playlist-add'}
+		<AddSongToPlaylist song={{ ...songInfo, album: $selectedAlbum }} />
+	{:else if modalType === 'playlist-remove'}
+		<RemoveConfirmModal bind:showModal item={songInfo} {playlist} itemType="playlist-song" />
+	{/if}
+</Modals>
 
 <style>
 	song-info {
@@ -218,7 +275,7 @@
 	li {
 		display: flex;
 		list-style: none;
-		justify-content: flex-start;
+		justify-content: space-between;
 		border-bottom: 1px solid var(--color-text-2);
 		padding: 8px;
 		align-items: center;
@@ -228,10 +285,67 @@
 		text-align: left;
 		width: 100%;
 		padding: 0;
-		margin: 0 0 0 12px;
+		margin: 0 0 0 8px;
 	}
 
-	img {
-		margin-left: 8px;
+	button {
+		background-color: transparent;
+		color: var(--color-text-0);
+		min-width: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	menu-container {
+		position: relative;
+	}
+
+	menu {
+		position: absolute;
+		right: 0;
+		padding: 0;
+		margin: 0;
+		z-index: 3;
+	}
+
+	menu ul {
+		width: 120px;
+		padding: 0;
+		margin: 0;
+		background-color: var(--color-bg-context-menu-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-bg-context-menu-0) 15%,
+			var(--color-bg-context-menu-1) 66%
+		);
+		box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.75);
+	}
+
+	menu ul li {
+		display: flex;
+		list-style: none;
+		justify-content: space-between;
+		border-bottom: none;
+		padding: 8px;
+		border-top: 1px solid rgba(0, 0, 0, 0.25);
+	}
+
+	menu ul li:first-of-type {
+		border-top: none;
+	}
+
+	menu ul li:hover {
+		background-color: rgba(0, 0, 0, 0.25);
+	}
+
+	closer {
+		display: block;
+		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		top: 0;
+		left: 0;
+		z-index: 2;
 	}
 </style>
