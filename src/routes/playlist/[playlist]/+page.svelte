@@ -1,4 +1,5 @@
 <script>
+	import { v4 as uuidv4 } from 'uuid';
 	import Modals from '$c/Modals/Modals.svelte';
 	import RemoteSongCard from '$routes/album/[albumId]/RemoteSongCard.svelte';
 	import { onMount } from 'svelte';
@@ -25,7 +26,14 @@
 		if (!playlist) {
 			goto(`/album/${guid}`, { replaceState: true });
 		} else {
-			playlist.remoteSongs = playlist.remoteSongs.filter((v) => v['@_feedGuid']);
+			playlist.remoteSongs = playlist.remoteSongs
+				.filter((v) => v?.['@_feedGuid'])
+				.map((v) => {
+					if (!v?.id) {
+						v.id = uuidv4();
+					}
+					return v;
+				});
 
 			$selectedAlbum = playlist;
 
@@ -62,7 +70,7 @@
 
 		<ul>
 			{#if playlist && playlist?.remoteSongs?.length}
-				{#each playlist.remoteSongs as remoteSong, index (remoteSong['@_feedGuid'])}
+				{#each playlist.remoteSongs as remoteSong, index (remoteSong.id)}
 					<RemoteSongCard {remoteSong} {index} {playlist} />
 				{/each}
 			{:else}

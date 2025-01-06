@@ -1,4 +1,5 @@
 <script>
+	import { v4 as uuidv4 } from 'uuid';
 	import QueueMusic from '$icons/QueueMusic.svelte';
 	import { playlists, playlistDB } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
@@ -17,6 +18,7 @@
 		playlist.remoteSongs = playlist.remoteSongs || [];
 		console.log(song);
 		playlist.remoteSongs.push({
+			id: uuidv4(),
 			'@_feedGuid': song?.album?.podcastGuid,
 			'@_itemGuid': song?.guid?.['#text'] || song?.guid
 		});

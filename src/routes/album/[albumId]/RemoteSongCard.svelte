@@ -8,6 +8,8 @@
 	import Pause from '$icons/Pause.svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import loadRemoteInfo from '$functions/loadRemoteInfo';
+	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
+	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
 	import {
 		selectedAlbum,
@@ -24,9 +26,6 @@
 		remotePlaylistPlaying,
 		remotePlaylist
 	} from '$/stores';
-
-	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
-	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
 	export let remoteSong;
 	export let playlist = '';

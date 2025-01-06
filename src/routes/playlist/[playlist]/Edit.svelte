@@ -1,6 +1,7 @@
 <script>
 	import TrackSorter from './TrackSorter.svelte';
 	export let playlist;
+	console.log(playlist);
 </script>
 
 <div class="container">

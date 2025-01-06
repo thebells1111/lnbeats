@@ -13,6 +13,8 @@
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
 	import Poster from './poster/Poster.svelte';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
+	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
+	import Modals from '$c/Modals/Modals.svelte';
 	import Share from '$c/Share/Share.svelte';
 	import {
 		webln,
@@ -21,7 +23,9 @@
 		remoteServer,
 		shareUrl,
 		discoverList,
-		featuredList
+		featuredList,
+		playingSong,
+		playingAlbum
 	} from '$/stores';
 	let albumList = [];
 	let wavlake = [];
@@ -35,6 +39,7 @@
 	let deferredPrompt;
 	let dontShowAgain = false;
 	let bannerVisible = false;
+	let showPlaylistModal = false;
 
 	// Function to trigger PWA installation
 	function installPWA() {
@@ -310,7 +315,7 @@
 		>
 			<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 			<SwiperSlide>
-				<Poster />
+				<Poster bind:showPlaylistModal />
 			</SwiperSlide>
 		</Swiper>
 	</poster>
@@ -339,6 +344,10 @@
 		<button on:click={hideBanner}>No</button>
 	</div>
 {/if}
+
+<Modals bind:showModal={showPlaylistModal}>
+	<AddSongToPlaylist song={{ ...$playingSong, album: $playingAlbum }} />
+</Modals>
 
 <style>
 	app {
