@@ -7,6 +7,7 @@
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	import { onMount, onDestroy } from 'svelte';
+	import loadRemoteInfo from '$functions/loadRemoteInfo';
 
 	import {
 		selectedAlbum,
@@ -65,59 +66,14 @@
 
 	function initialIntersectionObserver() {
 		return new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
+			entries.forEach(async (entry) => {
 				if (entry.isIntersecting) {
-					loadRemoteInfo(); // load info if within the viewport
+					songInfo = await loadRemoteInfo(remoteSong, songInfo); // load info if within the viewport
+					loaded = true;
 					observer.disconnect();
 				}
 			});
 		});
-	}
-
-	async function loadRemoteInfo() {
-		if (!remoteSong['@_feedGuid']) {
-			return;
-		}
-
-		console.log(remoteSong);
-
-		let remoteInfo = await fetchRemoteItem(remoteSong['@_feedGuid'], remoteSong['@_itemGuid']);
-
-		if (!remoteInfo.episode || remoteInfo.episode.length === 0) {
-			let feedInfo = await fetchRemoteFeed(remoteSong['@_feedGuid']);
-
-			console.log(feedInfo.feed);
-
-			remoteInfo = {
-				episode: {
-					title: 'Unknown',
-					feedTitle: feedInfo.feed.title,
-					image: feedInfo.feed.image,
-					podcastGuid: feedInfo.feed.podcastGuid
-				}
-			};
-		}
-
-		songInfo = remoteInfo.episode || {};
-		console.log(songInfo);
-		loaded = true;
-	}
-
-	async function fetchRemoteItem(feedGuid, itemGuid) {
-		const itemsUrl =
-			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(
-				`episodes/byguid?podcastguid=${feedGuid}&guid=${itemGuid}`
-			)}`;
-		const res = await fetch(itemsUrl);
-		return await res.json();
-	}
-
-	async function fetchRemoteFeed(feedGuid) {
-		const itemsUrl =
-			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
-		const res = await fetch(itemsUrl);
-		return await res.json();
 	}
 
 	async function playSong() {

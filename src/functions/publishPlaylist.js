@@ -1,9 +1,7 @@
-import localforage from 'localforage';
 import parser from 'fast-xml-parser';
 import blankplaylist from './blankplaylist.json';
 import clone from 'just-clone';
 
-import generateValidGuid from './generateValidGuid';
 import { user, remoteServer, publishingDisplay } from '$/stores';
 import { get } from 'svelte/store';
 
@@ -55,46 +53,51 @@ let response = {
 		'Feed added successfully. Please allow 15-20 minutes for it to be searchable in the index.'
 };
 export default async function publishPlaylist(list) {
-	console.log(list);
 	publishingDisplay.set('Publishing Playlist');
 
 	let $user = get(user);
+	let indexFeed = await checkPodcastIndex(list.guid);
 
-	let playlist = clone(blankplaylist);
-	playlist['podcast:guid'] = list.guid;
+	if (indexFeed?.feed?.length === 0 || indexFeed?.feed?.ownerName === $user.name) {
+		let playlist = clone(blankplaylist);
+		playlist['podcast:guid'] = list.guid;
 
-	playlist.link = 'https://lnbeats.com/album/' + list.guid;
-	playlist['podcast:remoteItem'] = list.remoteSongs;
-	playlist['itunes:owner'] = {
-		'itunes:email': $user.name,
-		'itunes:name': $user.name
-	};
-	playlist.title = list.title;
-	delete playlist.description;
-
-	console.log(playlist);
-
-	rss.channel = playlist;
-
-	let xmlJson = { rss: rss };
-	let xmlFile = js2xml.parse(xmlJson);
-	console.log(xmlFile);
-	if (xmlFile) {
-		try {
-			await uploadFile(xmlFile, list.guid);
-		} catch (error) {
-			publishingDisplay.set('Failed Publishing Playlist');
+		playlist.link = 'https://lnbeats.com/album/' + list.guid;
+		playlist['podcast:remoteItem'] = list.remoteSongs;
+		playlist['itunes:owner'] = {
+			'itunes:email': $user.name,
+			'itunes:name': $user.name
+		};
+		playlist.title = list.title;
+		if (list.description) {
+			playlist.description = list.description;
+		} else {
+			delete playlist.description;
 		}
+
+		rss.channel = playlist;
+
+		let xmlJson = { rss: rss };
+		let xmlFile = js2xml.parse(xmlJson);
+		if (xmlFile) {
+			try {
+				await uploadFile(xmlFile, list.guid, indexFeed);
+			} catch (error) {
+				console.log(error);
+				publishingDisplay.set('Failed Publishing Playlist');
+			}
+		}
+	} else {
+		publishingDisplay = "You don't have permissions to alter this feed.";
 	}
 
 	setTimeout(() => {
 		publishingDisplay.set('');
-	}, 1000);
-
-	// return { success: true, message: 'Play list published' };
+	}, 2000);
 }
 
-async function uploadFile(xmlFile, guid) {
+async function uploadFile(xmlFile, guid, indexFeed) {
+	console.log(guid);
 	var blob = new Blob([xmlFile], { type: 'text/xml;charset=utf-8' });
 	let folderName = 'playlists';
 
@@ -129,26 +132,24 @@ async function uploadFile(xmlFile, guid) {
 		console.log('Uploaded:', result);
 		if (result.url) {
 			console.log(result.url);
-			await checkPodcastIndex(guid, result.url);
+			if (indexFeed?.feed?.id) {
+				console.log('podpinging feed');
+				await podping(result.url);
+			} else {
+				console.log('adding feed');
+				await addFeed(result.url);
+			}
 		}
 	} catch (error) {
 		console.error('Upload error:', error);
 	}
 }
 
-async function checkPodcastIndex(guid, feedUrl) {
+async function checkPodcastIndex(guid) {
 	const url = remoteServer + `api/queryindex?q=podcasts/byguid?guid=${guid}`;
 	const res = await fetch(url);
-	const data = await res.json();
-	console.log(data);
-
-	if (data.status === 'true' && data?.feed?.id) {
-		console.log('podpinging feed');
-		await podping(feedUrl);
-	} else {
-		console.log('adding feed');
-		await addFeed(feedUrl);
-	}
+	const indexFeed = await res.json();
+	return indexFeed;
 }
 
 async function podping(feedUrl) {

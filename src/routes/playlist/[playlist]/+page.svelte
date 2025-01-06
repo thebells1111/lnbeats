@@ -1,16 +1,20 @@
 <script>
+	import Modals from '$c/Modals/Modals.svelte';
 	import RemoteSongCard from '$routes/album/[albumId]/RemoteSongCard.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { selectedAlbum, playlists, playlistDB, publishingDisplay, user } from '$/stores';
 	import publishPlaylist from '$functions/publishPlaylist.js';
 	import Upload from '$icons/Upload.svelte';
+	import EditSquare from '$icons/EditSquare.svelte';
+	import Edit from './Edit.svelte';
 
 	export let data = {};
 
 	let guid = data?.playlist;
 	let playlist = {};
 	let loading = true;
+	let showModal = false;
 
 	onMount(async () => {
 		$playlists = await playlistDB.getItem('playlists');
@@ -18,15 +22,15 @@
 
 	$: if (Object.keys($playlists).length) {
 		playlist = $playlists[guid];
-		playlist.remoteSongs = playlist.remoteSongs.filter((v) => v['@_feedGuid']);
-
-		$selectedAlbum = playlist;
-
 		if (!playlist) {
 			goto(`/album/${guid}`, { replaceState: true });
-		}
+		} else {
+			playlist.remoteSongs = playlist.remoteSongs.filter((v) => v['@_feedGuid']);
 
-		loading = !playlist;
+			$selectedAlbum = playlist;
+
+			loading = !playlist;
+		}
 	}
 </script>
 
@@ -34,6 +38,7 @@
 	{#if !loading}
 		{#if $user.name}
 			<publishing>
+				<spacer />
 				{#if $publishingDisplay}
 					<p>{$publishingDisplay}</p>
 				{:else if playlist?.remoteSongs?.length}
@@ -42,13 +47,22 @@
 						Publish
 					</button>
 				{/if}
+				<button
+					on:click={() => {
+						showModal = true;
+					}}
+					class="edit"
+				>
+					<EditSquare size="24" />
+					Edit
+				</button>
 			</publishing>
 		{/if}
 		<h2>{playlist?.title || ''}</h2>
 
 		<ul>
-			{#if playlist?.remoteSongs?.length}
-				{#each playlist.remoteSongs as remoteSong, index}
+			{#if playlist && playlist?.remoteSongs?.length}
+				{#each playlist.remoteSongs as remoteSong, index (remoteSong['@_feedGuid'])}
 					<RemoteSongCard {remoteSong} {index} {playlist} />
 				{/each}
 			{:else}
@@ -58,6 +72,15 @@
 		</ul>
 	{/if}
 </playlist-container>
+
+<Modals
+	bind:showModal
+	onClose={async () => {
+		playlistDB.setItem('playlists', $playlists);
+	}}
+>
+	<Edit bind:playlist />
+</Modals>
 
 <style>
 	h2 {
@@ -75,16 +98,30 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 45px;
+		align-items: center;
 		font-size: 0.6em;
 		background-color: transparent;
 		text-decoration: underline;
+		min-width: 45px;
+		height: 45px;
+	}
+
+	.edit {
+		justify-content: space-evenly;
 	}
 
 	publishing {
 		display: flex;
-		justify-content: end;
+		justify-content: space-between;
+		align-items: center;
 		position: absolute;
-		top: 10px;
-		right: 10px;
+		top: 0;
+		width: calc(100% - 45px);
+		min-height: 50px;
+		max-height: 50px;
+		margin-left: 45px;
 	}
 </style>
