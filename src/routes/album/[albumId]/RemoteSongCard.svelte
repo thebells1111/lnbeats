@@ -155,7 +155,8 @@
 
 	$: isSongPlaying =
 		songInfo.podcastGuid === $playingAlbum.podcastGuid &&
-		songInfo.guid === ($playingSong?.guid?.['#text'] || $playingSong?.guid);
+		songInfo.guid === ($playingSong?.guid?.['#text'] || $playingSong?.guid) &&
+		index === $playingIndex;
 </script>
 
 <li bind:this={root} on:click={playSong}>

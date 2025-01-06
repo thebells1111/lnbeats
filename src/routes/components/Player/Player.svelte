@@ -91,7 +91,7 @@
 							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 					} else if ($remotePlaylistPlaying) {
 						if ($playingIndex === $remotePlaylist.length) {
-							$playingIndex = 1;
+							$playingIndex = 0;
 						}
 
 						_nextSong = $remotePlaylist[$playingIndex];
