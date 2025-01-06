@@ -88,7 +88,7 @@ export default async function publishPlaylist(list) {
 			}
 		}
 	} else {
-		publishingDisplay = "You don't have permissions to alter this feed.";
+		publishingDisplay.set("You don't have permissions to alter this feed.");
 	}
 
 	setTimeout(() => {
