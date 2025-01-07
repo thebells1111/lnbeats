@@ -1,6 +1,7 @@
 <script>
 	import './styles.css';
 	import 'swiper/css';
+	import dbAlbums from '$functions/dbAlbums';
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
@@ -16,6 +17,7 @@
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import Modals from '$c/Modals/Modals.svelte';
 	import Share from '$c/Share/Share.svelte';
+
 	import {
 		webln,
 		showBoostScreen,
@@ -168,14 +170,7 @@
 
 	async function getDisoverList() {
 		if (!$discoverList.length) {
-			const res = await fetch(
-				remoteServer +
-					`api/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&val=lightning&max=10000'
-					)}`
-			);
-			let data = await res.json();
-			let fetchedFeeds = data.feeds || data.feed || [];
+			let fetchedFeeds = dbAlbums.albums;
 			let filteredFeeds = [];
 			let _featuredList = [];
 

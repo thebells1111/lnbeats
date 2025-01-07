@@ -4,8 +4,6 @@
 	import SearchBar from './SearchBar.svelte';
 	import clone from 'just-clone';
 	import extras from './extras.json';
-	import Top100 from '$routes/top100/+page.svelte';
-	import PlayArrow from '$icons/PlayArrow.svelte';
 	import FilteredList from './FilteredList.svelte';
 
 	import {
@@ -21,6 +19,7 @@
 	let demuList = [];
 	let filterDemu = false;
 	let timeoutId = null;
+	let songList = [];
 
 	onMount(async () => {
 		if (!$radio.length) {
@@ -41,6 +40,9 @@
 				})
 			);
 			console.log($radio);
+			$discoverList.forEach((v) => {
+				songList = songList.concat(v.item);
+			});
 		}
 
 		if ($albumSearch) {
@@ -71,7 +73,7 @@
 
 	function handleInput(e) {
 		const query = e.target.value.toLowerCase();
-		searchIndex(query);
+		// searchIndex(query);
 		$albumSearch = query;
 		if (query) {
 			filteredList = $discoverList
@@ -79,6 +81,8 @@
 					(v) => v.author.toLowerCase().includes(query) || v.title.toLowerCase().includes(query)
 				)
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
+
+			console.log(songList.filter((v) => v.title.toLowerCase().includes(query)));
 		} else filteredList = $discoverList;
 	}
 
