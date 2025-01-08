@@ -1,7 +1,7 @@
 <script>
 	import './styles.css';
 	import 'swiper/css';
-	import dbAlbums from '$functions/dbAlbums';
+	import dbAlbums from '$functions/dbAlbums.json';
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
 	import Player from './components/Player/Player.svelte';
@@ -27,9 +27,11 @@
 		discoverList,
 		featuredList,
 		playingSong,
-		playingAlbum
+		playingAlbum,
+		songList,
+		albumList
 	} from '$/stores';
-	let albumList = [];
+	let _discoverList = [];
 	let wavlake = [];
 	let rssblue = [];
 	let msp = [];
@@ -69,6 +71,7 @@
 	}
 
 	onMount(async () => {
+		$albumList = dbAlbums;
 		getDisoverList();
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/serviceworker.js');
@@ -120,6 +123,15 @@
 		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
 		// $playingSong = $playingAlbum.songs[0];
 		// $player.src = $playingSong.enclosure['@_url'];
+
+		dbAlbums.albums.forEach((v) => {
+			v.item = v.item.map((w) => {
+				w.podcastGuid = v.podcastGuid;
+				w.generator = v.generator;
+				return w;
+			});
+			$songList = $songList.concat(v.item);
+		});
 	});
 
 	function shuffleArray(array) {
@@ -170,7 +182,15 @@
 
 	async function getDisoverList() {
 		if (!$discoverList.length) {
-			let fetchedFeeds = dbAlbums.albums;
+			const res = await fetch(
+				remoteServer +
+					`api/queryindex?q=${encodeURIComponent(
+						'podcasts/bymedium?medium=music&val=lightning&max=10000'
+					)}`
+			);
+			let data = await res.json();
+			let fetchedFeeds = data.feeds || data.feed || [];
+			// let fetchedFeeds = dbAlbums.albums;
 			let filteredFeeds = [];
 			let _featuredList = [];
 
@@ -206,7 +226,7 @@
 
 			// console.log(generators);
 
-			albumList = sortByPubDate(filteredFeeds);
+			_discoverList = sortByPubDate(filteredFeeds);
 			_featuredList = shuffleArray(_featuredList);
 			addToFeaturedList(_featuredList);
 			setTimeout(addToFeaturedList, 1000);
@@ -219,7 +239,7 @@
 				}
 			}
 
-			$discoverList = albumList;
+			$discoverList = _discoverList;
 
 			wavlake.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author

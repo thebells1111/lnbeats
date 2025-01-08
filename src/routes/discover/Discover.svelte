@@ -12,14 +12,16 @@
 		discoverScreen,
 		albumSearch,
 		radio,
-		remoteServer
+		remoteServer,
+		songList
 	} from '$/stores';
 
 	let filteredList = [];
+	let filteredSongList = [];
 	let demuList = [];
+	let demuSongList = [];
 	let filterDemu = false;
 	let timeoutId = null;
-	let songList = [];
 
 	onMount(async () => {
 		if (!$radio.length) {
@@ -40,9 +42,6 @@
 				})
 			);
 			console.log($radio);
-			$discoverList.forEach((v) => {
-				songList = songList.concat(v.item);
-			});
 		}
 
 		if ($albumSearch) {
@@ -82,8 +81,15 @@
 				)
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
 
-			console.log(songList.filter((v) => v.title.toLowerCase().includes(query)));
-		} else filteredList = $discoverList;
+			filteredSongList = $songList.filter((v) => v.title.toLowerCase().includes(query));
+		} else {
+			filteredList = $discoverList;
+			filteredSongList = [];
+		}
+	}
+
+	$: if (filteredSongList?.length) {
+		console.log(filteredSongList);
 	}
 
 	function searchIndex(searchQuery) {
@@ -116,6 +122,7 @@
 
 	$: if (filterDemu) {
 		demuList = filteredList.filter((v) => !v.generator.includes('Wavlake'));
+		demuSongList = filteredSongList.filter((v) => !v.generator.includes('Wavlake'));
 	}
 </script>
 
@@ -183,6 +190,10 @@
 
 	{#if filteredList}
 		<FilteredList items={filterDemu ? demuList : filteredList} />
+	{/if}
+
+	{#if filteredSongList.length}
+		<FilteredList items={filterDemu ? demuSongList : filteredSongList} />
 	{/if}
 {/if}
 

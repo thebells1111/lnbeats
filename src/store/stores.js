@@ -77,3 +77,6 @@ export const shareText = writable('');
 
 export const remotePlaylist = writable([]);
 export const remotePlaylistPlaying = writable(false);
+
+export const songList = writable([]);
+export const albumList = writable({});
