@@ -88,10 +88,6 @@
 		}
 	}
 
-	$: if (filteredSongList?.length) {
-		console.log(filteredSongList);
-	}
-
 	function searchIndex(searchQuery) {
 		if (timeoutId) {
 			clearTimeout(timeoutId);
