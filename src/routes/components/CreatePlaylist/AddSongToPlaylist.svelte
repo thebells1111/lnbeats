@@ -34,7 +34,7 @@
 	<CreatePlaylistButton />
 </header>
 <ul>
-	{#each Object.entries($playlists) as [guid, list]}
+	{#each $playlists ? Object.entries($playlists) : [] as [guid, list]}
 		<li on:click={addSongToPlaylist.bind(this, guid)}>
 			<queue-icon>
 				<QueueMusic size="55" />
