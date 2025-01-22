@@ -92,6 +92,17 @@
 				Maybe consider reaching out to the artist and letting them know.
 			</p>
 		{/if}
+
+		{#if $selectedAlbum.license}
+			<div class="license">
+				License:
+				{#if $selectedAlbum.license['@_url']}
+					<a href="{$selectedAlbum.license['@_url']}" target="_blank">{$selectedAlbum.license['#text']}</a>
+				{:else}
+					{$selectedAlbum.license['#text']}
+				{/if}
+			</div>
+		{/if}
 	</ul>
 {:else}
 	<h3>It appears this Album is no longer available.</h3>
@@ -171,5 +182,11 @@
 		color: var(--color-text-0);
 		font-weight: 600;
 		align-self: center;
+	}
+	.license {
+		text-align: right;
+		padding-top: 0.25rem;
+		padding-right: 0.5rem;
+		font-size: 0.825rem;
 	}
 </style>
