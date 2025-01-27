@@ -1,5 +1,6 @@
 <script>
 	import localforage from 'localforage';
+	import clone from 'just-clone';
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import Modals from '$c/Modals/Modals.svelte';
@@ -19,11 +20,13 @@
 		top100Playing,
 		playFeatured,
 		currentPlayingChapter,
-		lnbRadioPlaying,
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
 		remotePlaylistPlaying,
+		selectedSongList,
+		playingSongList,
+		shuffleSongs
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
@@ -44,9 +47,13 @@
 
 	async function playSong() {
 		$top100Playing = false;
-		$lnbRadioPlaying = false;
 		$remotePlaylistPlaying = false;
 		$valueTimeSplitBlock = [];
+		if ($playingAlbum.id !== $selectedAlbum.id) {
+			$playingSongList = clone($selectedSongList);
+			$shuffleSongs = false;
+		}
+
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
 				.then((res) => res.json())

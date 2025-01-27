@@ -1,6 +1,6 @@
 <script>
 	import parseSRT from 'parse-srt';
-	import VirtualList from 'svelte-tiny-virtual-list';
+	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
@@ -14,7 +14,6 @@
 		playingChapters,
 		favorites,
 		favoritesDB,
-		selectedSong,
 		shareUrl,
 		shareText,
 		currentSplit,
@@ -47,7 +46,6 @@
 
 		$playingTranscript.full = t.split('|-|').join(' ');
 	} else {
-		console.log('dude');
 		$playingTranscript = [];
 	}
 
@@ -119,6 +117,18 @@
 		>
 			<Close size={24} />
 		</button>
+		<button
+			on:click={() => {
+				$posterSwiper.slideTo(0);
+				setTimeout(() => {
+					document.getElementById('poster-swiper').style.visibility = 'hidden';
+				}, 500);
+
+				goto('/album/' + $playingAlbum['podcastGuid']);
+			}}
+		>
+			View Album
+		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<top-buttons>
 			<button class="share" on:click={handleShare}>
@@ -161,12 +171,12 @@
 				{/if}
 			</button>
 			<album-info>
-				<song-title
-					>{$currentPlayingChapter
-						? $currentPlayingChapter.title || ''
-						: $playingSong.title}</song-title
-				>
+				<song-title>
+					{$currentPlayingChapter ? $currentPlayingChapter.title || '' : $playingSong.title}
+				</song-title>
+
 				<band-name>
+					by
 					<a
 						href={`/artist/${toUrlFriendly(
 							$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''

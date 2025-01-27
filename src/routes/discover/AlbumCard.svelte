@@ -3,13 +3,28 @@
 	export let isRadio = false;
 	export let fromSearch = false;
 
-	$: console.log(fromSearch);
+	let artworkSrc = album.artwork || album.image; // Initial URL from the song object
+
+	// Load the image URL from cache or use the original URL
+	function loadCachedArtwork(key, url) {
+		const cachedUrl = sessionStorage.getItem(key);
+
+		if (cachedUrl) {
+			return cachedUrl; // Use the cached URL
+		} else {
+			sessionStorage.setItem(key, url); // Cache the URL for the session
+			return url; // Use the original URL
+		}
+	}
+
+	// Initialize artwork source
+	artworkSrc = loadCachedArtwork(album.id, album.artwork || album.image);
 </script>
 
 {#if album}
 	<a href={isRadio ? '/radio' : `/album/${album.podcastGuid}`}>
 		<card>
-			<img src={album.artwork || album.image} loading="lazy" width="115" height="115" />
+			<img src={artworkSrc} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
 			<album-author>{album.author || ''}</album-author>
 

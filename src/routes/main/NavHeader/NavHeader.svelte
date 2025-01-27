@@ -1,28 +1,9 @@
 <script>
-	import BackArrowIcon from '$icons/BackArrow.svelte';
 	import SearchIcon from '$icons/Search.svelte';
 	import { page } from '$app/stores';
-
-	import { goto, afterNavigate } from '$app/navigation';
-	let previousPage = '';
-
-	function navigateBack() {
-		if (previousPage) {
-			goto(previousPage);
-		} else goto('/');
-	}
-
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
-		console.log(previousPage);
-	});
 </script>
 
 <header class:hidden={[`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}>
-	{#if ![`/`, `/library`, '/discover', '/search'].find((r) => r === $page.route.id)}
-		<button class="back-button" on:click={navigateBack}><BackArrowIcon size={30} /></button>
-	{/if}
-
 	{#if $page.route.id === '/discover'}
 		<a href="/search"><SearchIcon size={30} /></a>
 	{/if}

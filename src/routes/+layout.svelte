@@ -63,7 +63,7 @@
 	}
 
 	onMount(async () => {
-		getDisoverList();
+		getDiscoverList();
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/serviceworker.js');
 		}
@@ -162,7 +162,7 @@
 		}
 	}
 
-	async function getDisoverList() {
+	async function getDiscoverList() {
 		if (!$discoverList.length) {
 			const res = await fetch(
 				remoteServer +

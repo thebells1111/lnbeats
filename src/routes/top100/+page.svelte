@@ -26,6 +26,8 @@
 		top100Loop,
 		valueTimeSplitBlock,
 		remotePlaylistPlaying,
+		selectedSongList,
+		playingSongList
 	} from '$/stores';
 
 	let expandMenu = false;
@@ -55,20 +57,18 @@
 			console.log(data);
 
 			let dataArray = data.items;
-
 			$top100 = dataArray.sort((a, b) => a.rank - b.rank);
-			$sortedTop100 = clone($top100);
-
-			console.log($top100);
 		}
+		$selectedSongList = clone($top100);
 	}
 
 	async function playSong(song) {
-		$top100Playing = true;
+		if (!$top100Playing) {
+			$top100Playing = true;
+			$playingSongList = clone($top100);
+		}
 		$remotePlaylistPlaying = false;
 		$valueTimeSplitBlock = [];
-		console.log(song);
-		console.log($top100Playing);
 
 		const { feedGuid, rank, title } = song;
 
@@ -134,12 +134,6 @@
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
 	}
 
-	function handleShowModal(type) {
-		expandMenu = false;
-		showModal = true;
-		modalType = type;
-	}
-
 	function handleShuffle() {
 		isShuffled = !isShuffled;
 		$top100 = isShuffled ? shuffleArray([...$sortedTop100]) : $sortedTop100;
@@ -168,7 +162,7 @@
 </script>
 
 <ol>
-	{#each $top100 as song}
+	{#each $top100Playing ? $playingSongList : $selectedSongList as song}
 		<!-- <li on:click={playSong.bind(this, song)}>
 			<img width="60" src={song.imageURL} />
 			{song.title}
@@ -220,14 +214,6 @@
 	
 	{/if}
 </Modals> -->
-
-<button class:shuffled={isShuffled} on:click={handleShuffle} class="random">
-	<Shuffle size="30" />
-</button>
-
-<button class:looped={$top100Loop} on:click={handleLoop} class="loop">
-	<Laps size="27" />
-</button>
 
 <style>
 	song-info {

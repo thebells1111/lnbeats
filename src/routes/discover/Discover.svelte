@@ -4,8 +4,6 @@
 	import SearchBar from './SearchBar.svelte';
 	import clone from 'just-clone';
 	import extras from './extras.json';
-	import Top100 from '$routes/top100/+page.svelte';
-	import PlayArrow from '$icons/PlayArrow.svelte';
 	import FilteredList from './FilteredList.svelte';
 
 	import {
@@ -127,12 +125,7 @@
 		}}
 		class:active={$discoverScreen === 'featured'}>Featured</button
 	>
-	<button
-		on:click={() => {
-			$discoverScreen = 'top100';
-		}}
-		class:active={$discoverScreen === 'top100'}>Top 100</button
-	>
+	<a href="/album/6486d0d9-4393-55dd-adc5-ecb3fa7e7409">Top 100</a>
 	<button
 		on:click={() => {
 			$discoverScreen = 'radio';
@@ -169,10 +162,6 @@
 			</li>
 		{/each}
 	</ul>
-{:else if $discoverScreen === 'top100'}
-	<top100>
-		<Top100 />
-	</top100>
 {:else}
 	<search-header>
 		<SearchBar
@@ -230,17 +219,6 @@
 		overflow: auto;
 	}
 
-	top100 {
-		display: block;
-		padding: 0;
-		margin: 8px 0 0 8px;
-		flex: 1;
-		width: calc(100% - 8px);
-		flex-wrap: wrap;
-		justify-content: center;
-		overflow: auto;
-	}
-
 	li {
 		list-style: none;
 	}
@@ -251,7 +229,8 @@
 		justify-content: space-around;
 	}
 
-	navbar > button {
+	navbar > button,
+	navbar > a {
 		color: var(--color-text-0);
 		display: flex;
 		flex-direction: column;
@@ -260,14 +239,10 @@
 		font-family: 'Charm', cursive;
 		width: 80px;
 		padding: 8px 0 0 0;
+		text-decoration: none;
 	}
 
 	navbar > button.active {
 		border-bottom: 1px solid var(--color-text-0);
-	}
-
-	play {
-		display: flex;
-		align-items: flex-end;
 	}
 </style>

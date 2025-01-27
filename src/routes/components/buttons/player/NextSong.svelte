@@ -19,13 +19,12 @@
 		top100Playing,
 		top100,
 		remoteServer,
-		lnbRadio,
-		lnbRadioPlaying,
 		top100Loop,
 		favorites,
 		favoritesDB,
 		remotePlaylistPlaying,
 		remotePlaylist,
+		playingSongList
 	} from '$/stores';
 
 	const parserOptions = {
@@ -57,31 +56,22 @@
 			let currentSong = $playingSong;
 
 			if (
-				(album.songs || $lnbRadioPlaying || $remotePlaylistPlaying) &&
+				($playingSongList || $remotePlaylistPlaying) &&
 				(currentSong?.enclosure || currentSong?.enclosure?.['@_url'])
 			) {
 				if (
 					($playingIndex >= 0 &&
-						($playingIndex < album?.songs?.length - 1 ||
+						($playingIndex < $playingSongList?.length - 1 ||
 							($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-							($lnbRadioPlaying && $playingIndex < $lnbRadio.length - 1) ||
 							($remotePlaylistPlaying && $playingIndex < $remotePlaylist.length - 1))) ||
 					album.favorites
 				) {
 					$playingIndex = $playingIndex + 1;
 					let nextSong;
 					let _nextSong;
-					if ($top100Playing || $lnbRadioPlaying || $remotePlaylistPlaying) {
+					if ($top100Playing || $remotePlaylistPlaying) {
 						let feedUrl;
-						if ($lnbRadioPlaying) {
-							_nextSong = $lnbRadio[$playingIndex];
-							console.log(_nextSong);
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(
-									`podcasts/byguid?guid=${_nextSong.album.podcastGuid}`
-								)}`;
-						} else if ($top100Playing) {
+						if ($top100Playing) {
 							if ($playingIndex - 1 === $top100.length) {
 								$playingIndex = 1;
 							}
@@ -136,12 +126,7 @@
 							console.log($playingAlbum);
 
 							let foundSong;
-							if ($lnbRadioPlaying) {
-								console.log($playingAlbum.songs);
-								foundSong = $playingAlbum.songs.find(
-									(v) => JSON.stringify(v.guid) === JSON.stringify(_nextSong.guid)
-								);
-							} else if ($top100Playing) {
+							if ($top100Playing) {
 								foundSong = $playingAlbum.songs.find((v) => {
 									return v.title == _nextSong.title;
 								});
@@ -171,7 +156,7 @@
 						};
 						nextSong = song;
 					} else {
-						nextSong = album.songs[$playingIndex];
+						nextSong = $playingSongList?.[$playingIndex];
 					}
 					loadSong(nextSong);
 

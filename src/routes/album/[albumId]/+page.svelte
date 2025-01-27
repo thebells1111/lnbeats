@@ -2,6 +2,10 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
+
+	let unsubscribe;
 
 	import { convertAlbumIdtoGuid } from '$functions/covertAlbumIdToGuid';
 	import { deleteAlbum } from '$functions/deleteAlbum';
@@ -10,22 +14,24 @@
 	import SongCard from './SongCard.svelte';
 	import RemoteSongCard from './RemoteSongCard.svelte';
 
-	import { selectedAlbum, posterSwiper, library } from '$/stores';
+	import {
+		selectedAlbum,
+		playingAlbum,
+		posterSwiper,
+		library,
+		selectedSongList,
+		playingSongList,
+		playingSong,
+		playingIndex
+	} from '$/stores';
 
 	export let data;
 	export let isSong = false;
 	let expandDescription = false;
 	let descriptionEl;
-	if (browser) {
-		if (data.album) {
-			if (data.redirect) {
-				let guid = data.redirect.split('/')[2];
-				convertAlbumIdtoGuid($page.params.albumId, guid);
-				goto(data.redirect, { replaceState: true });
-			}
-		}
-	}
+
 	$selectedAlbum = data.album;
+	$selectedSongList = data.album.songs;
 
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
@@ -36,6 +42,26 @@
 	function isOverflowingHorizontally(element) {
 		return element?.scrollHeight > element?.clientHeight;
 	}
+
+	// Reactively handle route changes
+	unsubscribe = page.subscribe(($page) => {
+		if (data.album) {
+			if (data.redirect) {
+				let guid = data.redirect.split('/')[2];
+				convertAlbumIdtoGuid($page.params.albumId, guid);
+				goto(data.redirect, { replaceState: true });
+			}
+
+			$selectedAlbum = data.album;
+			$selectedSongList =
+				$selectedAlbum.id === $playingAlbum.id ? $playingSongList : data.album.songs;
+		}
+	});
+
+	// Cleanup on component destruction
+	onDestroy(() => {
+		unsubscribe();
+	});
 </script>
 
 <svelte:head>
@@ -78,8 +104,8 @@
 			{/if}
 		</description>
 
-		{#if $selectedAlbum.songs.length}
-			{#each $selectedAlbum.songs as song, index}
+		{#if $selectedSongList.length}
+			{#each $playingAlbum.id === $selectedAlbum.id ? $playingSongList : $selectedSongList as song, index}
 				<SongCard {song} {index} />
 			{/each}
 		{:else if $selectedAlbum.remoteSongs.length}

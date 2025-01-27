@@ -1,14 +1,70 @@
 <script>
-	import { playingSong, playingAlbum, posterSwiper } from '$/stores';
+	import clone from 'just-clone';
+	import {
+		playingSong,
+		playingAlbum,
+		posterSwiper,
+		playingSongList,
+		selectedAlbum,
+		playingIndex,
+		shuffleSongs,
+		top100Playing,
+		top100,
+		loopSongs
+	} from '$/stores';
 	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
 	import PreviousSong from '$buttons/player/PreviousSong.svelte';
 	import NextSong from '$buttons/player/NextSong.svelte';
+
+	import Shuffle from '$icons/Shuffle.svelte';
+	import Laps from '$icons/Laps.svelte';
 	import { page } from '$app/stores';
 
 	function openPoster() {
 		document.getElementById('poster-swiper').style.visibility = 'initial';
 		$posterSwiper.slideTo(1);
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+	}
+
+	function handleShuffle() {
+		$shuffleSongs = !$shuffleSongs;
+		let newList;
+		if ($top100Playing) {
+			newList = $shuffleSongs ? shuffleArray(clone($top100)) : $top100;
+		} else {
+			newList = $shuffleSongs ? shuffleArray(clone($selectedAlbum.songs)) : $selectedAlbum.songs;
+		}
+
+		let guid = $playingSong?.guid?.['#text'] || $playingSong?.guid;
+		$playingIndex = newList.findIndex((v) => {
+			return guid === (v.guid?.['#text'] || v?.guid);
+		});
+
+		//move playing song to top of list if shuffling
+		if ($shuffleSongs) {
+			const _playingSong = newList.splice($playingIndex, 1)[0];
+			newList.unshift(_playingSong);
+			$playingIndex = 0;
+		}
+
+		$playingSongList = newList;
+
+		function shuffleArray(array) {
+			let currentIndex = array.length,
+				randomIndex;
+
+			// While there remain elements to shuffle...
+			while (currentIndex !== 0) {
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex--;
+
+				// And swap it with the current element.
+				[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+			}
+
+			return array;
+		}
 	}
 </script>
 
@@ -28,6 +84,13 @@
 			<album-title>{$playingAlbum.title}</album-title>
 		</song-info>
 	</playbar-controls>
+	<button class:shuffled={$shuffleSongs} on:click|stopPropagation={handleShuffle} class="random">
+		<Shuffle size="30" />
+	</button>
+
+	<!-- <button class:looped={$loopSongs} on:click={handleLoop} class="loop">
+		<Laps size="27" />
+	</button> -->
 </playbar>
 
 <style>
@@ -80,5 +143,41 @@
 		height: 50px;
 		border-radius: 4px;
 		margin: 0 4px;
+	}
+
+	button.random,
+	button.loop {
+		background-color: transparent;
+		color: var(--color-text-0);
+		min-width: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		position: absolute;
+		bottom: 75px;
+		color: var(--color-text-0);
+		right: 8px;
+		background-color: gray;
+		align-items: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		min-width: 36px;
+		height: 36px;
+		padding: 0;
+		border-radius: 48px;
+	}
+
+	button.loop {
+		bottom: 120px;
+	}
+
+	button.shuffled {
+		background-color: var(--color-theme-yellow-light);
+	}
+
+	button.looped {
+		background-color: var(--color-theme-yellow-light);
 	}
 </style>
