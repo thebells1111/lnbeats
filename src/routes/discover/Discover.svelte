@@ -74,6 +74,7 @@
 		const query = e.target.value.toLowerCase();
 		// searchIndex(query);
 		$albumSearch = query;
+		console.log($songList);
 		if (query) {
 			filteredList = $discoverList
 				.filter(
