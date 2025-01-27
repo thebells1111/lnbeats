@@ -7,13 +7,15 @@
 
 	// Load the image URL from cache or use the original URL
 	function loadCachedArtwork(key, url) {
-		const cachedUrl = sessionStorage.getItem(key);
+		if (sessionStorage) {
+			const cachedUrl = sessionStorage.getItem(key);
 
-		if (cachedUrl) {
-			return cachedUrl; // Use the cached URL
-		} else {
-			sessionStorage.setItem(key, url); // Cache the URL for the session
-			return url; // Use the original URL
+			if (cachedUrl) {
+				return cachedUrl; // Use the cached URL
+			} else {
+				sessionStorage.setItem(key, url); // Cache the URL for the session
+				return url; // Use the original URL
+			}
 		}
 	}
 

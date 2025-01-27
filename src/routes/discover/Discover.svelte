@@ -5,6 +5,20 @@
 	import clone from 'just-clone';
 	import extras from './extras.json';
 	import FilteredList from './FilteredList.svelte';
+	import Album from '$routes/album/[albumId]/+page.svelte';
+
+	import { parse } from 'fast-xml-parser';
+	import { decode } from 'html-entities';
+
+	const parserOptions = {
+		attributeNamePrefix: '@_',
+		//attrNodeName: false,
+		//textNodeName : "#text",
+		ignoreAttributes: false,
+		ignoreNameSpace: false,
+		attrValueProcessor: (val, attrName) => decode(val), //default is a=>a
+		tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
+	};
 
 	import {
 		discoverList,
@@ -12,15 +26,18 @@
 		discoverScreen,
 		albumSearch,
 		radio,
-		remoteServer
+		remoteServer,
+		playingAlbum
 	} from '$/stores';
 
 	let filteredList = [];
 	let demuList = [];
 	let filterDemu = false;
 	let timeoutId = null;
+	let top100 = {};
 
 	onMount(async () => {
+		fetchTop100();
 		if (!$radio.length) {
 			$radio = shuffleArray(extras);
 			$radio = await Promise.all(
@@ -48,6 +65,28 @@
 		}
 		filteredList = $discoverList;
 	});
+
+	async function fetchTop100() {
+		const albumUrl =
+			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=6612768`)}`;
+		const albumRes = await fetch(albumUrl);
+		const albumData = await albumRes.json();
+
+		console.log(albumData);
+
+		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
+		let data = await res.text();
+
+		let xml2Json = parse(data, parserOptions);
+		let feed = xml2Json.rss.channel;
+
+		// music playlist feeds (musicL) can only contain remoteItems
+		albumData.feed.remoteSongs = [].concat(feed?.['podcast:remoteItem'] || []);
+		albumData.feed.songs = [];
+		albumData.feed.live = [];
+
+		top100 = albumData.feed;
+	}
 
 	function showFilteredList() {
 		if ($discoverList.length) {
@@ -111,10 +150,11 @@
 	$: if (filterDemu) {
 		demuList = filteredList.filter((v) => !v.generator.includes('Wavlake'));
 	}
+
+	$: console.log(top100);
 </script>
 
 <header>
-	<h2>Discover</h2>
 	<img src="lnbeats-header.png" alt="ln beats logo" />
 </header>
 
@@ -125,7 +165,18 @@
 		}}
 		class:active={$discoverScreen === 'featured'}>Featured</button
 	>
-	<a href="/album/6486d0d9-4393-55dd-adc5-ecb3fa7e7409">Top 100</a>
+	<button
+		on:click={() => {
+			$discoverScreen = 'queue';
+		}}
+		class:active={$discoverScreen === 'queue'}>Queue</button
+	>
+	<button
+		on:click={() => {
+			$discoverScreen = 'top100';
+		}}
+		class:active={$discoverScreen === 'top100'}>Top 100</button
+	>
 	<button
 		on:click={() => {
 			$discoverScreen = 'radio';
@@ -139,7 +190,8 @@
 		class:active={$discoverScreen === 'search'}>Search</button
 	>
 </navbar>
-{#if $discoverScreen === 'featured'}
+
+<featured class:show={$discoverScreen === 'featured'}>
 	<h3>Support These Artist Who Support LNBeats</h3>
 	<ul>
 		{#each $featuredList as album}
@@ -148,21 +200,32 @@
 			</li>
 		{/each}
 	</ul>
-{:else if $discoverScreen === 'radio'}
+</featured>
+
+<top100 class:show={$discoverScreen === 'queue'}>
+	{$playingAlbum.id}
+	{#if $playingAlbum.id}
+		<Album data={{ album: $playingAlbum }} />
+	{/if}
+</top100>
+
+<top100 class:show={$discoverScreen === 'top100'}>
+	{#if top100.id}
+		<Album data={{ album: top100 }} />
+	{/if}
+</top100>
+
+<music-shows class:show={$discoverScreen === 'radio'}>
 	<ul>
-		<li>
-			<AlbumCard
-				isRadio={true}
-				album={{ title: 'LN Beats Radio', artwork: '/lnbeats_logo_black_circle_192.png' }}
-			/>
-		</li>
 		{#each $radio as album}
 			<li>
 				<AlbumCard {album} />
 			</li>
 		{/each}
 	</ul>
-{:else}
+</music-shows>
+
+<search class:show={$discoverScreen === 'search'}>
 	<search-header>
 		<SearchBar
 			placeholder="search for album"
@@ -171,16 +234,15 @@
 			bind:filterDemu
 		/>
 	</search-header>
-
 	{#if filteredList}
 		<FilteredList items={filterDemu ? demuList : filteredList} />
 	{/if}
-{/if}
+</search>
 
 <style>
 	header {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
 		height: 50px;
 		padding: 0 12px;
@@ -214,9 +276,14 @@
 		margin: 8px 0 0 8px;
 		flex: 1;
 		width: calc(100% - 8px);
+		height: calc(100% - 60px);
 		flex-wrap: wrap;
 		justify-content: center;
 		overflow: auto;
+	}
+
+	music-shows > ul {
+		height: calc(100% - 8px);
 	}
 
 	li {
@@ -229,8 +296,7 @@
 		justify-content: space-around;
 	}
 
-	navbar > button,
-	navbar > a {
+	navbar > button {
 		color: var(--color-text-0);
 		display: flex;
 		flex-direction: column;
@@ -244,5 +310,18 @@
 
 	navbar > button.active {
 		border-bottom: 1px solid var(--color-text-0);
+	}
+
+	featured,
+	top100,
+	music-shows,
+	search {
+		display: none;
+		height: calc(100% - 84px);
+		overflow: hidden;
+	}
+
+	.show {
+		display: block;
 	}
 </style>

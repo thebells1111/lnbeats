@@ -213,7 +213,6 @@
 			setTimeout(addToFeaturedList, 1000);
 
 			function addToFeaturedList() {
-				console.log(_featuredList);
 				const newItems = _featuredList.splice(0, 20);
 				$featuredList = $featuredList.concat(newItems);
 				if (_featuredList.length > 0) {

@@ -26,7 +26,7 @@
 <div
 	class="list-container"
 	bind:clientHeight={gridHeight}
-	style={`height: calc(100% - 136px); overflow:hidden`}
+	style={`height: calc(100% - 46px); overflow:hidden`}
 >
 	<div class="grid" bind:clientWidth={gridWidth}>
 		<VirtualList
