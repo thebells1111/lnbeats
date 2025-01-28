@@ -5,6 +5,7 @@
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
 	import toUrlFriendly from '$functions/toUrlFriendly';
+
 	import {
 		playingSong,
 		playingAlbum,
@@ -29,6 +30,9 @@
 	import Favorite from '$icons/Favorite.svelte';
 	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 	import Close from '$icons/Close.svelte';
+	import Add from '$icons/Add.svelte';
+
+	export let showPlaylistModal = false;
 
 	$: isFavorite =
 		$favorites[
@@ -134,6 +138,15 @@
 			<button class="share" on:click={handleShare}>
 				<Share size="24" />
 				<p>Share</p>
+			</button>
+			<button
+				class="share"
+				on:click={() => {
+					showPlaylistModal = true;
+				}}
+			>
+				<Add size="24" />
+				<p>Playlist</p>
 			</button>
 		</top-buttons>
 		<img
@@ -343,6 +356,8 @@
 	top-buttons {
 		width: 100%;
 		max-width: 360px;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.share {

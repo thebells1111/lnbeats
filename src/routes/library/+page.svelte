@@ -1,13 +1,12 @@
 <script>
 	import localforage from 'localforage';
 	import { onMount } from 'svelte';
-	import { encodeURL } from '$functions/songId';
 
 	import AlbumCard from './AlbumCard.svelte';
 	import CreatePlaylistButton from '$c/CreatePlaylist/CreatePlaylistButton.svelte';
 	import OptionsMenu from './OptionsMenu.svelte';
 
-	import { library, playlists, albumSearch, favoritesDB, favorites } from '$/stores';
+	import { library, playlists, albumSearch, favoritesDB, favorites, playlistDB } from '$/stores';
 
 	let closerActive = false;
 
@@ -20,10 +19,24 @@
 
 			$library = (await libraryDB.getItem('library')) || {};
 			console.log($library);
-			const playlistDB = localforage.createInstance({
-				name: 'playlistDB'
-			});
-			$playlists = (await playlistDB.getItem('msp-playlist-db')) || new Set();
+
+			const _playlists = await playlistDB.getItem('playlists');
+			if (!_playlists) {
+				localforage
+					.dropInstance({
+						name: 'playlistDB'
+					})
+					.then(() => {
+						console.log('database reset');
+					})
+					.catch((err) => {
+						console.error('Error deleting database:', err);
+					});
+			}
+
+			$playlists = _playlists || {};
+
+			console.log($playlists);
 		}
 
 		if (!Object.keys($favorites).length) {
@@ -47,12 +60,13 @@
 				<AlbumCard {favorites} />
 			</a>
 		</li>
-		{#each [...$playlists] as playlist}
+
+		{#each Object.entries($playlists) as [guid, album]}
 			<li>
-				<a href={`/playlist/${encodeURL(playlist)}`}>
-					<AlbumCard {playlist} />
+				<a href={`/playlist/${guid}`}>
+					<AlbumCard {album} playlist="true" />
 				</a>
-				<OptionsMenu itemType="playlist" item={playlist} bind:closerActive />
+				<OptionsMenu itemType="playlist" item={album} bind:closerActive />
 			</li>
 		{/each}
 

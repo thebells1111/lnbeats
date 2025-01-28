@@ -36,10 +36,12 @@
 		"parse-srt": "^1.0.0-alpha",
 		"passport": "^0.6.0",
 		"passport-oauth2": "^1.6.1",
+		"sortablejs": "^1.15.6",
 		"svelte-lazy-image": "^0.5.1",
 		"svelte-tiny-virtual-list": "^2.0.5",
 		"svelte-virtual": "^1.0.0-next.16",
 		"swiper": "^8.4.6",
+		"uuid": "^11.0.3",
 		"webln": "^0.3.2"
 	}
 }

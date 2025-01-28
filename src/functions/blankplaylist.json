@@ -1,0 +1,10 @@
+{
+	"title": "New Playlist",
+	"description": "Playlist Description",
+	"itunes:image": {
+		"@_href": "https://lnbeats.b-cdn.net/playlist600x600.png"
+	},
+	"link": "",
+	"generator": "LN Beats",
+	"podcast:medium": "musicL"
+}

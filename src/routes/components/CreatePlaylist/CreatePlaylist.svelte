@@ -1,34 +1,34 @@
 <script>
-	import { addPlaylistToMasterList } from '$functions/addPlaylistToMasterList';
+	import generateValidGuid from '$functions/generateValidGuid';
 	export let showModal;
-	let name = '';
+
+	import { playlists, playlistDB } from '$/stores';
+	let title = '';
 	let displayText = '';
 
 	async function handleNewPlaylist() {
-		if (name && name !== 'msp-playlist-db') {
-			const { success, message } = await addPlaylistToMasterList({ name });
-
-			displayText = message;
-
-			console.log(success);
-
-			if (success) {
-				setTimeout(() => {
-					showModal = false;
-				}, 1000);
-			}
-		} else {
-			displayText = 'Please choose a different playlist name';
+		if (!$playlists) {
+			$playlists = (await playlistDB.getItem('playlists')) || {};
 		}
+
+		let guid = await generateValidGuid();
+		let playlist = { guid, art: '/playlist60x60.png', title, remoteSongs: [] };
+
+		$playlists[guid] = playlist;
+		await playlistDB.setItem('playlists', $playlists);
+
+		setTimeout(() => {
+			showModal = false;
+		}, 500);
 	}
 </script>
 
 <div>
 	<label
 		>Create New Playlist
-		<input type="text" bind:value={name} />
+		<input type="text" bind:value={title} />
 	</label>
-	<button on:click={handleNewPlaylist} disabled={!name && name !== 'msp-playlist-db'}>Save</button>
+	<button on:click={handleNewPlaylist} disabled={!title}>Save</button>
 	<h2>{displayText}</h2>
 </div>
 

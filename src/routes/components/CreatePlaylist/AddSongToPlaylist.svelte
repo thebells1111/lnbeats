@@ -1,30 +1,30 @@
 <script>
-	import localforage from 'localforage';
+	import { v4 as uuidv4 } from 'uuid';
 	import QueueMusic from '$icons/QueueMusic.svelte';
-	import { playlists, playingAlbum, selectedPlaylist } from '$/stores';
+	import { playlists, playlistDB } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
+	import { onMount } from 'svelte';
 	export let song;
 	let successList = '';
 
-	async function addSongToPlaylist(list) {
-		const playlistDB = localforage.createInstance({
-			name: 'playlistDB'
+	onMount(async () => {
+		if (!Object.keys($playlists).length) {
+			$playlists = await playlistDB.getItem('playlists');
+		}
+	});
+
+	async function addSongToPlaylist(guid) {
+		let playlist = $playlists[guid];
+		playlist.remoteSongs = playlist.remoteSongs || [];
+		console.log(song);
+		playlist.remoteSongs.push({
+			id: uuidv4(),
+			'@_feedGuid': song?.album?.podcastGuid,
+			'@_itemGuid': song?.guid?.['#text'] || song?.guid
 		});
 
-		const { artwork, image, podcastGuid, title, author } = song.album;
-		song.album = { artwork, image, podcastGuid, title, author };
-		song.playlist = list;
-
-		let playlist = await playlistDB.getItem(list);
-		playlist.push(song);
-		playlistDB.setItem(list, playlist);
-		if ($playingAlbum.playlist === list) {
-			$playingAlbum.songs = playlist;
-		}
-		if ($selectedPlaylist.playlist === list) {
-			$selectedPlaylist.songs = playlist;
-		}
-		successList = list;
+		successList = playlist.title;
+		await playlistDB.setItem('playlists', $playlists);
 		setTimeout(() => (successList = ''), 1000);
 	}
 </script>
@@ -34,19 +34,19 @@
 	<CreatePlaylistButton />
 </header>
 <ul>
-	{#each [...$playlists] as list}
-		<li on:click={addSongToPlaylist.bind(this, list)}>
+	{#each $playlists ? Object.entries($playlists) : [] as [guid, list]}
+		<li on:click={addSongToPlaylist.bind(this, guid)}>
 			<queue-icon>
 				<QueueMusic size="55" />
 			</queue-icon>
-			<list-name>{list}</list-name>
+			<list-name>{list.title}</list-name>
 		</li>
 	{/each}
 </ul>
 
 {#if successList}
 	<success-modal>
-		<h1>{song.title} added to {successList}</h1>
+		<h4>{song.title} added to {successList}</h4>
 	</success-modal>
 {/if}
 
@@ -108,7 +108,7 @@
 		z-index: 99;
 	}
 
-	success-modal h1 {
+	success-modal h4 {
 		text-align: center;
 		background-color: red;
 		margin: 16px;
@@ -117,6 +117,6 @@
 		background-color: rgba(0, 0, 0, 0.75);
 		backdrop-filter: blur(5px);
 		color: var(--color-text-4);
-		margin-top: 50px;
+		margin-top: 100px;
 	}
 </style>

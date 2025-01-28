@@ -1,5 +1,4 @@
 <script>
-	import localforage from 'localforage';
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import Modals from '$c/Modals/Modals.svelte';
@@ -25,7 +24,7 @@
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
-		remotePlaylistPlaying,
+		remotePlaylistPlaying
 	} from '$/stores';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';

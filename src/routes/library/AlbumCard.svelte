@@ -3,8 +3,8 @@
 	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
 
 	export let album = {};
-	export let playlist;
-	export let favorites;
+	export let playlist = null;
+	export let favorites = null;
 	console.log(album);
 </script>
 

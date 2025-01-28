@@ -2,8 +2,10 @@
 	import Close from '$icons/Close.svelte';
 
 	export let showModal = false;
+	export let onClose = async () => {};
 
-	function closeModal() {
+	async function closeModal() {
+		await onClose();
 		showModal = false;
 	}
 </script>

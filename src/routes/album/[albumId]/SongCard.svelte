@@ -80,28 +80,10 @@
 			$currentTranscriptIndex = undefined;
 		}
 
-		if (song.playlist) {
-			const playlistDB = localforage.createInstance({
-				name: 'playlistDB'
-			});
-			const playlist = await playlistDB.getItem(song.playlist);
-			// console.log(playlist)
-			// const { artwork, image, podcastGuid, title, author } = song.album;
-			$playingAlbum = {
-				album: song.album,
-				playlist: song.playlist,
-				title: song.album.title,
-				artwork: song.album.artwork || song.album.image,
-				songs: playlist,
-				author: song.album.author,
-				podcastGuid: song.album.podcastGuid
-			};
-		} else {
-			$playingAlbum = $selectedAlbum;
-			$playingAlbum.title = $playingAlbum.title;
-			$playingAlbum.author = $playingAlbum.author;
-			$playingIndex = null;
-		}
+		$playingAlbum = $selectedAlbum;
+		$playingAlbum.title = $playingAlbum.title;
+		$playingAlbum.author = $playingAlbum.author;
+		$playingIndex = null;
 
 		if ($playingIndex !== index) {
 			$player.pause();
