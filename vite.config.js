@@ -9,10 +9,10 @@ const config = {
 			$functions: path.resolve('src', 'functions'),
 			$: path.resolve('src', 'store'),
 			$routes: path.resolve('src', 'routes'),
-			$c: path.resolve('src', 'routes', 'components'),
-			$icons: path.resolve('src', 'routes', 'components', 'icons'),
-			$buttons: path.resolve('src', 'routes', 'components', 'buttons'),
-			$modals: path.resolve('src', 'routes', 'components', 'modals')
+			$c: path.resolve('src', 'components'),
+			$icons: path.resolve('src', 'components', 'icons'),
+			$buttons: path.resolve('src', 'components', 'buttons'),
+			$modals: path.resolve('src', 'components', 'modals')
 		}
 	}
 };

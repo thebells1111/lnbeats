@@ -4,5 +4,5 @@ export async function load({ params }) {
 		playlist = params.playlist;
 	} catch (error) {}
 
-	return { playlist };
+	return { guid: playlist };
 }

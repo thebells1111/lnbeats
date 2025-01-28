@@ -19,8 +19,6 @@
 		remoteServer,
 		playingChapters,
 		currentPlayingChapter,
-		top100Playing,
-		lnbRadioPlaying,
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
@@ -47,8 +45,6 @@
 		console.log(_song);
 		song = await favoritesDB.getItem(_song.id);
 		console.log(song);
-		$top100Playing = false;
-		$lnbRadioPlaying = false;
 		$remotePlaylistPlaying = false;
 		if (song['podcast:chapters']) {
 			fetch(remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`)
@@ -228,11 +224,6 @@
 								<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
 									Add to Playlist
 								</li>
-								{#if song.playlist}
-									<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>
-										Remove
-									</li>
-								{/if}
 							</ul>
 						</menu>
 					{/if}

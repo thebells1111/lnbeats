@@ -22,16 +22,13 @@
 		currentTranscriptIndex,
 		chapterBoostBypass,
 		remoteServer,
-		top100Playing,
 		top100,
-		top100Loop,
 		currentSplit,
 		favorites,
 		favoritesDB,
 		mediaSession,
 		remotePlaylistPlaying,
 		remotePlaylist,
-		selectedSongList,
 		playingSongList
 	} from '$/stores';
 
@@ -60,36 +57,24 @@
 			if (
 				($playingIndex >= 0 &&
 					($playingIndex < album?.songs?.length - 1 ||
-						($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-						($remotePlaylistPlaying && $playingIndex < $remotePlaylist.length - 1))) ||
+						($remotePlaylistPlaying &&
+							$playingIndex < $remotePlaylist?.remoteSongs?.length - 1))) ||
 				album.favorites
 			) {
 				$playingIndex = $playingIndex + 1;
 				let nextSong;
 				let _nextSong;
-				if ($top100Playing || $remotePlaylistPlaying) {
-					let feedUrl;
-					if ($top100Playing) {
-						if ($playingIndex - 1 === $top100.length) {
-							$playingIndex = 1;
-						}
-
-						_nextSong = $top100[$playingIndex - 1];
-						let feedGuid = _nextSong.feedGuid;
-						feedUrl =
-							remoteServer +
-							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
-					} else if ($remotePlaylistPlaying) {
-						if ($playingIndex === $remotePlaylist.length) {
-							$playingIndex = 0;
-						}
-
-						_nextSong = $remotePlaylist[$playingIndex];
-						let feedGuid = _nextSong['@_feedGuid'];
-						feedUrl =
-							remoteServer +
-							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+				if ($remotePlaylistPlaying) {
+					if ($playingIndex === $remotePlaylist?.remoteSongs?.length) {
+						$playingIndex = 0;
 					}
+
+					_nextSong = $remotePlaylist?.remoteSongs?.[$playingIndex];
+					let feedGuid = _nextSong['@_feedGuid'];
+					let feedUrl =
+						remoteServer +
+						`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+
 					console.log(_nextSong);
 
 					try {
@@ -122,11 +107,7 @@
 						console.log($playingAlbum);
 
 						let foundSong;
-						if ($top100Playing) {
-							foundSong = $playingAlbum.songs.find((v) => {
-								return v.title == _nextSong.title;
-							});
-						} else if ($remotePlaylist) {
+						if ($remotePlaylist?.remoteSongs) {
 							foundSong = $playingAlbum.songs.find(
 								(v) => v.guid['#text'] == _nextSong['@_itemGuid']
 							);
@@ -155,16 +136,6 @@
 					nextSong = $playingSongList[$playingIndex];
 				}
 				loadSong(nextSong);
-
-				if (nextSong.playlist) {
-					$playingAlbum = {
-						...$playingAlbum,
-						album: nextSong.album,
-						title: nextSong.album.title,
-						artwork: nextSong.album.artwork || nextSong.album.image,
-						author: nextSong.album.author
-					};
-				}
 			}
 		}
 	}
@@ -468,36 +439,24 @@
 				if (
 					($playingIndex >= 0 &&
 						($playingIndex < album?.songs?.length - 1 ||
-							($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-							($remotePlaylistPlaying && $playingIndex < $remotePlaylist.length - 1))) ||
+							($remotePlaylistPlaying &&
+								$playingIndex < $remotePlaylist?.remoteSongs?.length - 1))) ||
 					album.favorites
 				) {
 					$playingIndex = $playingIndex + 1;
 					let nextSong;
 					let _nextSong;
-					if ($top100Playing || $remotePlaylistPlaying) {
-						let feedUrl;
-						if ($top100Playing) {
-							if ($playingIndex - 1 === $top100.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $top100[$playingIndex - 1];
-							let feedGuid = _nextSong.feedGuid;
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
-						} else if ($remotePlaylistPlaying) {
-							if ($playingIndex === $remotePlaylist.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $remotePlaylist[$playingIndex];
-							let feedGuid = _nextSong['@_feedGuid'];
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+					if ($remotePlaylistPlaying) {
+						if ($playingIndex === $remotePlaylist.length) {
+							$playingIndex = 1;
 						}
+
+						_nextSong = $remotePlaylist?.remoteSongs?.[$playingIndex];
+						let feedGuid = _nextSong['@_feedGuid'];
+						let feedUrl =
+							remoteServer +
+							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+
 						console.log(_nextSong);
 
 						try {
@@ -532,11 +491,7 @@
 							console.log($playingAlbum);
 
 							let foundSong;
-							if ($top100Playing) {
-								foundSong = $playingAlbum.songs.find((v) => {
-									return v.title == _nextSong.title;
-								});
-							} else if ($remotePlaylist) {
+							if ($remotePlaylist?.remoteSongs) {
 								foundSong = $playingAlbum.songs.find(
 									(v) => v.guid['#text'] == _nextSong['@_itemGuid']
 								);
@@ -565,16 +520,6 @@
 						nextSong = $playingSongList[$playingIndex];
 					}
 					loadSong(nextSong);
-
-					if (nextSong.playlist) {
-						$playingAlbum = {
-							...$playingAlbum,
-							album: nextSong.album,
-							title: nextSong.album.title,
-							artwork: nextSong.album.artwork || nextSong.album.image,
-							author: nextSong.album.author
-						};
-					}
 				}
 			}
 		}
@@ -594,29 +539,17 @@
 					$playingIndex = $playingIndex - 1;
 					let nextSong;
 					let _nextSong;
-					if ($top100Playing || $remotePlaylistPlaying) {
-						let feedUrl;
-						if ($top100Playing) {
-							if ($playingIndex - 1 === $top100.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $top100[$playingIndex - 1];
-							let feedGuid = _nextSong.feedGuid;
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
-						} else if ($remotePlaylistPlaying) {
-							if ($playingIndex === $remotePlaylist.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $remotePlaylist[$playingIndex];
-							let feedGuid = _nextSong['@_feedGuid'];
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+					if ($remotePlaylistPlaying) {
+						if ($playingIndex === $remotePlaylist?.remoteSongs?.length) {
+							$playingIndex = 1;
 						}
+
+						_nextSong = $remotePlaylist?.remoteSongs?.[$playingIndex];
+						let feedGuid = _nextSong['@_feedGuid'];
+						let feedUrl =
+							remoteServer +
+							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+
 						console.log(_nextSong);
 
 						try {
@@ -651,11 +584,7 @@
 							console.log($playingAlbum);
 
 							let foundSong;
-							if ($top100Playing) {
-								foundSong = $playingAlbum.songs.find((v) => {
-									return v.title == _nextSong.title;
-								});
-							} else if ($remotePlaylist) {
+							if ($remotePlaylist?.remoteSongs) {
 								foundSong = $playingAlbum.songs.find(
 									(v) => v.guid['#text'] == _nextSong['@_itemGuid']
 								);
@@ -684,16 +613,6 @@
 						nextSong = $playingSongList[$playingIndex];
 					}
 					loadSong(nextSong);
-
-					if (nextSong.playlist) {
-						$playingAlbum = {
-							...$playingAlbum,
-							album: nextSong.album,
-							title: nextSong.album.title,
-							artwork: nextSong.album.artwork || nextSong.album.image,
-							author: nextSong.album.author
-						};
-					}
 				}
 			}
 		}

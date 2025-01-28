@@ -17,14 +17,11 @@
 		valueTimeSplitBlock,
 		remoteServer,
 		playingChapters,
-		top100Playing,
-		playFeatured,
 		currentPlayingChapter,
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
 		remotePlaylistPlaying,
-		selectedSongList,
 		playingSongList,
 		shuffleSongs
 	} from '$/stores';
@@ -33,24 +30,17 @@
 
 	export let song;
 	export let index;
+	export let album;
 
 	let expandMenu = false;
 	let showModal = false;
 	let modalType;
 
-	onMount(() => {
-		if ($playFeatured && index === 0) {
-			playSong();
-			$playFeatured = false;
-		}
-	});
-
 	async function playSong() {
-		$top100Playing = false;
 		$remotePlaylistPlaying = false;
 		$valueTimeSplitBlock = [];
 		if ($playingAlbum.id !== $selectedAlbum.id) {
-			$playingSongList = clone($selectedSongList);
+			$playingSongList = clone(album.songs);
 			$shuffleSongs = false;
 		}
 
@@ -235,9 +225,6 @@
 					<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
 						Add to Playlist
 					</li>
-					{#if song.playlist}
-						<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>Remove</li>
-					{/if}
 				</ul>
 			</menu>
 		{/if}

@@ -1,5 +1,5 @@
 <script>
-	import { indexSearchResults, selectedAlbum } from '$/stores';
+	import { indexSearchResults } from '$/stores';
 	export let album;
 
 	function removeAlbum() {

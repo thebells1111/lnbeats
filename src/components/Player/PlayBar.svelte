@@ -8,7 +8,7 @@
 		selectedAlbum,
 		playingIndex,
 		shuffleSongs,
-		top100Playing,
+		remotePlaylistPlaying,
 		top100,
 		loopSongs
 	} from '$/stores';
@@ -29,7 +29,7 @@
 	function handleShuffle() {
 		$shuffleSongs = !$shuffleSongs;
 		let newList;
-		if ($top100Playing) {
+		if ($remotePlaylistPlaying) {
 			newList = $shuffleSongs ? shuffleArray(clone($top100)) : $top100;
 		} else {
 			newList = $shuffleSongs ? shuffleArray(clone($selectedAlbum.songs)) : $selectedAlbum.songs;

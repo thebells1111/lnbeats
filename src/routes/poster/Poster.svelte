@@ -121,18 +121,7 @@
 		>
 			<Close size={24} />
 		</button>
-		<button
-			on:click={() => {
-				$posterSwiper.slideTo(0);
-				setTimeout(() => {
-					document.getElementById('poster-swiper').style.visibility = 'hidden';
-				}, 500);
 
-				goto('/album/' + $playingAlbum['podcastGuid']);
-			}}
-		>
-			View Album
-		</button>
 		<album-title>{$playingAlbum && $playingAlbum.title}</album-title>
 		<top-buttons>
 			<button class="share" on:click={handleShare}>

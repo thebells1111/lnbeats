@@ -12,17 +12,13 @@
 	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
 	import {
-		selectedAlbum,
 		posterSwiper,
-		top100Playing,
 		player,
 		remoteServer,
 		playingAlbum,
 		playingIndex,
 		playingSong,
 		valueTimeSplitBlock,
-		playFeatured,
-		lnbRadioPlaying,
 		remotePlaylistPlaying,
 		remotePlaylist
 	} from '$/stores';
@@ -30,6 +26,7 @@
 	export let remoteSong;
 	export let playlist = '';
 	export let index;
+	export let album;
 
 	let root;
 	let songInfo = {};
@@ -52,11 +49,6 @@
 	onMount(async () => {
 		observer = initialIntersectionObserver();
 		observer.observe(root);
-
-		if ($playFeatured && index === 0) {
-			playSong();
-			$playFeatured = false;
-		}
 	});
 
 	onDestroy(() => {
@@ -76,8 +68,6 @@
 	}
 
 	async function playSong() {
-		$top100Playing = false;
-		$lnbRadioPlaying = false;
 		$valueTimeSplitBlock = [];
 
 		const { podcastGuid } = songInfo;
@@ -98,7 +88,6 @@
 				throw error(404, 'Not found');
 			}
 
-			console.log(albumData.feed.url);
 			const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 			let data = await res.text();
 
@@ -128,7 +117,7 @@
 			$player.src = foundSong.enclosure['@_url'];
 			$playingSong = foundSong;
 			$playingIndex = index;
-			$remotePlaylist = $selectedAlbum.remoteSongs;
+			$remotePlaylist = album;
 			$remotePlaylistPlaying = true;
 
 			$player.play();
@@ -209,7 +198,7 @@
 
 <Modals bind:showModal>
 	{#if modalType === 'playlist-add'}
-		<AddSongToPlaylist song={{ ...songInfo, album: $selectedAlbum }} />
+		<AddSongToPlaylist song={{ ...songInfo, album }} />
 	{:else if modalType === 'playlist-remove'}
 		<RemoveConfirmModal bind:showModal item={songInfo} {playlist} itemType="playlist-song" />
 	{/if}

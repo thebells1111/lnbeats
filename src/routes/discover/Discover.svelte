@@ -5,7 +5,7 @@
 	import clone from 'just-clone';
 	import extras from './extras.json';
 	import FilteredList from './FilteredList.svelte';
-	import Album from '$routes/album/[albumId]/+page.svelte';
+	import Album from '$c/Album/Album.svelte';
 
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
@@ -27,7 +27,9 @@
 		albumSearch,
 		radio,
 		remoteServer,
-		playingAlbum
+		playingAlbum,
+		remotePlaylistPlaying,
+		remotePlaylist
 	} from '$/stores';
 
 	let filteredList = [];
@@ -203,15 +205,14 @@
 </featured>
 
 <top100 class:show={$discoverScreen === 'queue'}>
-	{$playingAlbum.id}
 	{#if $playingAlbum.id}
-		<Album data={{ album: $playingAlbum }} />
+		<Album album={$remotePlaylistPlaying ? $remotePlaylist : $playingAlbum} />
 	{/if}
 </top100>
 
 <top100 class:show={$discoverScreen === 'top100'}>
 	{#if top100.id}
-		<Album data={{ album: top100 }} />
+		<Album album={top100} />
 	{/if}
 </top100>
 

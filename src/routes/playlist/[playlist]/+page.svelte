@@ -1,7 +1,7 @@
 <script>
 	import { v4 as uuidv4 } from 'uuid';
 	import Modals from '$c/Modals/Modals.svelte';
-	import RemoteSongCard from '$routes/album/[albumId]/RemoteSongCard.svelte';
+	import RemoteSongCard from '$c/Album/RemoteSongCard.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { selectedAlbum, playlists, playlistDB, publishingDisplay, user } from '$/stores';
@@ -12,7 +12,7 @@
 
 	export let data = {};
 
-	let guid = data?.playlist;
+	let guid = data?.guid;
 	let playlist = {};
 	let loading = true;
 	let showModal = false;
@@ -71,7 +71,7 @@
 		<ul>
 			{#if playlist && playlist?.remoteSongs?.length}
 				{#each playlist.remoteSongs as remoteSong, index (remoteSong.id)}
-					<RemoteSongCard {remoteSong} {index} {playlist} />
+					<RemoteSongCard album={playlist} {remoteSong} {index} {playlist} />
 				{/each}
 			{:else}
 				<p style="text-align:center">This playlist has no songs.</p>

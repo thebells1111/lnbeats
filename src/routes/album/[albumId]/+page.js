@@ -25,20 +25,6 @@ export async function load({ params, fetch }) {
 
 		console.log(albumData.feed);
 
-		if (!albumData?.feed?.podcastGuid) {
-			albumUrl =
-				remoteServer +
-				`api/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=${params.albumId}`)}`;
-			albumRes = await fetch(albumUrl);
-			albumData = await albumRes.json();
-
-			if (!albumData?.feed?.id) {
-				return { redirect: '/' };
-			} else {
-				redirect = '/album/' + albumData?.feed?.podcastGuid;
-			}
-		}
-
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
 
@@ -65,7 +51,7 @@ export async function load({ params, fetch }) {
 				albumData.feed.live = [].concat(data.liveItem);
 			}
 
-			return { album: albumData.feed, redirect };
+			return albumData.feed;
 		}
 	} catch (err) {
 		console.log(err);

@@ -1,25 +1,17 @@
 <script>
-	// import gotoNextSong from '$functions/gotoNextSong';
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
 	import loadSong from '$functions/loadSong';
-	import SkipNext from '$icons/SkipNext.svelte';
-	export let size = 30;
-	export let style;
-
+	import SkipPrevious from '$icons/SkipPrevious.svelte';
 	import {
-		playingAlbum,
-		playingSong,
 		playingIndex,
 		playingChapters,
 		currentPlayingChapter,
 		currentChapterIndex,
 		player,
 		chapterBoostBypass,
-		top100Playing,
 		top100,
 		remoteServer,
-		top100Loop,
 		favorites,
 		favoritesDB,
 		remotePlaylistPlaying,
@@ -37,61 +29,43 @@
 		tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
 	};
 
-	async function gotoNextSong() {
-		if ($currentChapterIndex < $playingChapters?.length - 1) {
-			$currentChapterIndex++;
+	export let size = 30;
+	export let style;
+
+	import { playingAlbum, playingSong } from '$/stores';
+
+	async function gotoPreviousSong() {
+		if ($currentChapterIndex > 0) {
+			$currentChapterIndex--;
 			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
 			while ($currentPlayingChapter.hasOwnProperty('toc') && $currentPlayingChapter.toc !== true) {
-				if ($currentChapterIndex < $playingChapters?.length - 1) {
-					$currentChapterIndex++;
+				if ($currentChapterIndex > 0) {
+					$currentChapterIndex--;
 					$currentPlayingChapter = $playingChapters[$currentChapterIndex];
 				}
 			}
-
-			console.log($currentPlayingChapter);
 			$player.currentTime = $currentPlayingChapter.startTime;
 			$chapterBoostBypass = true;
 		} else {
 			let album = $playingAlbum;
 			let currentSong = $playingSong;
 
-			if (
-				($playingSongList || $remotePlaylistPlaying) &&
-				(currentSong?.enclosure || currentSong?.enclosure?.['@_url'])
-			) {
-				if (
-					($playingIndex >= 0 &&
-						($playingIndex < $playingSongList?.length - 1 ||
-							($top100Playing && ($playingIndex - 1 < $top100.length || $top100Loop)) ||
-							($remotePlaylistPlaying && $playingIndex < $remotePlaylist.length - 1))) ||
-					album.favorites
-				) {
-					$playingIndex = $playingIndex + 1;
+			if ($playingSongList && (currentSong?.enclosure || currentSong?.enclosure?.['@_url'])) {
+				if ($playingIndex > 0 || album.favorites) {
+					$playingIndex = $playingIndex - 1;
 					let nextSong;
 					let _nextSong;
-					if ($top100Playing || $remotePlaylistPlaying) {
-						let feedUrl;
-						if ($top100Playing) {
-							if ($playingIndex - 1 === $top100.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $top100[$playingIndex - 1];
-							let feedGuid = _nextSong.feedGuid;
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
-						} else if ($remotePlaylistPlaying) {
-							if ($playingIndex === $remotePlaylist.length) {
-								$playingIndex = 1;
-							}
-
-							_nextSong = $remotePlaylist[$playingIndex];
-							let feedGuid = _nextSong['@_feedGuid'];
-							feedUrl =
-								remoteServer +
-								`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+					if ($remotePlaylistPlaying) {
+						if ($playingIndex === $remotePlaylist?.remoteSongs?.length) {
+							$playingIndex = 1;
 						}
+
+						_nextSong = $remotePlaylist?.remoteSongs?.[$playingIndex];
+						let feedGuid = _nextSong['@_feedGuid'];
+						let feedUrl =
+							remoteServer +
+							`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+
 						console.log(_nextSong);
 
 						try {
@@ -126,11 +100,7 @@
 							console.log($playingAlbum);
 
 							let foundSong;
-							if ($top100Playing) {
-								foundSong = $playingAlbum.songs.find((v) => {
-									return v.title == _nextSong.title;
-								});
-							} else if ($remotePlaylist) {
+							if ($remotePlaylist?.remoteSongs) {
 								foundSong = $playingAlbum.songs.find(
 									(v) => v.guid['#text'] == _nextSong['@_itemGuid']
 								);
@@ -142,7 +112,7 @@
 						}
 					} else if (album.favorites) {
 						let favs = Object.entries($favorites);
-						let nextIndex = favs.findIndex((v) => v[0] === album.favorites) + 1;
+						let nextIndex = favs.findIndex((v) => v[0] === album.favorites) - 1;
 						let song = await favoritesDB.getItem(favs[nextIndex][0]);
 
 						$playingAlbum = {
@@ -159,24 +129,14 @@
 						nextSong = $playingSongList?.[$playingIndex];
 					}
 					loadSong(nextSong);
-
-					if (nextSong.playlist) {
-						$playingAlbum = {
-							...$playingAlbum,
-							album: nextSong.album,
-							title: nextSong.album.title,
-							artwork: nextSong.album.artwork || nextSong.album.image,
-							author: nextSong.album.author
-						};
-					}
 				}
 			}
 		}
 	}
 </script>
 
-<button on:click={gotoNextSong} aria-label="Next Song" {style}>
-	<SkipNext {size} />
+<button on:click={gotoPreviousSong} aria-label="Previous Song" {style}>
+	<SkipPrevious {size} />
 </button>
 
 <style>

@@ -25,11 +25,9 @@ export const favorites = writable({});
 export const selectedPlaylist = writable([]);
 export const selectedAlbum = writable({});
 export const playingAlbum = writable({});
-export const selectedSongList = writable([]);
 export const playingSongList = writable([]);
 export const shuffleSongs = writable(false);
 export const loopSongs = writable(false);
-export const selectedSong = writable({});
 export const playingSong = writable({});
 export const playingIndex = writable();
 export const player = writable();
@@ -38,6 +36,7 @@ export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
 export const mediaSession = writable();
 export const posterSwiper = writable();
+export const albumSwiper = writable();
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);
 export const senderName = writable('');
@@ -68,14 +67,11 @@ export const showInstructionScreen = writable(false);
 
 export const top100 = writable([]);
 export const sortedTop100 = writable([]);
-export const top100Playing = writable(false);
-export const top100Loop = writable(false);
 
 export const radio = writable([]);
 export const lnbRadio = writable([]);
 export const lnbRadioAlbums = writable({});
 export const lnbRadioPlaying = writable(false);
-export const playFeatured = writable(false);
 export const shareUrl = writable(false);
 export const shareText = writable('');
 

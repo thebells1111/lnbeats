@@ -1,7 +1,8 @@
 <script>
 	export let album;
-	export let isRadio = false;
 	export let fromSearch = false;
+
+	import { albumSwiper } from '$/stores';
 
 	let artworkSrc = album.artwork || album.image; // Initial URL from the song object
 
@@ -21,10 +22,16 @@
 
 	// Initialize artwork source
 	artworkSrc = loadCachedArtwork(album.id, album.artwork || album.image);
+
+	function openAlbum() {
+		document.getElementById('album-swiper').style.visibility = 'initial';
+		$albumSwiper.slideTo(1);
+		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+	}
 </script>
 
 {#if album}
-	<a href={isRadio ? '/radio' : `/album/${album.podcastGuid}`}>
+	<button on:click={openAlbum}>
 		<card>
 			<img src={artworkSrc} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
@@ -50,7 +57,7 @@
 				{/if}
 			{/if}
 		</card>
-	</a>
+	</button>
 {/if}
 
 <style>
@@ -65,6 +72,7 @@
 		backdrop-filter: blur(14px);
 		background-color: rgba(0, 0, 0, 0.5);
 		border-radius: 8px;
+		color: var(--color-text-0);
 	}
 
 	img {
@@ -128,6 +136,8 @@
 		padding: 1px;
 		font-size: 1.1em;
 		font-weight: 550;
+		display: flex;
+		justify-content: flex-start;
 	}
 
 	album-title {
@@ -140,11 +150,7 @@
 		font-size: 0.9em;
 	}
 
-	a,
-	a:hover {
-		text-decoration: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	button {
+		background-color: transparent;
 	}
 </style>

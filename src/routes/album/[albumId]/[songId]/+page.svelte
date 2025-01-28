@@ -1,5 +1,5 @@
 <script>
-	import Album from '../+page.svelte';
+	import Album from '$c/Album/Album.svelte';
 	import { onMount } from 'svelte';
 	import clone from 'just-clone';
 

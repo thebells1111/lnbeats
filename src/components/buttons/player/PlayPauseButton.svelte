@@ -1,5 +1,5 @@
 <script>
-	import { player, selectedSong, playingSong, playingAlbum, selectedAlbum } from '$/stores';
+	import { player, playingSong } from '$/stores';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	export let size = 30;

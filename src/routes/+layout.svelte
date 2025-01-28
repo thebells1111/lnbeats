@@ -3,10 +3,13 @@
 	import 'swiper/css';
 	import NavHeader from './main/NavHeader/NavHeader.svelte';
 	import NavFooter from './main/NavFooter/NavFooter.svelte';
-	import Player from './components/Player/Player.svelte';
-	import BoostScreen from './components/BoostScreen/BoostScreen.svelte';
-	import InstructionScreen from './components/BoostScreen/InstructionScreen.svelte';
-	import { posterSwiper, senderName, satsPerBoost, satsPerSong, user } from '$/stores';
+	import Player from '$c/Player/Player.svelte';
+	import BoostScreen from '$c/BoostScreen/BoostScreen.svelte';
+	import InstructionScreen from '$c/BoostScreen/InstructionScreen.svelte';
+	import Album from '$c/Album/Album.svelte';
+
+	import Close from '$icons/Close.svelte';
+
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
@@ -17,6 +20,12 @@
 	import Modals from '$c/Modals/Modals.svelte';
 	import Share from '$c/Share/Share.svelte';
 	import {
+		posterSwiper,
+		albumSwiper,
+		senderName,
+		satsPerBoost,
+		satsPerSong,
+		user,
 		webln,
 		showBoostScreen,
 		showInstructionScreen,
@@ -25,8 +34,10 @@
 		discoverList,
 		featuredList,
 		playingSong,
-		playingAlbum
+		playingAlbum,
+		top100
 	} from '$/stores';
+
 	let albumList = [];
 	let wavlake = [];
 	let rssblue = [];
@@ -319,6 +330,41 @@
 			</SwiperSlide>
 		</Swiper>
 	</poster>
+	<album id="album-swiper">
+		<Swiper
+			direction="vertical"
+			autoHeight={true}
+			simulateTouch={false}
+			on:slideChange={() => {
+				// document.getElementById('poster-swiper').style.display = 'none';
+
+				if ($albumSwiper.activeIndex === 0) {
+					setTimeout(
+						() => (document.getElementById('album-swiper').style.visibility = 'hidden'),
+						500
+					);
+				}
+			}}
+			on:swiper={(e) => ($albumSwiper = e.detail[0])}
+		>
+			<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
+			<SwiperSlide>
+				<album-container>
+					<button
+						on:click={() => {
+							$albumSwiper.slideTo(0);
+							setTimeout(() => {
+								document.getElementById('album-swiper').style.visibility = 'hidden';
+							}, 500);
+						}}
+					>
+						<Close size={24} />
+					</button>
+					<Album album={$top100} />
+				</album-container>
+			</SwiperSlide>
+		</Swiper>
+	</album>
 	<div class="header-background" />
 	<div class="footer-background" />
 	<div class="main-background" />
@@ -376,13 +422,18 @@
 		padding-top: env(safe-area-inset-top);
 	}
 
-	poster {
+	poster,
+	album {
 		position: absolute;
 		top: 0;
 		width: 100%;
 		height: 100vh;
 		overflow: hidden;
 		visibility: hidden;
+		z-index: 98;
+	}
+
+	poster {
 		z-index: 99;
 	}
 
@@ -430,6 +481,27 @@
 		position: absolute;
 		height: 100%;
 		width: 100%;
+	}
+
+	album-container {
+		min-width: 100%;
+		height: calc(100vh);
+		height: calc(var(--vh, 1vh) * 100);
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		padding: 16px 8px 8px 8px;
+
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
 	}
 
 	@media (min-width: 722px) {
