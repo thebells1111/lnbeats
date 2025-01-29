@@ -223,17 +223,17 @@
 			// console.log(generators);
 
 			albumList = sortByPubDate(filteredFeeds);
-			_featuredList = shuffleArray(_featuredList);
-			addToFeaturedList(_featuredList);
-			setTimeout(addToFeaturedList, 1000);
+			$featuredList = shuffleArray(_featuredList);
+			// addToFeaturedList(_featuredList);
+			// setTimeout(addToFeaturedList, 1000);
 
-			function addToFeaturedList() {
-				const newItems = _featuredList.splice(0, 20);
-				$featuredList = $featuredList.concat(newItems);
-				if (_featuredList.length > 0) {
-					setTimeout(addToFeaturedList, 1000);
-				}
-			}
+			// function addToFeaturedList() {
+			// 	const newItems = _featuredList.splice(0, 20);
+			// 	$featuredList = $featuredList.concat(newItems);
+			// 	if (_featuredList.length > 0) {
+			// 		setTimeout(addToFeaturedList, 1000);
+			// 	}
+			// }
 
 			$discoverList = albumList;
 

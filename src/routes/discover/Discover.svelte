@@ -5,6 +5,7 @@
 	import clone from 'just-clone';
 	import extras from './extras.json';
 	import FilteredList from './FilteredList.svelte';
+	import VirtualList from './VirtualList.svelte';
 	import Album from '$c/Album/Album.svelte';
 
 	import { parse } from 'fast-xml-parser';
@@ -50,7 +51,6 @@
 
 					const res = await fetch(feedGuidUrl);
 					const data = await res.json();
-					console.log(data);
 					if (data.status === 'true') {
 						return data.feed;
 					}
@@ -161,16 +161,17 @@
 <navbar>
 	<button
 		on:click={() => {
+			$discoverScreen = 'nowPlaying';
+		}}
+		class:active={$discoverScreen === 'nowPlaying'}>Playing</button
+	>
+	<button
+		on:click={() => {
 			$discoverScreen = 'featured';
 		}}
 		class:active={$discoverScreen === 'featured'}>Featured</button
 	>
-	<button
-		on:click={() => {
-			$discoverScreen = 'queue';
-		}}
-		class:active={$discoverScreen === 'queue'}>Queue</button
-	>
+
 	<button
 		on:click={() => {
 			$discoverScreen = 'top100';
@@ -191,22 +192,19 @@
 	>
 </navbar>
 
-<featured class:show={$discoverScreen === 'featured'}>
-	<h3>Support These Artist Who Support LNBeats</h3>
-	<ul>
-		{#each $featuredList as album}
-			<li>
-				<AlbumCard {album} />
-			</li>
-		{/each}
-	</ul>
-</featured>
-
-<top100 class:show={$discoverScreen === 'queue'}>
+<now-playing class:show={$discoverScreen === 'nowPlaying'}>
 	{#if $playingAlbum.id}
 		<Album album={$remotePlaylistPlaying ? $remotePlaylist : $playingAlbum} />
+	{:else}
+		<h3>Support These Artist Who Support LNBeats</h3>
+		<VirtualList items={$featuredList} />
 	{/if}
-</top100>
+</now-playing>
+
+<featured class:show={$discoverScreen === 'featured'}>
+	<h3>Support These Artist Who Support LNBeats</h3>
+	<VirtualList items={$featuredList} />
+</featured>
 
 <top100 class:show={$discoverScreen === 'top100'}>
 	{#if $top100.id}
@@ -311,6 +309,7 @@
 		border-bottom: 1px solid var(--color-text-0);
 	}
 
+	now-playing,
 	featured,
 	top100,
 	music-shows,

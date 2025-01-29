@@ -21,10 +21,6 @@
 
 	$selectedAlbum = album;
 	let songList = album?.songs?.length ? album.songs : album.remoteSongs;
-	console.log(album);
-	console.log(album?.songs);
-	console.log(album?.remoteSongs);
-	console.log(songList);
 
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
