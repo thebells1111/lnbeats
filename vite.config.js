@@ -11,7 +11,7 @@ const config = {
 			$routes: path.resolve('src', 'routes'),
 			$c: path.resolve('src', 'components'),
 			$icons: path.resolve('src', 'components', 'icons'),
-			$buttons: path.resolve('src', 'components', 'buttons'),
+			$buttons: path.resolve('src', 'components', 'Buttons'),
 			$modals: path.resolve('src', 'components', 'modals')
 		}
 	}

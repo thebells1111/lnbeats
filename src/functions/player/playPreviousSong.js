@@ -14,7 +14,7 @@ import {
 	playingSongList
 } from '$/stores';
 
-async function playNextSong() {
+async function playPreviousSong() {
 	let {
 		$playingAlbum,
 		$playingSong,
@@ -37,13 +37,8 @@ async function playNextSong() {
 	const currentSong = $playingSong ?? {};
 
 	if (currentSong?.enclosure || currentSong?.enclosure?.['@_url']) {
-		if (
-			($playingIndex >= 0 &&
-				($playingIndex < $playingSongList?.length - 1 ||
-					($remotePlaylistPlaying && $playingIndex < $remotePlaylist?.remoteSongs?.length - 1))) ||
-			album.favorites
-		) {
-			$playingIndex++;
+		if ($playingIndex > 0 || album.favorites) {
+			$playingIndex--;
 			playingIndex.set($playingIndex);
 			let nextSong;
 			let _nextSong;
@@ -94,7 +89,7 @@ async function playNextSong() {
 				}
 			} else if (album.favorites) {
 				let favs = Object.entries($favorites);
-				let nextIndex = favs.findIndex((v) => v[0] === album.favorites) + 1;
+				let nextIndex = favs.findIndex((v) => v[0] === album.favorites) - 1;
 				let song = await favoritesDB.getItem(favs[nextIndex][0]);
 
 				$playingAlbum = {
@@ -115,4 +110,4 @@ async function playNextSong() {
 	}
 }
 
-export default playNextSong;
+export default playPreviousSong;

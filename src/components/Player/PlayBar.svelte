@@ -12,9 +12,6 @@
 		top100,
 		loopSongs
 	} from '$/stores';
-	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
-	import PreviousSong from '$buttons/player/PreviousSong.svelte';
-	import NextSong from '$buttons/player/NextSong.svelte';
 
 	import Shuffle from '$icons/Shuffle.svelte';
 	import Laps from '$icons/Laps.svelte';

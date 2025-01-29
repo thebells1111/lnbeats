@@ -1,10 +1,20 @@
 <script>
 	import parseSRT from 'parse-srt';
-	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
 	import toUrlFriendly from '$functions/toUrlFriendly';
+
+	import AudioProgressBar from './AudioProgressBar.svelte';
+	import Controls from './Controls.svelte';
+	import BoostButton from '$buttons/BoostButton.svelte';
+	import convertTime from '$functions/convertTime.js';
+	import Favorite from '$icons/Favorite.svelte';
+	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
+	import Close from '$icons/Close.svelte';
+	import Add from '$icons/Add.svelte';
+	import Share from '$icons/Share.svelte';
+	import { encodeURL } from '$functions/songId';
 
 	import {
 		playingSong,
@@ -22,15 +32,6 @@
 		playingTranscriptText,
 		currentTranscriptIndex
 	} from '$/stores';
-
-	import AudioProgressBar from './AudioProgressBar.svelte';
-	import Controls from './Controls.svelte';
-	import BoostButton from '$buttons/BoostButton.svelte';
-	import convertTime from '$functions/convertTime.js';
-	import Favorite from '$icons/Favorite.svelte';
-	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
-	import Close from '$icons/Close.svelte';
-	import Add from '$icons/Add.svelte';
 
 	export let showPlaylistModal = false;
 
@@ -84,8 +85,6 @@
 		$favorites = $favorites;
 		favoritesDB.setItem('favoritesList', $favorites);
 	}
-	import Share from '$icons/Share.svelte';
-	import { encodeURL } from '$functions/songId';
 
 	function handleShare() {
 		console.log($playingAlbum);
@@ -112,6 +111,7 @@
 <poster-container>
 	<poster>
 		<button
+			class="close"
 			on:click={() => {
 				$posterSwiper.slideTo(0);
 				setTimeout(() => {
@@ -360,6 +360,11 @@
 		padding: 0;
 		line-height: 0.8em;
 		bottom: 0;
+	}
+
+	button.close {
+		align-self: flex-end;
+		padding-right: 8px;
 	}
 
 	@media (min-width: 722px) {

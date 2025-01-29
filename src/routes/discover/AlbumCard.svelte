@@ -1,8 +1,9 @@
 <script>
 	export let album;
 	export let fromSearch = false;
+	import loadAlbum from '$functions/loadAlbum';
 
-	import { albumSwiper } from '$/stores';
+	import { albumSwiper, selectedAlbum } from '$/stores';
 
 	let artworkSrc = album.artwork || album.image; // Initial URL from the song object
 
@@ -23,10 +24,11 @@
 	// Initialize artwork source
 	artworkSrc = loadCachedArtwork(album.id, album.artwork || album.image);
 
-	function openAlbum() {
+	async function openAlbum() {
 		document.getElementById('album-swiper').style.visibility = 'initial';
 		$albumSwiper.slideTo(1);
-		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+		$selectedAlbum = album;
+		setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid)), 1);
 	}
 </script>
 

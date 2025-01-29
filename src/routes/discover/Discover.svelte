@@ -29,14 +29,14 @@
 		remoteServer,
 		playingAlbum,
 		remotePlaylistPlaying,
-		remotePlaylist
+		remotePlaylist,
+		top100
 	} from '$/stores';
 
 	let filteredList = [];
 	let demuList = [];
 	let filterDemu = false;
 	let timeoutId = null;
-	let top100 = {};
 
 	onMount(async () => {
 		fetchTop100();
@@ -87,7 +87,7 @@
 		albumData.feed.songs = [];
 		albumData.feed.live = [];
 
-		top100 = albumData.feed;
+		$top100 = albumData.feed;
 	}
 
 	function showFilteredList() {
@@ -152,8 +152,6 @@
 	$: if (filterDemu) {
 		demuList = filteredList.filter((v) => !v.generator.includes('Wavlake'));
 	}
-
-	$: console.log(top100);
 </script>
 
 <header>
@@ -211,8 +209,8 @@
 </top100>
 
 <top100 class:show={$discoverScreen === 'top100'}>
-	{#if top100.id}
-		<Album album={top100} />
+	{#if $top100.id}
+		<Album album={$top100} />
 	{/if}
 </top100>
 

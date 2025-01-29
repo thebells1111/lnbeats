@@ -1,9 +1,9 @@
 <script>
-	import PlayPauseButton from '$buttons/player/PlayPauseButton.svelte';
-	import PreviousSong from '$buttons/player/PreviousSong.svelte';
-	import NextSong from '$buttons/player/NextSong.svelte';
-	import Rewind from '$buttons/player/Rewind.svelte';
-	import FastForward from '$buttons/player/FastForward.svelte';
+	import PlayPauseButton from '$buttons/Player/PlayPauseButton.svelte';
+	import PreviousSong from '$buttons/Player/PreviousSong.svelte';
+	import NextSong from '$buttons/Player/NextSong.svelte';
+	import Rewind from '$buttons/Player/Rewind.svelte';
+	import FastForward from '$buttons/Player/FastForward.svelte';
 	let style = 'color:var(--color-player-icon-0)';
 </script>
 

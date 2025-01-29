@@ -14,7 +14,7 @@
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
-	import Poster from './poster/Poster.svelte';
+	import Poster from '$c/Poster/Poster.svelte';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
 	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
 	import Modals from '$c/Modals/Modals.svelte';
@@ -35,7 +35,7 @@
 		featuredList,
 		playingSong,
 		playingAlbum,
-		top100
+		selectedAlbum
 	} from '$/stores';
 
 	let albumList = [];
@@ -360,7 +360,9 @@
 					>
 						<Close size={24} />
 					</button>
-					<Album album={$top100} />
+					<div>
+						<Album album={$selectedAlbum} />
+					</div>
 				</album-container>
 			</SwiperSlide>
 		</Swiper>
@@ -486,8 +488,7 @@
 	album-container {
 		min-width: 100%;
 		height: calc(100vh);
-		height: calc(var(--vh, 1vh) * 100);
-		height: 100%;
+		height: calc(var(--vh, 1vh) * 100 - 32px);
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -502,6 +503,24 @@
 			var(--color-poster-bg-0) 33%,
 			var(--color-poster-bg-1) 66%
 		);
+	}
+
+	album-container > button {
+		align-self: flex-end;
+		margin: 0;
+		position: relative;
+		bottom: 8px;
+		padding-right: 24px;
+		font-weight: 700;
+		color: var(--color-text-0);
+		background-color: transparent;
+		border: none;
+	}
+
+	album-container > div {
+		width: calc(100% - 8px);
+		height: calc(100% - 16px);
+		overflow: auto;
 	}
 
 	@media (min-width: 722px) {

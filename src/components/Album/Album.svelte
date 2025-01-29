@@ -67,11 +67,6 @@
 			{#each album.remoteSongs as remoteSong, index}
 				<RemoteSongCard {album} {remoteSong} {index} />
 			{/each}
-		{:else}
-			<p style="text-align:center">This album has no songs.</p>
-			<p style="text-align:center">
-				Maybe consider reaching out to the artist and letting them know.
-			</p>
 		{/if}
 	</ul>
 {:else}
