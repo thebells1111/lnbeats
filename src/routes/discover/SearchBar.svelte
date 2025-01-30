@@ -75,6 +75,7 @@
 		margin: 0 16px;
 		position: relative;
 		display: flex;
+		align-items: center;
 	}
 	input {
 		width: calc(100% - 4px);

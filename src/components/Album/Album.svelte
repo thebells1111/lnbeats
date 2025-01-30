@@ -34,7 +34,7 @@
 </script>
 
 {#if album}
-	<ul>
+	<container>
 		<header>
 			<img src={album.image || album.artwork} />
 			<h2>{album.title}</h2>
@@ -44,27 +44,29 @@
 				</add-button>
 			{/if}
 		</header>
-		<description
-			on:click={() => {
-				expandDescription = !expandDescription;
-			}}
-		>
-			<p bind:this={descriptionEl} class:expand={expandDescription}>{album.description}</p>
-			{#if isOverflowingHorizontally(descriptionEl)}
-				<p class="arrows" class:expand={expandDescription}>{expandDescription ? '▲' : '▼'}</p>
-			{/if}
-		</description>
+		<ul>
+			<description
+				on:click={() => {
+					expandDescription = !expandDescription;
+				}}
+			>
+				<p bind:this={descriptionEl} class:expand={expandDescription}>{album.description}</p>
+				{#if isOverflowingHorizontally(descriptionEl)}
+					<p class="arrows" class:expand={expandDescription}>{expandDescription ? '▲' : '▼'}</p>
+				{/if}
+			</description>
 
-		{#if album?.songs?.length}
-			{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
-				<SongCard {album} {song} {index} />
-			{/each}
-		{:else if album?.remoteSongs?.length}
-			{#each album.remoteSongs as remoteSong, index}
-				<RemoteSongCard {album} {remoteSong} {index} />
-			{/each}
-		{/if}
-	</ul>
+			{#if album?.songs?.length}
+				{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
+					<SongCard {album} {song} {index} />
+				{/each}
+			{:else if album?.remoteSongs?.length}
+				{#each album.remoteSongs as remoteSong, index}
+					<RemoteSongCard {album} {remoteSong} {index} />
+				{/each}
+			{/if}
+		</ul>
+	</container>
 {:else}
 	<h3>It appears this Album is no longer available.</h3>
 	<h3>Would you like to remove it from your library?</h3>
@@ -72,6 +74,11 @@
 {/if}
 
 <style>
+	container {
+		display: block;
+		height: 100%;
+		overflow: auto;
+	}
 	header {
 		display: flex;
 		position: relative;

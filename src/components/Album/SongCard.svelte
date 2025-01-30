@@ -195,16 +195,28 @@
 		}
 	}
 
+	async function togglePlay() {
+		if ($player.paused) {
+			$player.play();
+		} else {
+			$player.pause();
+		}
+
+		$player.paused = $player.paused;
+	}
+
 	function openPoster() {
-		document.getElementById('poster-swiper').style.visibility = 'initial';
-		$posterSwiper.slideTo(1);
-		setTimeout(() => {
-			$albumSwiper.slideTo(0);
+		if (index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)) {
+			document.getElementById('poster-swiper').style.visibility = 'initial';
+			$posterSwiper.slideTo(1);
 			setTimeout(() => {
-				document.getElementById('album-swiper').style.visibility = 'hidden';
+				$albumSwiper.slideTo(0);
+				setTimeout(() => {
+					document.getElementById('album-swiper').style.visibility = 'hidden';
+				}, 500);
 			}, 500);
-		}, 500);
-		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+			// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+		}
 	}
 
 	function handleShowModal(type) {
@@ -214,11 +226,20 @@
 	}
 </script>
 
-<li on:click={playSong}>
-	{#if $player && !$player.paused && index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)}
-		<Pause size="32" />
+<li
+	on:click={openPoster}
+	class:active={index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)}
+>
+	{#if index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)}
+		<button on:click|stopPropagation={togglePlay}>
+			{#if $player && !$player.paused}
+				<Pause size="32" />
+			{:else}
+				<Play size="32" />
+			{/if}
+		</button>
 	{:else}
-		<Play size="32" />
+		<button on:click={playSong}><Play size="32" /></button>
 	{/if}
 
 	<p>{song.title}</p>
@@ -262,8 +283,12 @@
 		border-bottom: 1px solid var(--color-text-2);
 		padding: 8px;
 		align-items: center;
+		cursor: default;
+		user-select: none;
 	}
-
+	.active {
+		cursor: pointer;
+	}
 	p {
 		text-align: left;
 		width: 100%;

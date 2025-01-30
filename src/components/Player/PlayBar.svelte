@@ -63,6 +63,8 @@
 			return array;
 		}
 	}
+
+	function handleLoop() {}
 </script>
 
 <playbar
@@ -85,9 +87,9 @@
 		<Shuffle size="30" />
 	</button>
 
-	<!-- <button class:looped={$loopSongs} on:click={handleLoop} class="loop">
+	<button class:looped={$loopSongs} on:click={handleLoop} class="loop">
 		<Laps size="27" />
-	</button> -->
+	</button>
 </playbar>
 
 <style>
@@ -151,9 +153,8 @@
 		align-items: center;
 		justify-content: flex-end;
 		position: absolute;
-		bottom: 75px;
 		color: var(--color-text-0);
-		right: 8px;
+		right: 6px;
 		background-color: gray;
 		align-items: center;
 		display: flex;
@@ -166,8 +167,8 @@
 		border-radius: 48px;
 	}
 
-	button.loop {
-		bottom: 120px;
+	button.random {
+		right: 48px;
 	}
 
 	button.shuffled {
