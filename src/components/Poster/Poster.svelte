@@ -21,27 +21,27 @@
 		playingAlbum,
 		player,
 		posterSwiper,
+		playlistControlsSwiper,
+		playlistControls,
 		currentPlayingChapter,
-		playingChapters,
 		favorites,
-		favoritesDB,
+		playlistDB,
 		shareUrl,
 		shareText,
 		currentSplit,
 		playingTranscript,
 		playingTranscriptText,
-		currentTranscriptIndex
+		currentTranscriptIndex,
+		playlists
 	} from '$/stores';
 
-	export let showPlaylistModal = false;
-
 	$: isFavorite =
-		$favorites[
-			`${$playingAlbum.podcastGuid}::${
-				$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
-			}`
-		];
-
+		$favorites?.remoteSongs?.findIndex((v) => {
+			return (
+				v['@_feedGuid'] === $playingAlbum.podcastGuid &&
+				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingSong?.guid)
+			);
+		}) > -1;
 	$: if ($playingTranscriptText) {
 		$playingTranscript = parseSRT($playingTranscriptText);
 		let t = $playingTranscript
@@ -55,35 +55,29 @@
 	}
 
 	function toggleFavorite() {
-		let id = `${$playingAlbum.podcastGuid || $playingSong?.album?.podcastGuid}::${
-			$playingSong.guid?.['#text'] || $playingSong.guid || $playingSong.enclosure?.['@_url']
-		}`;
+		let albumIndex = $favorites.remoteSongs.findIndex((v) => {
+			return (
+				v['@_feedGuid'] === $playingAlbum.podcastGuid &&
+				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingAlbum?.guid)
+			);
+		});
 
-		if ($favorites[id]) {
-			delete $favorites[id];
-			favoritesDB.removeItem(id);
+		console.log(albumIndex);
+
+		if (albumIndex > -1) {
+			$favorites.remoteSongs.splice(albumIndex, 1);
+			$favorites = $favorites;
 		} else {
-			const { artwork, image, podcastGuid, title, author } = $playingAlbum;
-			let song = clone($playingSong);
-			song.album = { artwork, image, podcastGuid, title, author };
-			$favorites[id] = {
-				artwork:
-					song.image ||
-					song.artwork ||
-					song?.['itunes:image']?.['@_href'] ||
-					song.album?.image ||
-					song.album?.artwork ||
-					song.album?.['itunes:image']?.['@_href'],
-				title: song.title,
-				album: song.album.title,
-				author: song.album.author,
-				id: id
-			};
-
-			favoritesDB.setItem(id, song);
+			$favorites.remoteSongs.push({
+				'@_feedGuid': $playingAlbum.podcastGuid,
+				'@_itemGuid': $playingSong?.guid?.['#text'] || $playingAlbum?.guid
+			});
 		}
+
 		$favorites = $favorites;
-		favoritesDB.setItem('favoritesList', $favorites);
+		console.log($favorites);
+		$playlists.favorites = $favorites;
+		playlistDB.setItem('playlists', $playlists);
 	}
 
 	function handleShare() {
@@ -106,6 +100,14 @@
 			'/' +
 			encodeURL($playingSong.enclosure['@_url']);
 	}
+	$: console.log($currentPlayingChapter);
+	$: console.log($playingSong);
+	$: console.log($playingAlbum);
+	$: byline = $currentPlayingChapter
+		? $currentSplit?.feedGuid === $playingAlbum?.feedGuid
+			? ''
+			: $currentSplit?.artist
+		: $playingAlbum?.author || '';
 </script>
 
 <poster-container>
@@ -131,7 +133,9 @@
 			<button
 				class="share"
 				on:click={() => {
-					showPlaylistModal = true;
+					document.getElementById('playlist-controls-swiper').style.visibility = 'initial';
+					$playlistControlsSwiper.slideTo(1);
+					$playlistControls = { type: 'add', song: { ...$playingSong, album: $playingAlbum } };
 				}}
 			>
 				<Add size="24" />
@@ -162,7 +166,7 @@
 					<filled-container
 						style={`${isFavorite ? 'display:initial' : 'display:none'}`}
 						class:filled={isFavorite}
-						transition:scale
+						transition:scale|global
 					>
 						<FavoriteFilled size="40" />
 					</filled-container>
@@ -174,19 +178,23 @@
 			</button>
 			<album-info>
 				<song-title>
-					{$currentPlayingChapter ? $currentPlayingChapter.title || '' : $playingSong.title}
+					{$currentPlayingChapter
+						? $currentPlayingChapter?.toc === false
+							? $currentSplit?.song || ''
+							: $currentPlayingChapter.title
+						: $playingSong.title}
 				</song-title>
 
 				<band-name>
-					by
-					<a
-						href={`/artist/${toUrlFriendly(
-							$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''
-						)}
+					{#if byline}
+						by
+						<a
+							href={`/artist/${toUrlFriendly(byline)}
 					`}
-					>
-						{$currentPlayingChapter ? $currentSplit?.artist || '' : $playingAlbum.author || ''}
-					</a>
+						>
+							{byline}
+						</a>
+					{/if}
 				</band-name>
 			</album-info>
 

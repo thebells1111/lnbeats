@@ -6,7 +6,7 @@
 	import Wallet from '$icons/Wallet.svelte';
 	import Modal from '$c/Modals/Modals.svelte';
 	import WalletInfo from '$c/Modals/WalletInfo/WalletInfo.svelte';
-	import { user, albyClientId, remoteServer } from '$/stores';
+	import { user, albyClientId, remoteServer, activeScreen } from '$/stores';
 	let showWallet = false;
 
 	function getRedirectUrl() {
@@ -20,11 +20,11 @@
 
 <footer>
 	<nav>
-		<a href="/library"> <LibraryMusic size={27} />Library</a>
-		<a href="/"><HomeIcon size={27} />Home</a>
+		<button on:click={() => ($activeScreen = 'library')}> <LibraryMusic size={27} />Library</button>
+		<button on:click={() => ($activeScreen = 'discover')}><HomeIcon size={27} />Home</button>
 		<!-- <a href="/search"><SearchIcon size={27} />Search</a> -->
 		<button
-			class:active={$user.loggedIn}
+			class:inactive={!$user.loggedIn}
 			on:click={async () => {
 				if ($user.loggedIn) {
 					showWallet = true;
@@ -37,7 +37,7 @@
 						$user.balance = data.balance;
 					}
 				} else {
-					goto(getRedirectUrl());
+					window.location = getRedirectUrl();
 				}
 			}}><Wallet size={27} />Wallet</button
 		>
@@ -76,10 +76,10 @@
 	}
 
 	button {
-		color: hsl(0, 76%, 55%);
+		color: var(--color-text-0);
 	}
 
-	.active {
-		color: var(--color-text-0);
+	.inactive {
+		color: hsl(0, 76%, 55%);
 	}
 </style>

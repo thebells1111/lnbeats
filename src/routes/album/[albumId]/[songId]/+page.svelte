@@ -1,11 +1,9 @@
 <script>
-	import Album from '$c/Album/Album.svelte';
 	import { onMount } from 'svelte';
-	import clone from 'just-clone';
-
 	import {
 		remoteServer,
 		playingAlbum,
+		selectedAlbum,
 		player,
 		playingSong,
 		posterSwiper,
@@ -15,7 +13,8 @@
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
-		playingIndex
+		discoverScreen,
+		playingSongList
 	} from '$/stores';
 	import { decodeURL } from '$functions/songId';
 
@@ -182,6 +181,10 @@
 
 	function initialSongLoad() {
 		$playingAlbum = data.album;
+		console.log(data);
+		$discoverScreen = 'nowPlaying';
+		$selectedAlbum = data.album;
+		$playingSongList = data.album.songs;
 		if (song) {
 			loadSong(song);
 		}
@@ -228,7 +231,3 @@
 		/>
 	{/if}
 </svelte:head>
-
-{#if data}
-	<Album {data} isSong={true} />
-{/if}

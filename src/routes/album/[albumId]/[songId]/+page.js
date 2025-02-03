@@ -22,7 +22,7 @@ export async function load({ params, fetch }) {
 		const albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();
 		if (!albumData.status) {
-			throw error(404, 'Not found');
+			error(404, 'Not found');
 		}
 
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);

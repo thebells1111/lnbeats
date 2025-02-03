@@ -1,12 +1,10 @@
-import getStores from '$functions/getStores';
+import { get } from 'svelte/store';
 import { playingChapters, currentChapterIndex, currentPlayingChapter } from '$/stores';
 
 function findCurrentChapter(currentTime) {
-	let { $playingChapters, $currentChapterIndex, $currentPlayingChapter } = getStores({
-		playingChapters,
-		currentChapterIndex,
-		currentPlayingChapter
-	});
+	let $playingChapters = get(playingChapters);
+	let $currentChapterIndex = get(currentChapterIndex);
+	let $currentPlayingChapter = get(currentPlayingChapter);
 
 	if ($playingChapters?.length) {
 		while (currentTime >= $playingChapters?.[$currentChapterIndex + 1]?.startTime) {

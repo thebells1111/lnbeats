@@ -1,8 +1,7 @@
 <script>
 	import generateValidGuid from '$functions/generateValidGuid';
-	export let showModal;
 
-	import { playlists, playlistDB } from '$/stores';
+	import { playlists, playlistDB, createPlaylistSwiper } from '$/stores';
 	let title = '';
 	let displayText = '';
 
@@ -12,13 +11,16 @@
 		}
 
 		let guid = await generateValidGuid();
-		let playlist = { guid, art: '/playlist60x60.png', title, remoteSongs: [] };
+		let playlist = { podcastGuid: guid, artwork: '/playlist60x60.png', title, remoteSongs: [] };
 
 		$playlists[guid] = playlist;
 		await playlistDB.setItem('playlists', $playlists);
 
+		$createPlaylistSwiper.slideTo(0);
 		setTimeout(() => {
-			showModal = false;
+			document.getElementById('create-playlist-swiper').style.visibility = 'hidden';
+			title = '';
+			displayText = '';
 		}, 500);
 	}
 </script>

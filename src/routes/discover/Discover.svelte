@@ -4,7 +4,6 @@
 	import SearchBar from './SearchBar.svelte';
 	import clone from 'just-clone';
 	import extras from './extras.json';
-	import FilteredList from './FilteredList.svelte';
 	import VirtualList from './VirtualList.svelte';
 	import Album from '$c/Album/Album.svelte';
 
@@ -31,7 +30,8 @@
 		playingAlbum,
 		remotePlaylistPlaying,
 		remotePlaylist,
-		top100
+		top100,
+		activeScreen
 	} from '$/stores';
 
 	let filteredList = [];
@@ -154,89 +154,100 @@
 	}
 </script>
 
-<header>
-	<img src="lnbeats-header.png" alt="ln beats logo" />
-</header>
+<discover class:show={$activeScreen === 'discover'}>
+	<header>
+		<img src="/lnbeats-header.png" alt="ln beats logo" />
+	</header>
 
-<navbar>
-	<button
-		on:click={() => {
-			$discoverScreen = 'nowPlaying';
-		}}
-		class:active={$discoverScreen === 'nowPlaying'}>Playing</button
-	>
-	<button
-		on:click={() => {
-			$discoverScreen = 'featured';
-		}}
-		class:active={$discoverScreen === 'featured'}>Featured</button
-	>
+	<navbar>
+		<button
+			on:click={() => {
+				$discoverScreen = 'nowPlaying';
+			}}
+			class:active={$discoverScreen === 'nowPlaying'}>Playing</button
+		>
+		<button
+			on:click={() => {
+				$discoverScreen = 'featured';
+			}}
+			class:active={$discoverScreen === 'featured'}>Featured</button
+		>
 
-	<button
-		on:click={() => {
-			$discoverScreen = 'top100';
-		}}
-		class:active={$discoverScreen === 'top100'}>Top 100</button
-	>
-	<button
-		on:click={() => {
-			$discoverScreen = 'radio';
-		}}
-		class:active={$discoverScreen === 'radio'}>Music Shows</button
-	>
-	<button
-		on:click={() => {
-			$discoverScreen = 'search';
-		}}
-		class:active={$discoverScreen === 'search'}>Search</button
-	>
-</navbar>
+		<button
+			on:click={() => {
+				$discoverScreen = 'top100';
+			}}
+			class:active={$discoverScreen === 'top100'}>Top 100</button
+		>
+		<button
+			on:click={() => {
+				$discoverScreen = 'radio';
+			}}
+			class:active={$discoverScreen === 'radio'}>Music Shows</button
+		>
+		<button
+			on:click={() => {
+				$discoverScreen = 'search';
+			}}
+			class:active={$discoverScreen === 'search'}>Search</button
+		>
+	</navbar>
 
-<now-playing class:show={$discoverScreen === 'nowPlaying'}>
-	{#if $playingAlbum.id}
-		<Album album={$remotePlaylistPlaying ? $remotePlaylist : $playingAlbum} />
-	{:else}
+	<now-playing class:show={$discoverScreen === 'nowPlaying'}>
+		{#if $playingAlbum.id}
+			<Album album={$remotePlaylistPlaying ? $remotePlaylist : $playingAlbum} />
+		{:else}
+			<h3>Support These Artist Who Support LNBeats</h3>
+			<VirtualList items={$featuredList} />
+		{/if}
+	</now-playing>
+
+	<featured class:show={$discoverScreen === 'featured'}>
 		<h3>Support These Artist Who Support LNBeats</h3>
 		<VirtualList items={$featuredList} />
-	{/if}
-</now-playing>
+	</featured>
 
-<featured class:show={$discoverScreen === 'featured'}>
-	<h3>Support These Artist Who Support LNBeats</h3>
-	<VirtualList items={$featuredList} />
-</featured>
+	<top100 class:show={$discoverScreen === 'top100'}>
+		{#if $top100.id}
+			<Album album={$top100} />
+		{/if}
+	</top100>
 
-<top100 class:show={$discoverScreen === 'top100'}>
-	{#if $top100.id}
-		<Album album={$top100} />
-	{/if}
-</top100>
+	<music-shows class:show={$discoverScreen === 'radio'}>
+		<ul>
+			{#each $radio as album}
+				<li>
+					<AlbumCard {album} />
+				</li>
+			{/each}
+		</ul>
+	</music-shows>
 
-<music-shows class:show={$discoverScreen === 'radio'}>
-	<ul>
-		{#each $radio as album}
-			<li>
-				<AlbumCard {album} />
-			</li>
-		{/each}
-	</ul>
-</music-shows>
-
-<search class:show={$discoverScreen === 'search'}>
-	<search-header>
-		<SearchBar
-			placeholder="search for album"
-			searchFn={handleSearch}
-			inputFn={handleInput}
-			bind:filterDemu
-		/>
-	</search-header>
-	{#if filteredList}
-		<FilteredList items={filterDemu ? demuList : filteredList} />
-	{/if}
-</search>
+	<search class:show={$discoverScreen === 'search'}>
+		<search-header>
+			<SearchBar
+				placeholder="search for album"
+				searchFn={handleSearch}
+				inputFn={handleInput}
+				bind:filterDemu
+			/>
+		</search-header>
+		{#if filteredList}
+			<VirtualList items={filterDemu ? demuList : filteredList} />
+		{/if}
+	</search>
+</discover>
 
 <style>
+	discover {
+		display: none;
+		overflow: hidden;
+		height: 100%;
+	}
+
+	.show {
+		display: block;
+	}
 	header {
 		display: flex;
 		justify-content: flex-end;

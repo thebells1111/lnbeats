@@ -29,22 +29,20 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 100vw;
+		width: 100%;
 		height: 100vh;
-		position: fixed;
+		position: absolute;
 		background: transparent;
 		top: 0;
 		right: 0;
-		z-index: 99;
+		z-index: 100;
 	}
 
 	modal {
 		display: block;
 		position: relative;
-
 		overflow-y: auto;
 		overflow-x: hidden;
-		border-radius: 8px;
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(
 			180deg,
@@ -60,7 +58,7 @@
 	}
 
 	.close {
-		position: fixed;
+		position: absolute;
 		top: max(8px, env(safe-area-inset-top));
 		left: calc(50% + min(316px, calc((100% / 2) - 44px)));
 		background-color: transparent;
@@ -86,7 +84,6 @@
 			height: calc(100%);
 			overflow-y: auto;
 			overflow-x: hidden;
-			border-radius: 8px;
 		}
 	}
 </style>

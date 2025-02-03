@@ -1,27 +1,23 @@
 <script>
 	import './styles.css';
 	import 'swiper/css';
-	import NavHeader from './main/NavHeader/NavHeader.svelte';
-	import NavFooter from './main/NavFooter/NavFooter.svelte';
+	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import Player from '$c/Player/Player.svelte';
 	import BoostScreen from '$c/BoostScreen/BoostScreen.svelte';
 	import InstructionScreen from '$c/BoostScreen/InstructionScreen.svelte';
-	import Album from '$c/Album/Album.svelte';
-
-	import Close from '$icons/Close.svelte';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
-	import { Swiper, SwiperSlide } from 'swiper/svelte';
-	import Poster from '$c/Poster/Poster.svelte';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
-	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
-	import Modals from '$c/Modals/Modals.svelte';
 	import Share from '$c/Share/Share.svelte';
+	import Discover from './discover/Discover.svelte';
+	import Library from '$c/Library/Library.svelte';
+	import PosterSwiper from '$c/Swipers/PosterSwiper.svelte';
+	import AlbumSwiper from '$c/Swipers/AlbumSwiper.svelte';
+	import PlaylistControlsSwiper from '$c/Swipers/PlaylistControlsSwiper.svelte';
+	import CreatePlaylistSwiper from '$c/Swipers/CreatePlaylistSwiper.svelte';
 	import {
-		posterSwiper,
-		albumSwiper,
 		senderName,
 		satsPerBoost,
 		satsPerSong,
@@ -30,12 +26,9 @@
 		showBoostScreen,
 		showInstructionScreen,
 		remoteServer,
-		shareUrl,
 		discoverList,
 		featuredList,
-		playingSong,
-		playingAlbum,
-		selectedAlbum
+		shareUrl
 	} from '$/stores';
 
 	let albumList = [];
@@ -50,7 +43,6 @@
 	let deferredPrompt;
 	let dontShowAgain = false;
 	let bannerVisible = false;
-	let showPlaylistModal = false;
 
 	// Function to trigger PWA installation
 	function installPWA() {
@@ -109,9 +101,6 @@
 		resizeOps();
 		window.addEventListener('resize', resizeOps);
 
-		const albumDB = localforage.createInstance({
-			name: 'albumDB'
-		});
 		const boostDB = localforage.createInstance({
 			name: 'boostDB'
 		});
@@ -126,9 +115,6 @@
 			// $user.preferences.wallet = 'webln';
 			$webln = window.webln;
 		}
-		// $playingAlbum = (await albumDB.getItem('1529389')) || {};
-		// $playingSong = $playingAlbum.songs[0];
-		// $player.src = $playingSong.enclosure['@_url'];
 	});
 
 	function shuffleArray(array) {
@@ -220,20 +206,8 @@
 				}
 			});
 
-			// console.log(generators);
-
 			albumList = sortByPubDate(filteredFeeds);
 			$featuredList = shuffleArray(_featuredList);
-			// addToFeaturedList(_featuredList);
-			// setTimeout(addToFeaturedList, 1000);
-
-			// function addToFeaturedList() {
-			// 	const newItems = _featuredList.splice(0, 20);
-			// 	$featuredList = $featuredList.concat(newItems);
-			// 	if (_featuredList.length > 0) {
-			// 		setTimeout(addToFeaturedList, 1000);
-			// 	}
-			// }
 
 			$discoverList = albumList;
 
@@ -293,13 +267,10 @@
 </svelte:head>
 
 <app>
-	{#if ![`/`, `/poster`, '/discover'].find((r) => r === $page.route.id)}
-		<NavHeader />
-	{/if}
+	<main class="apple-pad">
+		<Discover />
+		<Library />
 
-	<main
-		class:apple-pad={[`/`, `/poster`, '/discover', '/library'].find((r) => r === $page.route.id)}
-	>
 		<slot />
 	</main>
 
@@ -307,66 +278,11 @@
 
 	<NavFooter />
 
-	<poster id="poster-swiper">
-		<Swiper
-			direction="vertical"
-			autoHeight={true}
-			simulateTouch={false}
-			on:slideChange={() => {
-				// document.getElementById('poster-swiper').style.display = 'none';
+	<PosterSwiper />
+	<AlbumSwiper />
+	<PlaylistControlsSwiper />
+	<CreatePlaylistSwiper />
 
-				if ($posterSwiper.activeIndex === 0) {
-					setTimeout(
-						() => (document.getElementById('poster-swiper').style.visibility = 'hidden'),
-						500
-					);
-				}
-			}}
-			on:swiper={(e) => ($posterSwiper = e.detail[0])}
-		>
-			<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
-			<SwiperSlide>
-				<Poster bind:showPlaylistModal />
-			</SwiperSlide>
-		</Swiper>
-	</poster>
-	<album id="album-swiper">
-		<Swiper
-			direction="vertical"
-			autoHeight={true}
-			simulateTouch={false}
-			on:slideChange={() => {
-				// document.getElementById('poster-swiper').style.display = 'none';
-
-				if ($albumSwiper.activeIndex === 0) {
-					setTimeout(
-						() => (document.getElementById('album-swiper').style.visibility = 'hidden'),
-						500
-					);
-				}
-			}}
-			on:swiper={(e) => ($albumSwiper = e.detail[0])}
-		>
-			<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
-			<SwiperSlide>
-				<album-container>
-					<button
-						on:click={() => {
-							$albumSwiper.slideTo(0);
-							setTimeout(() => {
-								document.getElementById('album-swiper').style.visibility = 'hidden';
-							}, 500);
-						}}
-					>
-						<Close size={24} />
-					</button>
-					<div>
-						<Album album={$selectedAlbum} />
-					</div>
-				</album-container>
-			</SwiperSlide>
-		</Swiper>
-	</album>
 	<div class="header-background" />
 	<div class="footer-background" />
 	<div class="main-background" />
@@ -392,10 +308,6 @@
 		<button on:click={hideBanner}>No</button>
 	</div>
 {/if}
-
-<Modals bind:showModal={showPlaylistModal}>
-	<AddSongToPlaylist song={{ ...$playingSong, album: $playingAlbum }} />
-</Modals>
 
 <style>
 	app {
@@ -425,17 +337,22 @@
 	}
 
 	poster,
-	album {
+	album,
+	playlist-controls {
 		position: absolute;
 		top: 0;
 		width: 100%;
 		height: 100vh;
 		overflow: hidden;
 		visibility: hidden;
-		z-index: 98;
+		z-index: 97;
 	}
 
 	poster {
+		z-index: 98;
+	}
+
+	playlist-controls {
 		z-index: 99;
 	}
 
@@ -485,18 +402,16 @@
 		width: 100%;
 	}
 
-	album-container {
-		min-width: 100%;
-		height: calc(100vh);
+	album-container,
+	playlist-controls-container {
+		min-width: calc(100% - 16px);
 		height: calc(var(--vh, 1vh) * 100 - 32px);
 		display: flex;
 		flex-direction: column;
 		position: relative;
-
 		display: flex;
 		flex-direction: column;
 		padding: 16px 8px 8px 8px;
-
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(
 			180deg,
@@ -505,12 +420,20 @@
 		);
 	}
 
-	album-container > button {
+	album-header {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	album-header > button,
+	playlist-controls-container > button {
 		align-self: flex-end;
 		margin: 0;
 		position: relative;
 		bottom: 8px;
-		padding-right: 24px;
+		padding-right: 8px;
 		font-weight: 700;
 		color: var(--color-text-0);
 		background-color: transparent;
@@ -568,6 +491,30 @@
 
 	#installBanner button:nth-of-type(2) {
 		background-color: var(--color-bg-button-1);
+		color: var(--color-text-0);
+	}
+
+	.share {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		align-self: flex-start;
+		margin: 0 8px 0 0;
+		font-weight: 700;
+		color: var(--color-text-0);
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		width: 36px;
+		height: 36px;
+	}
+	.share p {
+		font-size: 0.8em;
+		padding: 4px 0 0 0;
+		margin: 0;
+		line-height: 0.8em;
+		bottom: 0;
 		color: var(--color-text-0);
 	}
 </style>

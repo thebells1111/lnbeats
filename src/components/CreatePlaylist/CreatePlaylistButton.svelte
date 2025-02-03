@@ -1,13 +1,12 @@
 <script>
 	import PlaylistAdd from '$icons/PlaylistAdd.svelte';
-	import CreatePlaylist from './CreatePlaylist.svelte';
-	import Modals from '../Modals/Modals.svelte';
-	let showModal = false;
+	import { createPlaylistSwiper } from '$/stores';
 </script>
 
 <button
 	on:click={() => {
-		showModal = true;
+		document.getElementById('create-playlist-swiper').style.visibility = 'initial';
+		$createPlaylistSwiper.slideTo(1);
 	}}
 >
 	<PlaylistAdd
@@ -16,10 +15,6 @@
 	/>
 	<p>Create Playlist</p>
 </button>
-
-<Modals bind:showModal>
-	<CreatePlaylist bind:showModal />
-</Modals>
 
 <style>
 	button {

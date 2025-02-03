@@ -3,29 +3,45 @@
 	import { deletePlaylist } from '$functions/deletePlaylist';
 	import { deleteSongFromPlaylist } from '$functions/deleteSongFromPlaylist';
 
-	export let showModal = false;
-	export let item;
-	export let itemType;
-	export let playlist;
+	import { playlistControls, playlistControlsSwiper } from '$/stores';
 
 	function handleRemoveConfirm() {
+		let itemType = $playlistControls?.itemType;
+		let item = $playlistControls?.item;
+		let playlist = $playlistControls?.playlist;
+		console.log(item);
+		console.log(itemType);
 		if (itemType === 'album') {
 			deleteAlbum(item);
 		} else if (itemType === 'playlist') {
 			deletePlaylist(item);
 		} else if (itemType === 'playlist-song') {
-			deleteSongFromPlaylist(item, playlist);
+			console.log(item);
+			console.log(playlist);
+			// deleteSongFromPlaylist(item, playlist);
 		}
-
-		showModal = false;
+		$playlistControlsSwiper.slideTo(0);
+		setTimeout(() => {
+			document.getElementById('playlist-controls-swiper').style.visibility = 'hidden';
+		}, 500);
 	}
 </script>
 
-<h2>Are you sure you want to delete {item.title || item}?</h2>
+<h2>
+	Are you sure you want to delete {$playlistControls?.item?.title || $playlistControls?.item}?
+</h2>
 
 <button-container>
 	<button on:click={handleRemoveConfirm}>Yes</button>
-	<button class="cancel" on:click={() => (showModal = false)}>No</button>
+	<button
+		class="cancel"
+		on:click={() => {
+			$playlistControlsSwiper.slideTo(0);
+			setTimeout(() => {
+				document.getElementById('playlist-controls-swiper').style.visibility = 'hidden';
+			}, 500);
+		}}>No</button
+	>
 </button-container>
 
 <style>

@@ -1,12 +1,9 @@
-import getStores from '$functions/getStores';
-
+import { get } from 'svelte/store';
 import { playingTranscript, currentTranscriptIndex } from '$/stores';
 
 function findCurrentTranscript(currentTime) {
-	let { $playingTranscript, $currentTranscriptIndex } = getStores({
-		playingTranscript,
-		currentTranscriptIndex
-	});
+	let $playingTranscript = get(playingTranscript);
+	let $currentTranscriptIndex = get(currentTranscriptIndex);
 
 	if ($playingTranscript?.length) {
 		if (currentTime < $playingTranscript[0]) {

@@ -1,9 +1,8 @@
-import getStores from '$functions/getStores';
-
+import { get } from 'svelte/store';
 import { valueTimeSplitBlock } from '$/stores';
 
 function findCurrentSplit(currentTime) {
-	let { $valueTimeSplitBlock } = getStores({ valueTimeSplitBlock });
+	let $valueTimeSplitBlock = get(valueTimeSplitBlock);
 
 	let activeItem = null;
 

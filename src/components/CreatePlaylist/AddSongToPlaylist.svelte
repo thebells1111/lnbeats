@@ -1,10 +1,9 @@
 <script>
 	import { v4 as uuidv4 } from 'uuid';
 	import QueueMusic from '$icons/QueueMusic.svelte';
-	import { playlists, playlistDB } from '$/stores';
+	import { playlists, playlistDB, playlistControls } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
 	import { onMount } from 'svelte';
-	export let song;
 	let successList = '';
 
 	onMount(async () => {
@@ -27,26 +26,30 @@
 		await playlistDB.setItem('playlists', $playlists);
 		setTimeout(() => (successList = ''), 1000);
 	}
+
+	$: song = $playlistControls?.song;
 </script>
 
 <header>
-	<h3>Add <i style="text-decoration: underline">{song.title}</i> to which playlist?</h3>
+	<h3>Add <i style="text-decoration: underline">{song?.title}</i> to which playlist?</h3>
 	<CreatePlaylistButton />
 </header>
 <ul>
 	{#each $playlists ? Object.entries($playlists) : [] as [guid, list]}
-		<li on:click={addSongToPlaylist.bind(this, guid)}>
-			<queue-icon>
-				<QueueMusic size="55" />
-			</queue-icon>
-			<list-name>{list.title}</list-name>
-		</li>
+		{#if guid !== 'favorites'}
+			<li on:click={addSongToPlaylist.bind(this, guid)}>
+				<queue-icon>
+					<QueueMusic size="55" />
+				</queue-icon>
+				<list-name>{list.title}</list-name>
+			</li>
+		{/if}
 	{/each}
 </ul>
 
 {#if successList}
 	<success-modal>
-		<h4>{song.title} added to {successList}</h4>
+		<h4>{song?.title} added to {successList}</h4>
 	</success-modal>
 {/if}
 
@@ -95,9 +98,9 @@
 	}
 
 	success-modal {
-		position: fixed;
+		position: absolute;
 		height: 100vh;
-		width: 100vw;
+		width: 100%;
 		background-color: transparent;
 		backdrop-filter: blur(5px);
 		display: flex;
@@ -105,7 +108,7 @@
 		justify-content: center;
 		top: 0;
 		left: 0;
-		z-index: 99;
+		z-index: 100;
 	}
 
 	success-modal h4 {

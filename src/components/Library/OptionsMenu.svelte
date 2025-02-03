@@ -2,50 +2,48 @@
 	import { slide } from 'svelte/transition';
 
 	import MoreVert from '$icons/MoreVert.svelte';
-	import Modals from '$c/Modals/Modals.svelte';
-	import RemoveConfirmModal from './RemoveConfirmModal.svelte';
 
-	export let itemType;
-	export let item;
-	export let closerActive;
+	import { playlistControls, playlistControlsSwiper, activeScreen } from '$/stores';
+
+	export let itemType = '';
+	export let item = {};
+	export let playlist = {};
 
 	let expandMenu = false;
-	let showModal = false;
-	let modalScreen;
 
-	$: if (!closerActive) {
+	$: if ($activeScreen !== 'library') {
 		expandMenu = false;
 	}
 
-	function handleRemoveItem() {
+	function handleShowPlaylistControls() {
 		expandMenu = false;
-		showModal = true;
-		modalScreen = 'remove-confirm';
+		document.getElementById('playlist-controls-swiper').style.visibility = 'initial';
+		$playlistControlsSwiper.slideTo(1);
+
+		console.log(itemType);
+
+		$playlistControls = {
+			type: 'remove',
+			item,
+			playlist,
+			itemType
+		};
 	}
 </script>
 
 <menu-container>
 	<button
 		on:click|stopPropagation|capture={() => {
-			if (closerActive) {
-				closerActive = false;
-				setTimeout(() => {
-					expandMenu = true;
-					closerActive = true;
-				}, 1);
-			} else {
-				expandMenu = true;
-				closerActive = true;
-			}
+			expandMenu = !expandMenu;
 		}}
 	>
 		<MoreVert size="27" />
 	</button>
 	{#if expandMenu}
 		<menu>
-			<ul transition:slide>
+			<ul transition:slide|global>
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li on:click|stopPropagation={handleRemoveItem}>Remove</li>
+				<li on:click|stopPropagation={handleShowPlaylistControls}>Remove</li>
 			</ul>
 		</menu>
 	{/if}
@@ -55,16 +53,9 @@
 	<closer
 		on:click={() => {
 			expandMenu = false;
-			closerActive = false;
 		}}
 	/>
 {/if}
-
-<Modals bind:showModal>
-	{#if modalScreen === 'remove-confirm'}
-		<RemoveConfirmModal bind:showModal {item} {itemType} />
-	{/if}
-</Modals>
 
 <style>
 	button {
@@ -111,9 +102,9 @@
 
 	closer {
 		display: block;
-		position: fixed;
-		height: 100vh;
-		width: 100vw;
+		position: absolute;
+		height: calc(100% - 60px);
+		width: 100%;
 		top: 0;
 		left: 0;
 	}

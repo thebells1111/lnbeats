@@ -2,7 +2,8 @@ import findCurrentChapter from './findCurrentChapter';
 import findCurrentTranscript from './findCurrentTranscript';
 import findCurrentSplit from './findCurrentSplit';
 import handleAutoBoost from './handleAutoBoost';
-import getStores from '$functions/getStores';
+import { get } from 'svelte/store';
+import clone from 'just-clone';
 
 import {
 	playingSong,
@@ -19,7 +20,7 @@ let runningSplitTime = 0;
 let minBoostTime = 30;
 
 function updatePlayerTime(currentTime) {
-	let { $currentSplit } = getStores({ currentSplit });
+	let $currentSplit = get(currentSplit);
 
 	findCurrentChapter(currentTime);
 	findCurrentTranscript(currentTime);
@@ -44,24 +45,16 @@ function isSameSplit(split1, split2) {
 }
 
 function handleNewSplit(currentTime) {
-	let {
-		$playingSong,
-		$playingAlbum,
-		$currentSplit,
-		$currentSplitDestinations,
-		$chapterBoostBypass,
-		$user
-	} = getStores(
-		playingSong,
-		playingAlbum,
-		currentSplit,
-		currentSplitDestinations,
-		chapterBoostBypass,
-		user
-	);
+	let $playingSong = get(playingSong);
+	let $playingAlbum = get(playingAlbum);
+	let $currentSplit = get(currentSplit);
+	let $currentSplitDestinations = get(currentSplitDestinations);
+	let $chapterBoostBypass = get(chapterBoostBypass);
+	let $user = get(user);
+
 	if (shouldBoost() && $user.loggedIn) {
 		if ($chapterBoostBypass) {
-			$chapterBoostBypass = false;
+			chapterBoostBypass.set(false);
 		} else {
 			console.log('BOOST');
 			handleAutoBoost($currentSplitDestinations);
@@ -91,6 +84,10 @@ function handleNewSplit(currentTime) {
 
 	previousSplit = $currentSplit;
 	currentSplitDestinations.set($currentSplitDestinations);
+}
+
+function removeUndefinedKeys(obj) {
+	return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== undefined));
 }
 
 function buildDestinations(split) {

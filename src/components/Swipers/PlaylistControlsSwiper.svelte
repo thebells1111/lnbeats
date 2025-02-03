@@ -1,0 +1,101 @@
+<script>
+	import Close from '$icons/Close.svelte';
+
+	import { Swiper, SwiperSlide } from 'swiper/svelte';
+
+	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
+	import RemovalConfirmation from '$c/Library/RemovalConfirmation.svelte';
+
+	import { playlistControlsSwiper, playlistControls } from '$/stores';
+</script>
+
+<playlist-controls id="playlist-controls-swiper">
+	<Swiper
+		direction="vertical"
+		autoHeight={true}
+		simulateTouch={false}
+		on:slideChange={() => {
+			// document.getElementById('poster-swiper').style.display = 'none';
+
+			if ($playlistControlsSwiper.activeIndex === 0) {
+				setTimeout(
+					() => (document.getElementById('playlist-controls-swiper').style.visibility = 'hidden'),
+					500
+				);
+			}
+		}}
+		on:swiper={(e) => ($playlistControlsSwiper = e.detail[0])}
+	>
+		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
+		<SwiperSlide>
+			<playlist-controls-container>
+				<button
+					on:click={() => {
+						$playlistControlsSwiper.slideTo(0);
+						setTimeout(() => {
+							document.getElementById('playlist-controls-swiper').style.visibility = 'hidden';
+						}, 500);
+					}}
+				>
+					<Close size={24} />
+				</button>
+
+				{#if $playlistControls.type === 'add'}
+					<AddSongToPlaylist />
+				{:else if $playlistControls.type === 'remove'}
+					<RemovalConfirmation />
+				{/if}
+			</playlist-controls-container>
+		</SwiperSlide>
+	</Swiper>
+</playlist-controls>
+
+<style>
+	playlist-controls {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		visibility: hidden;
+		z-index: 97;
+	}
+
+	playlist-controls {
+		z-index: 99;
+	}
+
+	.hidden-slide {
+		background-color: transparent;
+		height: 100vh;
+	}
+
+	playlist-controls-container {
+		min-width: calc(100% - 16px);
+		height: calc(var(--vh, 1vh) * 100 - 32px);
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 16px 8px 8px 8px;
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
+	}
+
+	playlist-controls-container > button {
+		align-self: flex-end;
+		margin: 0;
+		position: relative;
+		bottom: 8px;
+		padding-right: 8px;
+		font-weight: 700;
+		color: var(--color-text-0);
+		background-color: transparent;
+		border: none;
+	}
+</style>

@@ -2,18 +2,16 @@
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
 	import { slide } from 'svelte/transition';
-	import Modals from '$c/Modals/Modals.svelte';
 	import MoreVert from '$icons/MoreVert.svelte';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import loadRemoteInfo from '$functions/loadRemoteInfo';
-	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
-	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
 	import {
 		posterSwiper,
 		albumSwiper,
+		playlistControlsSwiper,
 		player,
 		remoteServer,
 		playingAlbum,
@@ -21,11 +19,12 @@
 		playingSong,
 		valueTimeSplitBlock,
 		remotePlaylistPlaying,
-		remotePlaylist
+		remotePlaylist,
+		isPlaylist,
+		playlistControls
 	} from '$/stores';
 
 	export let remoteSong;
-	export let playlist = '';
 	export let index;
 	export let album;
 
@@ -33,8 +32,6 @@
 	let songInfo = {};
 	let loaded = false;
 	let expandMenu = false;
-	let showModal = false;
-	let modalType;
 
 	const parserOptions = {
 		attributeNamePrefix: '@_',
@@ -143,15 +140,25 @@
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
 	}
 
-	function handleShowModal(type) {
+	function handleShowPlaylistControls(type) {
 		expandMenu = false;
-		showModal = true;
-		modalType = type;
+		document.getElementById('playlist-controls-swiper').style.visibility = 'initial';
+		$playlistControlsSwiper.slideTo(1);
+		if (type === 'add') {
+			$playlistControls = { type, song: { ...songInfo, album } };
+		} else if (type === 'remove') {
+			$playlistControls = {
+				type,
+				item: { songInfo },
+				playlist: { album },
+				itemType: 'playlist-song'
+			};
+		}
 	}
 
 	$: isSongPlaying =
-		songInfo.podcastGuid === $playingAlbum.podcastGuid &&
-		songInfo.guid === ($playingSong?.guid?.['#text'] || $playingSong?.guid) &&
+		songInfo?.podcastGuid === $playingAlbum.podcastGuid &&
+		songInfo?.guid === ($playingSong?.guid?.['#text'] || $playingSong?.guid) &&
 		index === $playingIndex;
 </script>
 
@@ -179,12 +186,12 @@
 			</button>
 			{#if expandMenu}
 				<menu>
-					<ul transition:slide>
-						<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
+					<ul transition:slide|global>
+						<li on:click|stopPropagation={handleShowPlaylistControls.bind(this, 'playlist-add')}>
 							Add to Playlist
 						</li>
-						{#if playlist}
-							<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-remove')}>
+						{#if $isPlaylist}
+							<li on:click|stopPropagation={handleShowPlaylistControls.bind(this, 'remove')}>
 								Remove
 							</li>
 						{/if}
@@ -202,14 +209,6 @@
 		}}
 	/>
 {/if}
-
-<Modals bind:showModal>
-	{#if modalType === 'playlist-add'}
-		<AddSongToPlaylist song={{ ...songInfo, album }} />
-	{:else if modalType === 'playlist-remove'}
-		<RemoveConfirmModal bind:showModal item={songInfo} {playlist} itemType="playlist-song" />
-	{/if}
-</Modals>
 
 <style>
 	song-info {
@@ -293,9 +292,9 @@
 
 	closer {
 		display: block;
-		position: fixed;
-		height: 100vh;
-		width: 100vw;
+		position: absolute;
+		height: 100%;
+		width: 100%;
 		top: 0;
 		left: 0;
 		z-index: 2;

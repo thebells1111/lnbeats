@@ -1,47 +1,33 @@
+import { get } from 'svelte/store';
 import loadSong from '$functions/loadSong';
 import parseFeed from '$functions/parseFeed';
-import getStores from '$functions/getStores';
 
 import {
 	playingAlbum,
 	playingSong,
 	playingIndex,
 	remoteServer,
-	favorites,
-	favoritesDB,
 	remotePlaylistPlaying,
 	remotePlaylist,
 	playingSongList
 } from '$/stores';
 
 async function playNextSong() {
-	let {
-		$playingAlbum,
-		$playingSong,
-		$playingIndex,
-		$favorites,
-		$remotePlaylistPlaying,
-		$remotePlaylist,
-		$playingSongList
-	} = getStores({
-		playingAlbum,
-		playingSong,
-		playingIndex,
-		favorites,
-		remotePlaylistPlaying,
-		remotePlaylist,
-		playingSongList
-	});
+	let $playingSong = get(playingSong);
+	let $playingAlbum = get(playingAlbum);
+	let $playingIndex = get(playingIndex);
+	let $remotePlaylistPlaying = get(remotePlaylistPlaying);
+	let $remotePlaylist = get(remotePlaylist);
+	let $playingSongList = get(playingSongList);
 
 	const album = $playingAlbum ?? {};
 	const currentSong = $playingSong ?? {};
 
 	if (currentSong?.enclosure || currentSong?.enclosure?.['@_url']) {
 		if (
-			($playingIndex >= 0 &&
-				($playingIndex < $playingSongList?.length - 1 ||
-					($remotePlaylistPlaying && $playingIndex < $remotePlaylist?.remoteSongs?.length - 1))) ||
-			album.favorites
+			$playingIndex >= 0 &&
+			($playingIndex < $playingSongList?.length - 1 ||
+				($remotePlaylistPlaying && $playingIndex < $remotePlaylist?.remoteSongs?.length - 1))
 		) {
 			$playingIndex++;
 			playingIndex.set($playingIndex);
@@ -92,21 +78,6 @@ async function playNextSong() {
 				} catch (err) {
 					console.log(err);
 				}
-			} else if (album.favorites) {
-				let favs = Object.entries($favorites);
-				let nextIndex = favs.findIndex((v) => v[0] === album.favorites) + 1;
-				let song = await favoritesDB.getItem(favs[nextIndex][0]);
-
-				$playingAlbum = {
-					album: song.album,
-					favorites: favs[nextIndex][0],
-					title: song.album.title,
-					artwork: song.album.artwork || song.album.image,
-					songs: song,
-					author: song.album.author,
-					podcastGuid: song.album.podcastGuid
-				};
-				nextSong = song;
 			} else {
 				nextSong = $playingSongList?.[$playingIndex];
 			}

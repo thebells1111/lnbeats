@@ -7,20 +7,15 @@
 	import RemoteSongCard from './RemoteSongCard.svelte';
 	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 
-	import {
-		selectedAlbum,
-		playingAlbum,
-		library,
-		playingSongList,
-		remotePlaylistPlaying
-	} from '$/stores';
+	import { selectedAlbum, playingAlbum, playingSongList, albumSwiper } from '$/stores';
 
 	export let album;
 	let expandDescription = false;
 	let descriptionEl;
 
-	$selectedAlbum = album;
-	let songList = album?.songs?.length ? album.songs : album.remoteSongs;
+	if ($albumSwiper?.activeIndex === 0) {
+		$selectedAlbum = album;
+	}
 
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
@@ -37,8 +32,9 @@
 	<container>
 		<header>
 			<img src={album.image || album.artwork} />
+
 			<h2>{album.title}</h2>
-			{#if !$library[album.podcastGuid]}
+			{#if album.songs}
 				<add-button>
 					<AddToLibraryButton />
 				</add-button>
@@ -50,7 +46,7 @@
 					expandDescription = !expandDescription;
 				}}
 			>
-				<p bind:this={descriptionEl} class:expand={expandDescription}>{album.description}</p>
+				<p bind:this={descriptionEl} class:expand={expandDescription}>{album.description || ''}</p>
 				{#if isOverflowingHorizontally(descriptionEl)}
 					<p class="arrows" class:expand={expandDescription}>{expandDescription ? '▲' : '▼'}</p>
 				{/if}
@@ -83,6 +79,7 @@
 		display: flex;
 		position: relative;
 		overflow: hidden;
+		margin: 8px 0;
 	}
 	ul {
 		margin: 0;
@@ -91,6 +88,7 @@
 
 	h2 {
 		flex: 1;
+		margin: 4px 0;
 	}
 
 	description {
@@ -124,7 +122,7 @@
 		width: 100px;
 		height: 100px;
 		border-radius: 8px;
-		margin: 8px;
+		margin: 0 8px;
 	}
 
 	add-button {

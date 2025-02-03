@@ -1,39 +1,17 @@
 <script>
-	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
-	import loadSong from '$functions/loadSong';
 	import SkipPrevious from '$icons/SkipPrevious.svelte';
 	import playPreviousSong from '$functions/player/playPreviousSong';
 	import {
-		playingIndex,
 		playingChapters,
 		currentPlayingChapter,
 		currentChapterIndex,
 		player,
-		chapterBoostBypass,
-		top100,
-		remoteServer,
-		favorites,
-		favoritesDB,
-		remotePlaylistPlaying,
-		remotePlaylist,
-		playingSongList
+		chapterBoostBypass
 	} from '$/stores';
-
-	const parserOptions = {
-		attributeNamePrefix: '@_',
-		//attrNodeName: false,
-		//textNodeName : "#text",
-		ignoreAttributes: false,
-		ignoreNameSpace: false,
-		attrValueProcessor: (val, attrName) => decode(val), //default is a=>a
-		tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
-	};
 
 	export let size = 30;
 	export let style;
-
-	import { playingAlbum, playingSong } from '$/stores';
 
 	async function gotoPreviousSong() {
 		if ($currentChapterIndex > 0) {

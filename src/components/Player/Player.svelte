@@ -1,8 +1,6 @@
 <script>
-	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
 
-	import loadSong from '$functions/loadSong';
 	import playNextSong from '$functions/player/playNextSong';
 	import playPreviousSong from '$functions/player/playPreviousSong';
 	import updatePlayerTime from '$functions/player/updatePlayerTime';
@@ -12,29 +10,12 @@
 		player,
 		playingSong,
 		playingAlbum,
-		playingIndex,
 		playingChapters,
 		currentPlayingChapter,
 		currentChapterIndex,
 		chapterBoostBypass,
-		remoteServer,
-		favorites,
-		favoritesDB,
-		mediaSession,
-		remotePlaylistPlaying,
-		remotePlaylist,
-		playingSongList
+		mediaSession
 	} from '$/stores';
-
-	const parserOptions = {
-		attributeNamePrefix: '@_',
-		//attrNodeName: false,
-		//textNodeName : "#text",
-		ignoreAttributes: false,
-		ignoreNameSpace: false,
-		attrValueProcessor: (val, attrName) => decode(val), //default is a=>a
-		tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
-	};
 
 	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';

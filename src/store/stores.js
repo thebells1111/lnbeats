@@ -35,8 +35,7 @@ export const playerTime = writable(0);
 export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
 export const mediaSession = writable();
-export const posterSwiper = writable();
-export const albumSwiper = writable();
+
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);
 export const senderName = writable('');
@@ -77,3 +76,12 @@ export const shareText = writable('');
 
 export const remotePlaylist = writable([]);
 export const remotePlaylistPlaying = writable(false);
+export const isPlaylist = writable(false);
+export const playlistControls = writable({});
+
+export const activeScreen = writable('discover');
+
+export const posterSwiper = writable();
+export const albumSwiper = writable();
+export const playlistControlsSwiper = writable();
+export const createPlaylistSwiper = writable();

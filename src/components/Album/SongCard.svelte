@@ -1,9 +1,6 @@
 <script>
-	import localforage from 'localforage';
 	import clone from 'just-clone';
 	import { slide } from 'svelte/transition';
-	import { onMount } from 'svelte';
-	import Modals from '$c/Modals/Modals.svelte';
 	import MoreVert from '$icons/MoreVert.svelte';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
@@ -24,18 +21,17 @@
 		currentTranscriptIndex,
 		remotePlaylistPlaying,
 		playingSongList,
-		shuffleSongs
+		shuffleSongs,
+		discoverScreen,
+		playlistControlsSwiper,
+		playlistControls
 	} from '$/stores';
-	import AddSongToPlaylist from '$c/CreatePlaylist/AddSongToPlaylist.svelte';
-	import RemoveConfirmModal from '$routes/library/RemoveConfirmModal.svelte';
 
 	export let song;
 	export let index;
 	export let album;
 
 	let expandMenu = false;
-	let showModal = false;
-	let modalType;
 
 	async function playSong() {
 		$remotePlaylistPlaying = false;
@@ -209,6 +205,7 @@
 		if (index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)) {
 			document.getElementById('poster-swiper').style.visibility = 'initial';
 			$posterSwiper.slideTo(1);
+			$discoverScreen = 'nowPlaying';
 			setTimeout(() => {
 				$albumSwiper.slideTo(0);
 				setTimeout(() => {
@@ -219,10 +216,13 @@
 		}
 	}
 
-	function handleShowModal(type) {
+	function handleShowPlaylistControls(type) {
 		expandMenu = false;
-		showModal = true;
-		modalType = type;
+
+		document.getElementById('playlist-controls-swiper').style.visibility = 'initial';
+		$playlistControlsSwiper.slideTo(1);
+
+		$playlistControls = { type, song: { ...song, album: $selectedAlbum } };
 	}
 </script>
 
@@ -249,8 +249,8 @@
 		</button>
 		{#if expandMenu}
 			<menu>
-				<ul transition:slide>
-					<li on:click|stopPropagation={handleShowModal.bind(this, 'playlist-add')}>
+				<ul transition:slide|global>
+					<li on:click|stopPropagation={handleShowPlaylistControls.bind(this, 'add')}>
 						Add to Playlist
 					</li>
 				</ul>
@@ -266,14 +266,6 @@
 		}}
 	/>
 {/if}
-
-<Modals bind:showModal>
-	{#if modalType === 'playlist-add'}
-		<AddSongToPlaylist song={{ ...song, album: $selectedAlbum }} />
-	{:else if modalType === 'playlist-remove'}
-		<RemoveConfirmModal bind:showModal item={song} {index} itemType="playlist-song" />
-	{/if}
-</Modals>
 
 <style>
 	li {
@@ -349,11 +341,10 @@
 
 	closer {
 		display: block;
-		position: fixed;
-		height: 100vh;
-		width: 100vw;
+		position: absolute;
+		height: 100%;
+		width: 100%;
 		top: 0;
 		left: 0;
-		z-index: 2;
 	}
 </style>
