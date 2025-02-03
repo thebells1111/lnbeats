@@ -1,13 +1,10 @@
 <script>
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
 	import HomeIcon from '$icons/Home.svelte';
 	import Wallet from '$icons/Wallet.svelte';
-	import Modal from '$c/Modals/Modals.svelte';
-	import WalletInfo from '$c/Modals/WalletInfo/WalletInfo.svelte';
-	import { user, albyClientId, remoteServer, activeScreen } from '$/stores';
-	let showWallet = false;
+
+	import { user, albyClientId, remoteServer, activeScreen, walletSwiper } from '$/stores';
 
 	function getRedirectUrl() {
 		const redirectUrl =
@@ -27,7 +24,8 @@
 			class:inactive={!$user.loggedIn}
 			on:click={async () => {
 				if ($user.loggedIn) {
-					showWallet = true;
+					document.getElementById('wallet-swiper').style.visibility = 'initial';
+					$walletSwiper.slideTo(1);
 					let res = await fetch(remoteServer + 'api/alby/refresh', {
 						credentials: 'include'
 					});
@@ -43,12 +41,6 @@
 		>
 	</nav>
 </footer>
-
-{#if showWallet}
-	<Modal bind:showModal={showWallet}>
-		<WalletInfo bind:showWallet />
-	</Modal>
-{/if}
 
 <style>
 	nav {

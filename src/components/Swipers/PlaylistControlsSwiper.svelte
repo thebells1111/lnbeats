@@ -15,12 +15,10 @@
 		autoHeight={true}
 		simulateTouch={false}
 		on:slideChange={() => {
-			// document.getElementById('poster-swiper').style.display = 'none';
-
 			if ($playlistControlsSwiper.activeIndex === 0) {
 				setTimeout(
 					() => (document.getElementById('playlist-controls-swiper').style.visibility = 'hidden'),
-					500
+					333
 				);
 			}
 		}}
@@ -32,9 +30,6 @@
 				<button
 					on:click={() => {
 						$playlistControlsSwiper.slideTo(0);
-						setTimeout(() => {
-							document.getElementById('playlist-controls-swiper').style.visibility = 'hidden';
-						}, 500);
 					}}
 				>
 					<Close size={24} />

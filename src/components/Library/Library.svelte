@@ -17,6 +17,7 @@
 			});
 
 			const _library = (await libraryDB.getItem('library')) || {};
+			$library = {};
 
 			const lib = await Promise.all(
 				Object.keys(_library).map((key) => {
@@ -26,16 +27,17 @@
 			);
 
 			lib.forEach((v) => {
-				console.log(v);
-				$library[v.podcastGuid] = {
-					artwork: v.artwork,
-					author: v.author,
-					description: v.description,
-					id: v.id,
-					podcastGuid: v.podcastGuid,
-					title: v.title,
-					url: v.url
-				};
+				if (v) {
+					$library[v.podcastGuid] = {
+						artwork: v.artwork,
+						author: v.author,
+						description: v.description,
+						id: v.id,
+						podcastGuid: v.podcastGuid,
+						title: v.title,
+						url: v.url
+					};
+				}
 			});
 
 			console.log($library);

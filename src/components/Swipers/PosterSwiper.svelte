@@ -11,12 +11,10 @@
 		autoHeight={true}
 		simulateTouch={false}
 		on:slideChange={() => {
-			// document.getElementById('poster-swiper').style.display = 'none';
-
 			if ($posterSwiper.activeIndex === 0) {
 				setTimeout(
 					() => (document.getElementById('poster-swiper').style.visibility = 'hidden'),
-					500
+					333
 				);
 			}
 		}}

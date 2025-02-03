@@ -3,20 +3,18 @@
 	import 'swiper/css';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import Player from '$c/Player/Player.svelte';
-	import BoostScreen from '$c/BoostScreen/BoostScreen.svelte';
-	import InstructionScreen from '$c/BoostScreen/InstructionScreen.svelte';
+	import BoostScreen from '$c/Wallet/BoostScreen/BoostScreen.svelte';
+	import InstructionScreen from '$c/Wallet/BoostScreen/InstructionScreen.svelte';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
 	import SmallModal from '$c/Modals/SmallModal.svelte';
 	import Share from '$c/Share/Share.svelte';
-	import Discover from './discover/Discover.svelte';
+	import Discover from '$c/Discover/Discover.svelte';
 	import Library from '$c/Library/Library.svelte';
-	import PosterSwiper from '$c/Swipers/PosterSwiper.svelte';
-	import AlbumSwiper from '$c/Swipers/AlbumSwiper.svelte';
-	import PlaylistControlsSwiper from '$c/Swipers/PlaylistControlsSwiper.svelte';
-	import CreatePlaylistSwiper from '$c/Swipers/CreatePlaylistSwiper.svelte';
+	import SwiperContainer from '$c/Swipers/SwiperContainer.svelte';
+
 	import {
 		senderName,
 		satsPerBoost,
@@ -274,14 +272,9 @@
 		<slot />
 	</main>
 
+	<SwiperContainer />
 	<Player />
-
 	<NavFooter />
-
-	<PosterSwiper />
-	<AlbumSwiper />
-	<PlaylistControlsSwiper />
-	<CreatePlaylistSwiper />
 
 	<div class="header-background" />
 	<div class="footer-background" />

@@ -85,3 +85,5 @@ export const posterSwiper = writable();
 export const albumSwiper = writable();
 export const playlistControlsSwiper = writable();
 export const createPlaylistSwiper = writable();
+export const walletSwiper = writable();
+export const boostSwiper = writable();

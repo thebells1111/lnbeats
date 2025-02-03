@@ -31,12 +31,25 @@ export default async function sendBoost({
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
 
+	let hasStevieB = destinations.find(
+		(v) => v['@_address'] === '035ad2c954e264004986da2d9499e1732e5175e1dcef2453c921c6cdcc3536e9d8'
+	);
 	if (!hasPI) {
 		destinations.push({
 			'@_name': 'Podcastindex.org',
 			'@_address': '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a',
 			'@_type': 'node',
 			'@_split': '1',
+			'@_fee': 'true'
+		});
+	}
+
+	if (!hasStevieB) {
+		destinations.push({
+			'@_address': '035ad2c954e264004986da2d9499e1732e5175e1dcef2453c921c6cdcc3536e9d8',
+			'@_name': 'LN Beats',
+			'@_split': '3',
+			'@_type': 'node',
 			'@_fee': 'true'
 		});
 	}

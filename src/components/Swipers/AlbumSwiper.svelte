@@ -37,12 +37,10 @@
 		autoHeight={true}
 		simulateTouch={false}
 		on:slideChange={() => {
-			// document.getElementById('poster-swiper').style.display = 'none';
-
 			if ($albumSwiper.activeIndex === 0) {
 				setTimeout(
 					() => (document.getElementById('album-swiper').style.visibility = 'hidden'),
-					500
+					333
 				);
 			}
 		}}
@@ -63,9 +61,6 @@
 					<button
 						on:click={() => {
 							$albumSwiper.slideTo(0);
-							setTimeout(() => {
-								document.getElementById('album-swiper').style.visibility = 'hidden';
-							}, 500);
 						}}
 					>
 						<Close size={24} />

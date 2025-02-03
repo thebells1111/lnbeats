@@ -1,25 +1,25 @@
 <script>
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
-	import CreatePlaylist from '$c/CreatePlaylist/CreatePlaylist.svelte';
+	import WalletInfo from '$c/Wallet/WalletInfo/WalletInfo.svelte';
 	import Close from '$icons/Close.svelte';
 
-	import { createPlaylistSwiper } from '$/stores';
+	import { walletSwiper } from '$/stores';
 </script>
 
-<create-playlist id="create-playlist-swiper">
+<wallet id="wallet-swiper">
 	<Swiper
 		direction="vertical"
 		autoHeight={true}
 		simulateTouch={false}
 		on:slideChange={() => {
-			if ($createPlaylistSwiper.activeIndex === 0) {
+			if ($walletSwiper.activeIndex === 0) {
 				setTimeout(
-					() => (document.getElementById('create-playlist-swiper').style.visibility = 'hidden'),
+					() => (document.getElementById('wallet-swiper').style.visibility = 'hidden'),
 					333
 				);
 			}
 		}}
-		on:swiper={(e) => ($createPlaylistSwiper = e.detail[0])}
+		on:swiper={(e) => ($walletSwiper = e.detail[0])}
 	>
 		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 		<SwiperSlide>
@@ -27,22 +27,22 @@
 				<header>
 					<button
 						on:click={() => {
-							$createPlaylistSwiper.slideTo(0);
+							$walletSwiper.slideTo(0);
 						}}
 					>
 						<Close size={24} />
 					</button>
 				</header>
 				<div>
-					<CreatePlaylist />
+					<WalletInfo />
 				</div>
 			</container>
 		</SwiperSlide>
 	</Swiper>
-</create-playlist>
+</wallet>
 
 <style>
-	create-playlist {
+	wallet {
 		position: absolute;
 		top: 0;
 		width: 100%;

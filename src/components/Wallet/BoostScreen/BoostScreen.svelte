@@ -29,9 +29,7 @@
 
 	let appDestination = [
 		{
-			'@_address': '030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3',
-			'@_customKey': '696969',
-			'@_customValue': 'eChoVKtO1KujpAA5HCoB',
+			'@_address': '035ad2c954e264004986da2d9499e1732e5175e1dcef2453c921c6cdcc3536e9d8',
 			'@_name': 'LN Beats',
 			'@_split': '100',
 			'@_type': 'node'

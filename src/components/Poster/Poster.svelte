@@ -7,7 +7,7 @@
 
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
-	import BoostButton from '$buttons/BoostButton.svelte';
+	import BoostButton from '$c/Wallet/BoostButton.svelte';
 	import convertTime from '$functions/convertTime.js';
 	import Favorite from '$icons/Favorite.svelte';
 	import FavoriteFilled from '$icons/FavoriteFilled.svelte';
