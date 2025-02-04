@@ -3,8 +3,6 @@
 	import 'swiper/css';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import Player from '$c/Player/Player.svelte';
-	import BoostScreen from '$c/Wallet/BoostScreen/BoostScreen.svelte';
-	import InstructionScreen from '$c/Wallet/BoostScreen/InstructionScreen.svelte';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -21,12 +19,9 @@
 		satsPerSong,
 		user,
 		webln,
-		showBoostScreen,
-		showInstructionScreen,
 		remoteServer,
 		discoverList,
-		featuredList,
-		shareUrl
+		featuredList
 	} from '$/stores';
 
 	let albumList = [];
@@ -280,18 +275,6 @@
 	<div class="footer-background" />
 	<div class="main-background" />
 </app>
-
-{#if $shareUrl}
-	<SmallModal bind:showModal={$shareUrl}>
-		<Share />
-	</SmallModal>
-{/if}
-
-{#if $showBoostScreen}
-	<BoostScreen />
-{:else if $showInstructionScreen}
-	<InstructionScreen />
-{/if}
 
 {#if !isPWA && showBanner}
 	<div id="installBanner" class={bannerVisible ? 'slide-in' : 'slide-out'}>

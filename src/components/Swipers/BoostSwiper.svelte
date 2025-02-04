@@ -1,25 +1,27 @@
 <script>
 	import { Swiper, SwiperSlide } from 'swiper/svelte';
-	import Share from '$c/Share/Share.svelte';
+	import BoostScreen from '$c/Wallet/BoostScreen/BoostScreen.svelte';
+	import InstructionScreen from '$c/Wallet/BoostScreen/InstructionScreen.svelte';
 	import Close from '$icons/Close.svelte';
 
-	import { shareSwiper } from '$/stores';
+	import { boostSwiper, showBoostScreen, showInstructionScreen } from '$/stores';
 </script>
 
-<share id="share-swiper">
+<boost id="boost-swiper">
 	<Swiper
 		direction="vertical"
 		autoHeight={true}
 		simulateTouch={false}
 		on:slideChange={() => {
-			if ($shareSwiper.activeIndex === 0) {
-				setTimeout(
-					() => (document.getElementById('share-swiper').style.visibility = 'hidden'),
-					333
-				);
+			if ($boostSwiper.activeIndex === 0) {
+				setTimeout(() => {
+					document.getElementById('boost-swiper').style.visibility = 'hidden';
+					$showBoostScreen = false;
+					$showInstructionScreen = false;
+				}, 333);
 			}
 		}}
-		on:swiper={(e) => ($shareSwiper = e.detail[0])}
+		on:swiper={(e) => ($boostSwiper = e.detail[0])}
 	>
 		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 		<SwiperSlide>
@@ -27,22 +29,24 @@
 				<header>
 					<button
 						on:click={() => {
-							$shareSwiper.slideTo(0);
+							$boostSwiper.slideTo(0);
 						}}
 					>
 						<Close size={24} />
 					</button>
 				</header>
-				<div>
-					<Share />
-				</div>
+				{#if $showBoostScreen}
+					<BoostScreen />
+				{:else if $showInstructionScreen}
+					<InstructionScreen />
+				{/if}
 			</container>
 		</SwiperSlide>
 	</Swiper>
-</share>
+</boost>
 
 <style>
-	share {
+	boost {
 		position: absolute;
 		top: 0;
 		width: 100%;
@@ -64,7 +68,8 @@
 		flex-direction: column;
 		position: relative;
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 		padding: 16px 8px 8px 8px;
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(

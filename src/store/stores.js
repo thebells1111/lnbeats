@@ -71,8 +71,7 @@ export const radio = writable([]);
 export const lnbRadio = writable([]);
 export const lnbRadioAlbums = writable({});
 export const lnbRadioPlaying = writable(false);
-export const shareUrl = writable(false);
-export const shareText = writable('');
+export const shareInfo = writable({});
 
 export const remotePlaylist = writable([]);
 export const remotePlaylistPlaying = writable(false);
@@ -87,3 +86,4 @@ export const playlistControlsSwiper = writable();
 export const createPlaylistSwiper = writable();
 export const walletSwiper = writable();
 export const boostSwiper = writable();
+export const shareSwiper = writable();

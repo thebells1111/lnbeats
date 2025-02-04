@@ -73,102 +73,64 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<blurred-background
-	on:mousedown|self={() => {
-		$showBoostScreen = false;
-		$posterSwiper.enabled = true;
-		boostagram = '';
-	}}
->
-	<button
-		class="close"
-		on:click={() => {
-			$showBoostScreen = false;
-			$posterSwiper.enabled = true;
-			boostagram = '';
-		}}
-	>
-		<Close size={30} style={'color: var(--color-text-boost-cancel-0);'} />
-	</button>
-	<card>
-		{#if showAppSupport}
-			<h2>Thanks for Supporting<br />LN Beats</h2>
-		{/if}
-		<boostagram>
+<card>
+	{#if showAppSupport}
+		<h2>Thanks for Supporting<br />LN Beats</h2>
+	{/if}
+	<boostagram>
+		<label>
+			<p>Sender Name</p>
+			<input type="text" name="sender-name" placeholder="sender name" bind:value={$senderName} />
+		</label>
+		<label>
+			<p>Boost Amount</p>
+			<input type="number" name="boost-amount" placeholder="boost amount" bind:value={satAmount} />
+		</label>
+		<label class="boostagram">
+			<p>Boostagram</p>
+			<textarea placeholder="message" bind:value={boostagram} />
+		</label>
+		<boost-actions>
+			{#if !showAppSupport}
+				<button
+					on:click={() => {
+						showAppSupport = true;
+					}}
+					class="support-button"
+				>
+					<span>Support</span> <span>LNBeats</span>
+				</button>
+			{:else}
+				<support-placeholder />
+			{/if}
+			<button class="send" on:click={handleBoost}> <RocketLaunch size={35} /></button>
+		</boost-actions>
+	</boostagram>
+	{#if !showAppSupport}
+		<sats-per-song>
 			<label>
-				<p>Sender Name</p>
-				<input type="text" name="sender-name" placeholder="sender name" bind:value={$senderName} />
-			</label>
-			<label>
-				<p>Boost Amount</p>
+				<p>Send this many sats after a song ends.</p>
 				<input
 					type="number"
-					name="boost-amount"
-					placeholder="boost amount"
-					bind:value={satAmount}
+					name="sats-per-song"
+					placeholder="send sats per song"
+					bind:value={$satsPerSong}
 				/>
 			</label>
-			<label class="boostagram">
-				<p>Boostagram</p>
-				<textarea placeholder="message" bind:value={boostagram} />
-			</label>
-			<boost-actions>
-				{#if !showAppSupport}
-					<button
-						on:click={() => {
-							showAppSupport = true;
-						}}
-						class="support-button"
-					>
-						<span>Support</span> <span>LNBeats</span>
-					</button>
-				{:else}
-					<support-placeholder />
-				{/if}
-				<button class="send" on:click={handleBoost}> <RocketLaunch size={35} /></button>
-			</boost-actions>
-		</boostagram>
-		{#if !showAppSupport}
-			<sats-per-song>
-				<label>
-					<p>Send this many sats after a song ends.</p>
-					<input
-						type="number"
-						name="sats-per-song"
-						placeholder="send sats per song"
-						bind:value={$satsPerSong}
-					/>
-				</label>
-				<button
-					class="save"
-					on:click={async () => {
-						await saveBoostData();
-						$showBoostScreen = false;
-					}}>Save</button
-				>
-			</sats-per-song>
-		{:else}
-			<p class="support">Send us your praise, complaints, and suggestions.</p>
-		{/if}
-	</card>
-</blurred-background>
+			<button
+				class="save"
+				on:click={async () => {
+					await saveBoostData();
+					$showBoostScreen = false;
+				}}>Save</button
+			>
+		</sats-per-song>
+	{:else}
+		<p class="support">Send us your praise, complaints, and suggestions.</p>
+	{/if}
+</card>
 
 <style>
-	blurred-background {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 100;
-		backdrop-filter: blur(5px) contrast(60%);
-		-webkit-backdrop-filter: blur(2px) contrast(60%);
-	}
-
 	card {
 		height: calc(100% - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		width: calc(100% - 36px - env(safe-area-inset-right) - env(safe-area-inset-left));

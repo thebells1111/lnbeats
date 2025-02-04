@@ -8,11 +8,19 @@
 
 	import ShareIcon from '$icons/Share.svelte';
 
-	import { albumSwiper, remoteServer, selectedAlbum, shareText, shareUrl } from '$/stores';
+	import { albumSwiper, remoteServer, selectedAlbum, shareInfo, shareSwiper } from '$/stores';
 
 	function handleShare() {
-		$shareText = `Check out this latest banger by ${$selectedAlbum.author}\n\n`;
-		$shareUrl = $page.url.origin + '/album/' + $selectedAlbum['podcastGuid'];
+		document.getElementById('share-swiper').style.visibility = 'initial';
+		$shareSwiper.slideTo(1);
+
+		let albumLink = $page.url.origin + '/album/' + $selectedAlbum['podcastGuid'];
+
+		$shareInfo = {
+			author: $selectedAlbum.author,
+			album: $selectedAlbum.title,
+			albumLink
+		};
 	}
 
 	$: checkGuid($selectedAlbum?.podcastGuid);

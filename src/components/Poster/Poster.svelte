@@ -26,13 +26,13 @@
 		currentPlayingChapter,
 		favorites,
 		playlistDB,
-		shareUrl,
-		shareText,
+		shareInfo,
 		currentSplit,
 		playingTranscript,
 		playingTranscriptText,
 		currentTranscriptIndex,
-		playlists
+		playlists,
+		shareSwiper
 	} from '$/stores';
 
 	$: isFavorite =
@@ -81,24 +81,22 @@
 	}
 
 	function handleShare() {
-		console.log($playingAlbum);
-
-		console.log(
-			$page.url.origin +
-				'/album/' +
-				$playingAlbum['podcastGuid'] +
-				'/' +
-				encodeURL($playingSong.enclosure['@_url'])
-		);
-		$shareText = `Check out this latest banger by ${$playingAlbum.author}\n\n
-		
-		`;
-		$shareUrl =
+		let songLink =
 			$page.url.origin +
 			'/album/' +
 			$playingAlbum['podcastGuid'] +
 			'/' +
 			encodeURL($playingSong.enclosure['@_url']);
+		let albumLink = $page.url.origin + '/album/' + $playingAlbum['podcastGuid'];
+		$shareInfo = {
+			author: $playingAlbum.author,
+			song: $playingSong.title,
+			album: $playingAlbum.title,
+			songLink,
+			albumLink
+		};
+		document.getElementById('share-swiper').style.visibility = 'initial';
+		$shareSwiper.slideTo(1);
 	}
 	$: console.log($currentPlayingChapter);
 	$: console.log($playingSong);

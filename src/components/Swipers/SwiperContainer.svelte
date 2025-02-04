@@ -4,6 +4,8 @@
 	import PlaylistControlsSwiper from '$c/Swipers/PlaylistControlsSwiper.svelte';
 	import CreatePlaylistSwiper from '$c/Swipers/CreatePlaylistSwiper.svelte';
 	import WalletSwiper from '$c/Swipers/WalletSwiper.svelte';
+	import BoostSwiper from '$c/Swipers/BoostSwiper.svelte';
+	import ShareSwiper from '$c/Swipers/ShareSwiper.svelte';
 </script>
 
 <PosterSwiper />
@@ -11,3 +13,5 @@
 <PlaylistControlsSwiper />
 <CreatePlaylistSwiper />
 <WalletSwiper />
+<BoostSwiper />
+<ShareSwiper />

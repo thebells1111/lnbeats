@@ -1,7 +1,6 @@
 <script>
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 	import {
-		posterSwiper,
 		user,
 		webln,
 		showBoostScreen,
@@ -9,7 +8,8 @@
 		currentSplitDestinations,
 		playingSong,
 		playingAlbum,
-		currentBoostDestinations
+		currentBoostDestinations,
+		boostSwiper
 	} from '$/stores';
 </script>
 
@@ -25,10 +25,13 @@
 			$user.loggedIn
 		) {
 			$showBoostScreen = true;
-			$posterSwiper.enabled = false;
+			document.getElementById('boost-swiper').style.visibility = 'initial';
+			$boostSwiper.slideTo(1);
 		} else {
+			$boostSwiper.slideTo(0);
 			$showInstructionScreen = true;
-			$posterSwiper.enabled = false;
+			document.getElementById('boost-swiper').style.visibility = 'initial';
+			$boostSwiper.slideTo(1);
 		}
 	}}
 >

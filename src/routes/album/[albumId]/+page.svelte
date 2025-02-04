@@ -4,16 +4,22 @@
 	export let data;
 	export let isSong = false;
 
-	import { albumSwiper, selectedAlbum } from '$/stores';
+	import { albumSwiper, selectedAlbum, playingAlbum, discoverScreen } from '$/stores';
 	onMount(openAlbum);
 	async function openAlbum() {
+		history.replaceState({}, '', '/');
 		$selectedAlbum = data;
+
 		let startTime = Date.now();
 
 		function trySlide() {
 			if ($albumSwiper && typeof $albumSwiper.slideTo === 'function') {
 				document.getElementById('album-swiper').style.visibility = 'visible';
 				$albumSwiper.slideTo(1);
+				setTimeout(() => {
+					// $playingAlbum = data;
+					// $discoverScreen = 'nowPlaying';
+				}, 500);
 			} else if (Date.now() - startTime < 30000) {
 				setTimeout(trySlide, 100);
 			}

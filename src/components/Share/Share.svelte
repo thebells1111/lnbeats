@@ -1,48 +1,61 @@
 <script>
-	import { shareUrl, shareText } from '$/stores';
+	import { shareInfo, shareSwiper } from '$/stores';
 
-	let copySuccess = false;
-
-	function shareTwitter() {
-		window.open(`https://x.com/intent/tweet?url=${$shareUrl}`);
+	function shareTwitter(link) {
+		window.open(`https://x.com/intent/tweet?url=${link}`);
 	}
 
-	async function shareNative() {
+	async function shareNative(link) {
 		if (navigator.share) {
 			try {
 				await navigator.share({
-					title: $shareText,
-					url: $shareUrl
+					title: `Check out this latest banger by ${$shareInfo.author}\n\n`,
+					url: link
 				});
 			} catch (err) {
 				console.error('Error sharing:', err);
 			}
 		} else {
-			shareTwitter(); // fallback to Twitter if Web Share API is not supported
+			shareTwitter(link); // fallback to Twitter if Web Share API is not supported
 		}
-		$shareText = '';
-		$shareUrl = '';
+		$shareSwiper.slideTo(0);
+		$shareInfo = {};
 	}
 
-	async function copyLink() {
+	async function copyLink(link) {
 		try {
-			await navigator.clipboard.writeText($shareUrl);
-			copySuccess = true;
+			await navigator.clipboard.writeText(link);
 		} catch (err) {
 			console.error('Failed to copy: ', err);
 		}
-		$shareText = '';
-		$shareUrl = '';
+		$shareSwiper.slideTo(0);
+		$shareInfo = {};
 	}
 </script>
 
-<share-buttons>
-	<input type="text" value={$shareUrl} readonly />
-	<button-container>
-		<button on:click={shareNative}>Share</button>
-		<button on:click={copyLink}>Copy Link</button>
-	</button-container>
-</share-buttons>
+{#if $shareInfo?.songLink}
+	<h3>Share Song</h3>
+	<h2>{$shareInfo?.song || ''}</h2>
+	<share-buttons>
+		<input type="text" value={$shareInfo.songLink} readonly />
+		<button-container>
+			<button on:click={shareNative.bind(this, $shareInfo.songLink)}>Share</button>
+			<button on:click={copyLink.bind(this, $shareInfo.songLink)}>Copy Link</button>
+		</button-container>
+	</share-buttons>
+{/if}
+
+{#if $shareInfo?.albumLink}
+	<h3>Share Album</h3>
+	<h2>{$shareInfo?.album || ''}</h2>
+	<share-buttons>
+		<input type="text" value={$shareInfo.albumLink} readonly />
+		<button-container>
+			<button on:click={shareNative.bind(this, $shareInfo.albumLink)}>Share</button>
+			<button on:click={copyLink.bind(this, $shareInfo.albumLink)}>Copy Link</button>
+		</button-container>
+	</share-buttons>
+{/if}
 
 <style>
 	share-buttons {
@@ -69,5 +82,12 @@
 	button:nth-of-type(2) {
 		background-color: var(--color-theme-yellow-light);
 		color: var(--color-text-0);
+	}
+
+	h2 {
+		margin: 0 0 4px 8px;
+	}
+	h3 {
+		margin: 8px 0 0 0;
 	}
 </style>

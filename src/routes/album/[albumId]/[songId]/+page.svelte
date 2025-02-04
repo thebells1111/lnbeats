@@ -180,8 +180,8 @@
 	}
 
 	function initialSongLoad() {
+		history.replaceState({}, '', '/');
 		$playingAlbum = data.album;
-		console.log(data);
 		$discoverScreen = 'nowPlaying';
 		$selectedAlbum = data.album;
 		$playingSongList = data.album.songs;
