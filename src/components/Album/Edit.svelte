@@ -1,22 +1,22 @@
 <script>
 	import TrackSorter from './TrackSorter.svelte';
-	export let playlist;
-	console.log(playlist);
+	export let album;
+	console.log(album);
 </script>
 
 <div class="container">
 	<div class="left">
 		<label>
 			Title
-			<input bind:value={playlist.title} />
+			<input bind:value={album.title} />
 		</label>
 		<label>
 			Description
-			<textarea bind:value={playlist.description} />
+			<textarea bind:value={album.description} />
 		</label>
 	</div>
 	<div class="right">
-		<TrackSorter bind:tracks={playlist.remoteSongs} bind:playlist />
+		<TrackSorter bind:tracks={album.remoteSongs} bind:album />
 	</div>
 </div>
 

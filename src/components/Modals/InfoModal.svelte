@@ -12,10 +12,6 @@
 
 <blurred-background on:mousedown|self={closeModal} on:touchend|self={closeModal}>
 	<modal>
-		<button class="close" on:click={closeModal}>
-			<Close size="24" />
-		</button>
-
 		<container>
 			<slot />
 		</container>

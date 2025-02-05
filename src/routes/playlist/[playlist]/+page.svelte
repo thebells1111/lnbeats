@@ -15,7 +15,6 @@
 	let guid = data?.guid;
 	let playlist = {};
 	let loading = true;
-	let showModal = false;
 
 	onMount(async () => {
 		$playlists = await playlistDB.getItem('playlists');
@@ -80,15 +79,6 @@
 		</ul>
 	{/if}
 </playlist-container>
-
-<Modals
-	bind:showModal
-	onClose={async () => {
-		playlistDB.setItem('playlists', $playlists);
-	}}
->
-	<Edit bind:playlist />
-</Modals>
 
 <style>
 	h2 {

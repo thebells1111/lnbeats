@@ -5,13 +5,33 @@
 
 	import SongCard from './SongCard.svelte';
 	import RemoteSongCard from './RemoteSongCard.svelte';
-	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
 
-	import { selectedAlbum, playingAlbum, playingSongList, albumSwiper } from '$/stores';
+	import publishPlaylist from '$functions/publishPlaylist.js';
+
+	import AddToLibraryButton from '$buttons/AddToLibraryButton.svelte';
+	import Modals from '$c/Modals/Modals.svelte';
+	import SmallModal from '$c/Modals/SmallModal.svelte';
+	import Upload from '$icons/Upload.svelte';
+	import EditSquare from '$icons/EditSquare.svelte';
+
+	import Edit from './Edit.svelte';
+
+	import {
+		selectedAlbum,
+		playingAlbum,
+		playingSongList,
+		albumSwiper,
+		playlists,
+		playlistDB,
+		publishingDisplay,
+		user,
+		library
+	} from '$/stores';
 
 	export let album;
 	let expandDescription = false;
 	let descriptionEl;
+	let showModal = false;
 
 	if ($albumSwiper?.activeIndex === 0) {
 		$selectedAlbum = album;
@@ -34,7 +54,7 @@
 			<img src={album.image || album.artwork} />
 
 			<h2>{album.title}</h2>
-			{#if album.songs}
+			{#if album.songs && !$library?.[album?.podcastGuid]}
 				<add-button>
 					<AddToLibraryButton />
 				</add-button>
@@ -57,6 +77,26 @@
 					<SongCard {album} {song} {index} />
 				{/each}
 			{:else if album?.remoteSongs?.length}
+				{#if $user.name && $playlists?.[album?.podcastGuid]}
+					<publishing>
+						{#if album?.remoteSongs?.length}
+							<button on:click={publishPlaylist.bind(this, album)}>
+								<Upload size="27" />
+								Publish
+							</button>
+						{/if}
+						<button
+							on:click={() => {
+								showModal = true;
+							}}
+							class="edit"
+						>
+							<EditSquare size="24" />
+							Edit
+						</button>
+						<spacer />
+					</publishing>
+				{/if}
 				{#each album.remoteSongs as remoteSong, index}
 					<RemoteSongCard {album} {remoteSong} {index} />
 				{/each}
@@ -67,6 +107,25 @@
 	<h3>It appears this Album is no longer available.</h3>
 	<h3>Would you like to remove it from your library?</h3>
 	<button on:click={removeAlbum} class="primary">Remove</button>
+{/if}
+
+<Modals
+	bind:showModal
+	onClose={async () => {
+		playlistDB.setItem('playlists', $playlists);
+	}}
+>
+	<Edit bind:album />
+</Modals>
+
+{#if $publishingDisplay}
+	<SmallModal
+		onClose={() => {
+			$publishingDisplay = '';
+		}}
+	>
+		<publishing-display>{$publishingDisplay}</publishing-display>
+	</SmallModal>
 {/if}
 
 <style>
@@ -148,5 +207,42 @@
 		color: var(--color-text-0);
 		font-weight: 600;
 		align-self: center;
+	}
+
+	publishing > button {
+		color: var(--color-text-0);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 45px;
+		align-items: center;
+		font-size: 0.6em;
+		background-color: transparent;
+		text-decoration: underline;
+		min-width: 45px;
+		height: 45px;
+	}
+
+	.edit {
+		justify-content: space-evenly;
+	}
+
+	publishing {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		width: calc(100% - 45px);
+		min-height: 50px;
+		max-height: 50px;
+	}
+
+	publishing-display {
+		color: var(--color-theme-yellow-light);
+		font-size: 1.1em;
+		font-weight: 600;
 	}
 </style>

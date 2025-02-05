@@ -4,7 +4,7 @@
 	import loadRemoteInfo from '$functions/loadRemoteInfo';
 
 	export let tracks = [];
-	export let playlist;
+	export let album;
 	let trackNames = [];
 
 	function handleSort(e) {
@@ -16,7 +16,7 @@
 			tracks.splice(newIndex, 0, movedItem);
 			trackNames.splice(newIndex, 0, _movedItem);
 		}
-		playlist.remoteSongs = tracks;
+		album.remoteSongs = tracks;
 	}
 
 	let foo;
