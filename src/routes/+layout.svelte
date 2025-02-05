@@ -1,6 +1,7 @@
 <script>
 	import './styles.css';
 	import 'swiper/css';
+	import dbAlbums from './dbAlbums.json';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import Player from '$c/Player/Player.svelte';
 
@@ -165,13 +166,17 @@
 					)}`
 			);
 			let data = await res.json();
-			let fetchedFeeds = data.feeds || data.feed || [];
+			let fetchedFeeds = (data.feeds || data.feed || []).filter(
+				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
+			);
 			let filteredFeeds = [];
 			let _featuredList = [];
 
+			$discoverList = sortByPubDate([...filteredFeeds, ...dbAlbums.albums.reverse()]);
+
 			const generators = new Set();
 
-			fetchedFeeds.forEach((v) => {
+			$discoverList.forEach((v) => {
 				let addFeed = true;
 				if (
 					//this removes 100% Retro Live Feed
@@ -199,10 +204,7 @@
 				}
 			});
 
-			albumList = sortByPubDate(filteredFeeds);
 			$featuredList = shuffleArray(_featuredList);
-
-			$discoverList = albumList;
 
 			wavlake.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author
@@ -312,31 +314,6 @@
 		padding-top: env(safe-area-inset-top);
 	}
 
-	poster,
-	album,
-	playlist-controls {
-		position: absolute;
-		top: 0;
-		width: 100%;
-		height: 100vh;
-		overflow: hidden;
-		visibility: hidden;
-		z-index: 97;
-	}
-
-	poster {
-		z-index: 98;
-	}
-
-	playlist-controls {
-		z-index: 99;
-	}
-
-	.hidden-slide {
-		background-color: transparent;
-		height: 100vh;
-	}
-
 	.header-background {
 		position: absolute;
 		top: 0;
@@ -376,50 +353,6 @@
 		position: absolute;
 		height: 100%;
 		width: 100%;
-	}
-
-	album-container,
-	playlist-controls-container {
-		min-width: calc(100% - 16px);
-		height: calc(var(--vh, 1vh) * 100 - 32px);
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding: 16px 8px 8px 8px;
-		background-color: var(--color-poster-bg-0);
-		background-image: linear-gradient(
-			180deg,
-			var(--color-poster-bg-0) 33%,
-			var(--color-poster-bg-1) 66%
-		);
-	}
-
-	album-header {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	album-header > button,
-	playlist-controls-container > button {
-		align-self: flex-end;
-		margin: 0;
-		position: relative;
-		bottom: 8px;
-		padding-right: 8px;
-		font-weight: 700;
-		color: var(--color-text-0);
-		background-color: transparent;
-		border: none;
-	}
-
-	album-container > div {
-		width: calc(100% - 8px);
-		height: calc(100% - 16px);
-		overflow: auto;
 	}
 
 	@media (min-width: 722px) {

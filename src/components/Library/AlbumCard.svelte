@@ -14,7 +14,7 @@
 		console.log(playlist);
 		$isPlaylist = playlist;
 		if (!album?.remoteSongs) {
-			setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid)), 1);
+			setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid, album)), 1);
 		}
 	}
 </script>

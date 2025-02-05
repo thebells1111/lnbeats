@@ -9,7 +9,8 @@
 		document.getElementById('album-swiper').style.visibility = 'initial';
 		$albumSwiper.slideTo(1);
 		$selectedAlbum = album;
-		setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid)), 1);
+
+		setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid, album)), 1);
 	}
 </script>
 

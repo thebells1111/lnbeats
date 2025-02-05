@@ -13,19 +13,27 @@ const parserOptions = {
 	tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
 };
 
-async function loadAlbum(albumId) {
-	console.log(albumId);
+async function loadAlbum(albumId, album) {
+	console.log(album);
 	try {
-		let albumUrl =
-			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
-		let albumRes = await fetch(albumUrl);
-		let albumData = await albumRes.json();
+		let feed;
+		let albumData;
 
-		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
-		let data = await res.text();
+		if (!(album?.item || album?.liveItem || album?.remoteItem)) {
+			let albumUrl =
+				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
+			let albumRes = await fetch(albumUrl);
+			albumData = await albumRes.json();
 
-		let xml2Json = parse(data, parserOptions);
-		let feed = xml2Json.rss.channel;
+			const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
+			let data = await res.text();
+
+			let xml2Json = parse(data, parserOptions);
+			feed = xml2Json.rss.channel;
+		} else {
+			feed = album;
+			albumData = { feed };
+		}
 
 		if (feed) {
 			if (feed?.['podcast:medium'] === 'music') {
@@ -38,13 +46,15 @@ async function loadAlbum(albumId) {
 
 			if (feed?.['podcast:medium'] === 'musicL') {
 				// music playlist feeds (musicL) can only contain remoteItems
-				albumData.feed.remoteSongs = [].concat(feed?.['podcast:remoteItem'] || []);
+				albumData.feed.remoteSongs = [].concat(
+					feed?.['podcast:remoteItem'] || feed?.remoteItem || []
+				);
 				albumData.feed.songs = [];
 				albumData.feed.live = [];
 			} else {
 				albumData.feed.remoteSongs = [];
 				albumData.feed.songs = feed.item ? [].concat(feed.item) : [];
-				albumData.feed.live = [].concat(data.liveItem);
+				albumData.feed.live = [].concat(feed.liveItem);
 			}
 
 			return albumData.feed;
