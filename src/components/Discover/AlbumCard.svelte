@@ -2,6 +2,7 @@
 	export let album;
 	export let fromSearch = false;
 	import loadAlbum from '$functions/loadAlbum';
+	import loadValueBlocks from '$functions/loadValueBlocks';
 
 	import { albumSwiper, selectedAlbum } from '$/stores';
 
@@ -10,7 +11,12 @@
 		$albumSwiper.slideTo(1);
 		$selectedAlbum = album;
 
-		setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid, album)), 1);
+		setTimeout(async () => {
+			$selectedAlbum = await loadAlbum(album.podcastGuid, album);
+			loadValueBlocks($selectedAlbum);
+
+			console.log($selectedAlbum);
+		}, 1);
 	}
 </script>
 

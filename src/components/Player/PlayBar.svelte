@@ -64,7 +64,9 @@
 		}
 	}
 
-	function handleLoop() {}
+	function handleLoop() {
+		$loopSongs = !$loopSongs;
+	}
 </script>
 
 <playbar
@@ -87,7 +89,7 @@
 		<Shuffle size="30" />
 	</button>
 
-	<button class:looped={$loopSongs} on:click={handleLoop} class="loop">
+	<button class:looped={$loopSongs} on:click|stopPropagation={handleLoop} class="loop">
 		<Laps size="27" />
 	</button>
 </playbar>

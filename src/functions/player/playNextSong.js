@@ -9,7 +9,8 @@ import {
 	remoteServer,
 	remotePlaylistPlaying,
 	remotePlaylist,
-	playingSongList
+	playingSongList,
+	loopSongs
 } from '$/stores';
 
 async function playNextSong() {
@@ -19,6 +20,7 @@ async function playNextSong() {
 	let $remotePlaylistPlaying = get(remotePlaylistPlaying);
 	let $remotePlaylist = get(remotePlaylist);
 	let $playingSongList = get(playingSongList);
+	let $loopSongs = get(loopSongs);
 
 	const album = $playingAlbum ?? {};
 	const currentSong = $playingSong ?? {};
@@ -27,8 +29,16 @@ async function playNextSong() {
 		if (
 			$playingIndex >= 0 &&
 			($playingIndex < $playingSongList?.length - 1 ||
-				($remotePlaylistPlaying && $playingIndex < $remotePlaylist?.remoteSongs?.length - 1))
+				($remotePlaylistPlaying && $playingIndex < $remotePlaylist?.remoteSongs?.length - 1) ||
+				$loopSongs)
 		) {
+			if (
+				($playingIndex === $playingSongList?.length - 1 ||
+					$playingIndex === $remotePlaylist?.remoteSongs?.length - 1) &&
+				$loopSongs
+			) {
+				$playingIndex = -1;
+			}
 			$playingIndex++;
 			playingIndex.set($playingIndex);
 			let nextSong;

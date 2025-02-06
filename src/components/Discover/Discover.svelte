@@ -206,7 +206,7 @@
 			/>
 		</search-header>
 		{#if filteredList}
-			<VirtualList items={filterDemu ? demuList : filteredList} />
+			<VirtualList items={filterDemu ? demuList : filteredList} fromSearch={true} />
 		{/if}
 	</search>
 </discover>

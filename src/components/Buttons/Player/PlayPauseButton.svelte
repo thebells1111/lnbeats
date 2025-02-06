@@ -17,7 +17,7 @@
 
 {#if $player}
 	<button on:click={handlePlayButton} aria-label="Play Pause" {style}>
-		{#if $player.src !== $playingSong.enclosure['@_url']}
+		{#if $player.src !== $playingSong?.enclosure?.['@_url']}
 			<Play {size} />
 		{:else if $player.paused}
 			<Play {size} />

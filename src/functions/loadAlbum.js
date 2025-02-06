@@ -14,12 +14,17 @@ const parserOptions = {
 };
 
 async function loadAlbum(albumId, album) {
-	console.log(album);
+	if (album.songs || album.remoteSongs) {
+		return album;
+	}
+
 	try {
 		let feed;
 		let albumData;
+		let feedPromise;
 
 		if (!(album?.item?.length || album?.remoteItem?.length)) {
+			console.log('dude');
 			let albumUrl =
 				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
 			let albumRes = await fetch(albumUrl);
@@ -30,10 +35,17 @@ async function loadAlbum(albumId, album) {
 
 			let xml2Json = parse(data, parserOptions);
 			feed = xml2Json.rss.channel;
-			console.log(feed);
 		} else {
 			feed = album;
 			albumData = { feed };
+
+			feedPromise = fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`)
+				.then((res) => res.text())
+				.then((data) => {
+					let xml2Json = parse(data, parserOptions);
+					feed = xml2Json.rss.channel;
+					return feed;
+				});
 		}
 
 		if (feed) {
@@ -68,6 +80,13 @@ async function loadAlbum(albumId, album) {
 							return v;
 					  })
 					: [];
+			}
+
+			//this is to fetch the feed, do all the otherstuff, and load the album,
+			// and when the feed is fetched use it to build the valueBlock since that's not
+			// stored in the database
+			if (feedPromise) {
+				albumData.feed.promise = feedPromise;
 			}
 
 			return albumData.feed;
