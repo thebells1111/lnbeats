@@ -61,7 +61,6 @@ async function playPreviousSong() {
 						}
 
 						albumData.feed.songs = [].concat(feed.item);
-						albumData.feed.live = data.liveItem ? [].concat(data.liveItem) : undefined;
 					}
 
 					playingAlbum.set(albumData.feed);

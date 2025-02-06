@@ -1,46 +1,18 @@
 <script>
-	import { indexSearchResults } from '$/stores';
-	import { remoteServer, albumSearch } from '$/stores';
+	import { albumSearch } from '$/stores';
 	import CancelFilled from '$icons/CancelFilled.svelte';
 	let searchQuery = $albumSearch || '';
 	let searchInput;
 	export let placeholder = 'find new music';
-	export let searchFn = async () => {
-		let url =
-			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(
-				`/search/music/byterm?q=${searchQuery}&val=lightning`
-			)}`;
-
-		const res = await fetch(url);
-		let data = await res.json();
-
-		try {
-			data = JSON.parse(data);
-			console.log(data);
-			data.feeds = data.feeds || [data.feed];
-			if (data.status) {
-				$indexSearchResults = data.feeds.filter((feed) => !feed.title.includes('3Speak'));
-			}
-		} catch (error) {}
-	};
 
 	export let inputFn = () => {};
 	export let filterDemu = false;
-
-	function checkEnter(e) {
-		if (e.key === 'Enter') {
-			searchFn();
-		}
-	}
 </script>
 
 <div>
 	<input
 		bind:this={searchInput}
 		bind:value={searchQuery}
-		on:submit={searchFn}
-		on:keypress={checkEnter}
 		on:input={inputFn}
 		on:focus={() => {
 			searchInput.select();

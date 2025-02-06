@@ -5,13 +5,10 @@
 
 	export let album = {};
 	export let playlist = false;
-	console.log(album);
-
 	async function openAlbum() {
 		document.getElementById('album-swiper').style.visibility = 'initial';
 		$albumSwiper.slideTo(1);
 		$selectedAlbum = album;
-		console.log(playlist);
 		$isPlaylist = playlist;
 		if (!album?.remoteSongs) {
 			setTimeout(async () => ($selectedAlbum = await loadAlbum(album.podcastGuid, album)), 1);

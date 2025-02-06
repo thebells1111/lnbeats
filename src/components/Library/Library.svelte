@@ -40,8 +40,6 @@
 				}
 			});
 
-			console.log($library);
-
 			libraryDB.setItem('library', $library);
 		}
 

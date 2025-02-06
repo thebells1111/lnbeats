@@ -7,6 +7,7 @@
 	import Pause from '$icons/Pause.svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import loadRemoteInfo from '$functions/loadRemoteInfo';
+	import loadSong from '$functions/loadSong';
 
 	import {
 		posterSwiper,
@@ -100,7 +101,6 @@
 				}
 
 				albumData.feed.songs = [].concat(feed.item);
-				albumData.feed.live = data.liveItem ? [].concat(data.liveItem) : undefined;
 			}
 
 			$playingAlbum = albumData.feed;
@@ -111,16 +111,12 @@
 				return v.guid['#text'] === remoteSong['@_itemGuid'];
 			});
 
-			$player.pause();
-			$player.src = foundSong.enclosure['@_url'];
 			$playingSong = foundSong;
 			$playingIndex = index;
 			$remotePlaylist = album;
 			$remotePlaylistPlaying = true;
 
-			$player.play();
-
-			$player.paused = $player.paused;
+			loadSong(foundSong);
 
 			openPoster();
 		} catch (err) {

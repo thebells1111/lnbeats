@@ -1,5 +1,6 @@
 import {
 	playingSong,
+	playingAlbum,
 	player,
 	remoteServer,
 	playingChapters,
@@ -7,7 +8,6 @@ import {
 	currentChapterIndex,
 	currentSplitDestinations,
 	valueTimeSplitBlock,
-	playingTranscript,
 	playingTranscriptText
 } from '$/stores';
 import { get } from 'svelte/store';
@@ -38,11 +38,10 @@ export default async function loadSong(song) {
 		let res = await fetch(
 			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
 		);
-		let data = (res.ok ? await res.text() : '');
+		let data = res.ok ? await res.text() : '';
 		playingTranscriptText.set(data);
 		// playingChapters.set(data?.chapters);
-	}
-	else {
+	} else {
 		playingTranscriptText.set('');
 	}
 

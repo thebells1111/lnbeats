@@ -38,8 +38,13 @@ export async function load({ params, fetch }) {
 				feed.item.sort((a, b) => (a['itunes:episode'] > b['itunes:episode'] ? 1 : -1));
 			}
 
-			albumData.feed.songs = [].concat(feed.item);
-			albumData.feed.live = data.liveItem ? [].concat(data.liveItem) : undefined;
+			albumData.feed.songs = [].concat(feed.item).map((v) => {
+				if (!v.enclosure) {
+					v.enclosure = { '@_type': v.enclosureType, '@_url': v.enclosureUrl };
+				}
+
+				return v;
+			});
 
 			return { album: albumData.feed, songId: params.songId };
 		}

@@ -19,7 +19,7 @@ async function loadAlbum(albumId, album) {
 		let feed;
 		let albumData;
 
-		if (!(album?.item || album?.liveItem || album?.remoteItem)) {
+		if (!(album?.item?.length || album?.remoteItem?.length)) {
 			let albumUrl =
 				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
 			let albumRes = await fetch(albumUrl);
@@ -30,6 +30,7 @@ async function loadAlbum(albumId, album) {
 
 			let xml2Json = parse(data, parserOptions);
 			feed = xml2Json.rss.channel;
+			console.log(feed);
 		} else {
 			feed = album;
 			albumData = { feed };
@@ -46,15 +47,27 @@ async function loadAlbum(albumId, album) {
 
 			if (feed?.['podcast:medium'] === 'musicL') {
 				// music playlist feeds (musicL) can only contain remoteItems
-				albumData.feed.remoteSongs = [].concat(
-					feed?.['podcast:remoteItem'] || feed?.remoteItem || []
-				);
+				albumData.feed.remoteSongs = []
+					.concat(feed?.['podcast:remoteItem'] || feed?.remoteItem || [])
+					.map((v) => {
+						if (!v.enclosure) {
+							v.enclosure = { '@_type': v.enclosureType, '@_url': v.enclosureUrl };
+						}
+
+						return v;
+					});
 				albumData.feed.songs = [];
-				albumData.feed.live = [];
 			} else {
 				albumData.feed.remoteSongs = [];
-				albumData.feed.songs = feed.item ? [].concat(feed.item) : [];
-				albumData.feed.live = [].concat(feed.liveItem);
+				albumData.feed.songs = feed.item
+					? [].concat(feed.item).map((v) => {
+							if (!v.enclosure) {
+								v.enclosure = { '@_type': v.enclosureType, '@_url': v.enclosureUrl };
+							}
+
+							return v;
+					  })
+					: [];
 			}
 
 			return albumData.feed;

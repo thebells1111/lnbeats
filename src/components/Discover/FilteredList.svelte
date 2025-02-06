@@ -3,8 +3,6 @@
 	import AlbumCard from './AlbumCard.svelte';
 	export let items = [];
 
-	$: console.log(items);
-
 	let gridHeight;
 	let gridWidth;
 	let rowColumns = 6;
@@ -13,14 +11,9 @@
 
 	$: if (gridWidth > itemWidth) {
 		rowColumns = Math.floor(gridWidth / itemWidth);
-		console.log(gridWidth);
-		console.log(itemWidth);
-		console.log(rowColumns);
 	} else {
 		rowColumns = 1;
 	}
-
-	$: console.log(Math.ceil(items.length / rowColumns));
 </script>
 
 <div

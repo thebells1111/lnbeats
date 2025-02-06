@@ -57,7 +57,6 @@
 					return v;
 				})
 			);
-			console.log($radio);
 		}
 
 		if ($albumSearch) {
@@ -74,8 +73,6 @@
 		const albumRes = await fetch(albumUrl);
 		const albumData = await albumRes.json();
 
-		console.log(albumData);
-
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
 
@@ -83,9 +80,14 @@
 		let feed = xml2Json.rss.channel;
 
 		// music playlist feeds (musicL) can only contain remoteItems
-		albumData.feed.remoteSongs = [].concat(feed?.['podcast:remoteItem'] || []);
+		albumData.feed.remoteSongs = [].concat(feed?.['podcast:remoteItem'] || []).map((v) => {
+			if (!v.enclosure) {
+				v.enclosure = { '@_type': v.enclosureType, '@_url': v.enclosureUrl };
+			}
+
+			return v;
+		});
 		albumData.feed.songs = [];
-		albumData.feed.live = [];
 
 		$top100 = albumData.feed;
 	}
@@ -110,7 +112,6 @@
 
 	function handleInput(e) {
 		const query = e.target.value.toLowerCase();
-		searchIndex(query);
 		$albumSearch = query;
 		if (query) {
 			filteredList = $discoverList
@@ -119,34 +120,6 @@
 				)
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
 		} else filteredList = $discoverList;
-	}
-
-	function searchIndex(searchQuery) {
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
-
-		// Set a new timeout
-		timeoutId = setTimeout(async () => {
-			let url =
-				remoteServer +
-				`api/queryindex?q=${encodeURIComponent(
-					`/search/music/byterm?q=${searchQuery}&val=lightning`
-				)}`;
-
-			const res = await fetch(url);
-			let data = await res.json();
-
-			try {
-				data = JSON.parse(data);
-				data.feeds = data.feeds || [data.feed];
-				if (data.status) {
-					data.feeds = data.feeds.filter((feed) => !feed.title.includes('3Speak'));
-					console.log(filteredList);
-					console.log(data.feeds);
-				}
-			} catch (error) {}
-		}, 3000); // 3 seconds delay
 	}
 
 	$: if (filterDemu) {

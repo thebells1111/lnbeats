@@ -166,13 +166,18 @@
 					)}`
 			);
 			let data = await res.json();
-			let fetchedFeeds = (data.feeds || data.feed || []).filter(
+			console.log(data);
+			let fetchedFeeds = (data.feeds || [data.feed] || []).filter(
 				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
 			);
 			let filteredFeeds = [];
 			let _featuredList = [];
 
-			$discoverList = sortByPubDate([...filteredFeeds, ...dbAlbums.albums.reverse()]);
+			console.log('new feeds: ', fetchedFeeds);
+
+			$discoverList = sortByPubDate(dbAlbums.albums.concat(fetchedFeeds));
+
+			console.log($discoverList);
 
 			const generators = new Set();
 
@@ -223,7 +228,7 @@
 	}
 
 	function sortByPubDate(arr) {
-		arr.sort((a, b) => (a.newestItemPubdate < b.newestItemPubdate ? 1 : -1));
+		arr.sort((a, b) => (a.newestItemPubdate || b.newestItemPubdate ? 1 : -1));
 
 		return arr;
 	}

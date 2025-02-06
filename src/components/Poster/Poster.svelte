@@ -62,8 +62,6 @@
 			);
 		});
 
-		console.log(albumIndex);
-
 		if (albumIndex > -1) {
 			$favorites.remoteSongs.splice(albumIndex, 1);
 			$favorites = $favorites;
@@ -75,7 +73,6 @@
 		}
 
 		$favorites = $favorites;
-		console.log($favorites);
 		$playlists.favorites = $favorites;
 		playlistDB.setItem('playlists', $playlists);
 	}
@@ -98,9 +95,7 @@
 		document.getElementById('share-swiper').style.visibility = 'initial';
 		$shareSwiper.slideTo(1);
 	}
-	$: console.log($currentPlayingChapter);
-	$: console.log($playingSong);
-	$: console.log($playingAlbum);
+
 	$: byline = $currentPlayingChapter
 		? $currentSplit?.feedGuid === $playingAlbum?.feedGuid
 			? ''
