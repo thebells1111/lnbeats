@@ -3,8 +3,11 @@
 	export let fromSearch = false;
 	import loadAlbum from '$functions/loadAlbum';
 	import loadValueBlocks from '$functions/loadValueBlocks';
+	import { onMount } from 'svelte';
+	import CryptoJS from 'crypto-js';
 
 	import { albumSwiper, selectedAlbum } from '$/stores';
+	let imageUrl = album.artwork || album.image;
 
 	async function openAlbum() {
 		document.getElementById('album-swiper').style.visibility = 'initial';
@@ -18,12 +21,33 @@
 			console.log($selectedAlbum);
 		}, 1);
 	}
+	function hashUrl(url) {
+		const hash = CryptoJS.SHA1(url).toString(CryptoJS.enc.Hex);
+		return `https://lnbeats.b-cdn.net/images/${hash}.webp`;
+	}
+
+
+	$:handleImage(album)
+
+	function handleImage(album){
+		if (album.hasOwnProperty('imageHash')) {
+			imageUrl =  album.imageHash
+		} else{
+		album.imageHash = hashUrl(album.artwork || album.image);
+		imageUrl = album.imageHash
+		}		
+	}
+
+	function handleError() {		
+		album.imageHash = album.artwork || album.image;
+		imageUrl = album.imageHash
+	}
 </script>
 
 {#if album}
 	<button on:click={openAlbum}>
 		<card>
-			<img src={album.artwork || album.image} loading="lazy" width="115" height="115" />
+			<img src={imageUrl} on:error={handleError} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
 			<album-author>{album.author || ''}</album-author>
 

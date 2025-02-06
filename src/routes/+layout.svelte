@@ -174,8 +174,12 @@
 			let _featuredList = [];
 
 			console.log('new feeds: ', fetchedFeeds);
+			const albumMap = new Map(dbAlbums.albums.map((album) => [album.id, album]));
+			fetchedFeeds.forEach((feed) => {
+				albumMap.set(feed.id, feed);
+			});
 
-			$discoverList = sortByPubDate(dbAlbums.albums.concat(fetchedFeeds));
+			$discoverList = sortByPubDate(Array.from(albumMap.values()).concat(fetchedFeeds));
 
 			console.log($discoverList);
 

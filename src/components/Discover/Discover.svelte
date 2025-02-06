@@ -132,13 +132,7 @@
 		<img src="/lnbeats-header.png" alt="ln beats logo" />
 	</header>
 
-	<navbar>
-		<button
-			on:click={() => {
-				$discoverScreen = 'nowPlaying';
-			}}
-			class:active={$discoverScreen === 'nowPlaying'}>Playing</button
-		>
+	<navbar>		
 		<button
 			on:click={() => {
 				$discoverScreen = 'featured';
@@ -166,14 +160,7 @@
 		>
 	</navbar>
 
-	<now-playing class:show={$discoverScreen === 'nowPlaying'}>
-		{#if $playingAlbum.id}
-			<Album album={$remotePlaylistPlaying ? $remotePlaylist : $playingAlbum} />
-		{:else}
-			<h3>Support These Artist Who Support LNBeats</h3>
-			<VirtualList items={$featuredList} />
-		{/if}
-	</now-playing>
+
 
 	<featured class:show={$discoverScreen === 'featured'}>
 		<h3>Support These Artist Who Support LNBeats</h3>
@@ -293,7 +280,7 @@
 		border-bottom: 1px solid var(--color-text-0);
 	}
 
-	now-playing,
+	
 	featured,
 	top100,
 	music-shows,

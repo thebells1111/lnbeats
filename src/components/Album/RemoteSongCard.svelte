@@ -127,13 +127,7 @@
 	function openPoster() {
 		document.getElementById('poster-swiper').style.visibility = 'initial';
 		$posterSwiper.slideTo(1);
-		setTimeout(() => {
-			$albumSwiper.slideTo(0);
-			setTimeout(() => {
-				document.getElementById('album-swiper').style.visibility = 'hidden';
-			}, 500);
-		}, 500);
-		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+		
 	}
 
 	function handleShowPlaylistControls(type) {

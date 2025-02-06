@@ -67,14 +67,7 @@
 		if (index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)) {
 			document.getElementById('poster-swiper').style.visibility = 'initial';
 			$posterSwiper.slideTo(1);
-			$discoverScreen = 'nowPlaying';
-			setTimeout(() => {
-				$albumSwiper.slideTo(0);
-				setTimeout(() => {
-					document.getElementById('album-swiper').style.visibility = 'hidden';
-				}, 500);
-			}, 500);
-			// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+		
 		}
 	}
 

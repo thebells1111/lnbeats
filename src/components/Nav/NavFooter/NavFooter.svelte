@@ -2,9 +2,10 @@
 	import { page } from '$app/stores';
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
 	import HomeIcon from '$icons/Home.svelte';
+	import SearchIcon from '$icons/Search.svelte'
 	import Wallet from '$icons/Wallet.svelte';
 
-	import { user, albyClientId, remoteServer, activeScreen, walletSwiper } from '$/stores';
+	import { user, albyClientId, remoteServer, activeScreen, walletSwiper, albumSwiper, selectedAlbum, playingAlbum} from '$/stores';
 
 	function getRedirectUrl() {
 		const redirectUrl =
@@ -17,8 +18,18 @@
 
 <footer>
 	<nav>
+		<button on:click={() => {	
+			if ($playingAlbum?.['podcastGuid']){
+			$selectedAlbum = $playingAlbum
+			}
+			document.getElementById('album-swiper').style.visibility = 'initial';
+		$albumSwiper.slideTo(1);}
+		}> 
+		<LibraryMusic size={27} />
+		Playing
+	</button>
 		<button on:click={() => ($activeScreen = 'library')}> <LibraryMusic size={27} />Library</button>
-		<button on:click={() => ($activeScreen = 'discover')}><HomeIcon size={27} />Home</button>
+		<button on:click={() => ($activeScreen = 'discover')}><SearchIcon size={27} />Discover</button>
 		<!-- <a href="/search"><SearchIcon size={27} />Search</a> -->
 		<button
 			class:inactive={!$user.loggedIn}
