@@ -14,7 +14,7 @@ const parserOptions = {
 };
 
 async function loadAlbum(albumId, album) {
-	if (album.songs || album.remoteSongs) {
+	if (album?.songs || album?.remoteSongs) {
 		return album;
 	}
 
@@ -24,7 +24,6 @@ async function loadAlbum(albumId, album) {
 		let feedPromise;
 
 		if (!(album?.item?.length || album?.remoteItem?.length)) {
-			console.log('dude');
 			let albumUrl =
 				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
 			let albumRes = await fetch(albumUrl);

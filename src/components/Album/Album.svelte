@@ -33,6 +33,11 @@
 	let descriptionEl;
 	let showModal = false;
 
+	$: console.log($playlists);
+	$: if ($playlists && album.id !== 6612768) {
+		album.remoteSongs = album.remoteSongs;
+	}
+
 	if ($albumSwiper?.activeIndex === 0) {
 		$selectedAlbum = album;
 	}
@@ -73,9 +78,11 @@
 			</description>
 
 			{#if album?.songs?.length}
-				{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
-					<SongCard {album} {song} {index} />
-				{/each}
+				<ul class="no-scroll">
+					{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
+						<SongCard {album} {song} {index} />
+					{/each}
+				</ul>
 			{:else if album?.remoteSongs?.length}
 				{#if $user.name && $playlists?.[album?.podcastGuid]}
 					<publishing>
@@ -97,9 +104,11 @@
 						<spacer />
 					</publishing>
 				{/if}
-				{#each album.remoteSongs as remoteSong, index}
-					<RemoteSongCard {album} {remoteSong} {index} />
-				{/each}
+				<ul class="no-scroll">
+					{#each album.remoteSongs as remoteSong, index}
+						<RemoteSongCard {album} {remoteSong} {index} />
+					{/each}
+				</ul>
 			{/if}
 		</ul>
 	</container>
@@ -131,7 +140,7 @@
 <style>
 	container {
 		display: block;
-		height: 100%;
+		height: calc(100% - 8px);
 		overflow: auto;
 	}
 	header {

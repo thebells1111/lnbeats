@@ -8,16 +8,13 @@ export async function deleteSongFromPlaylist(song, _playlist) {
 		$playlists = await playlistDB.getItem('playlists');
 	}
 
-	console.log(song);
-	console.log(_playlist);
-
 	_playlist.remoteSongs = _playlist.remoteSongs.filter((v) => {
-		console.log(v?.['@_feedGuid'] === song?.podcastGuid);
-		console.log(v?.['@_itemGuid'] === song?.guid);
 		return !(v?.['@_feedGuid'] === song?.podcastGuid && v?.['@_itemGuid'] === song?.guid);
 	});
 
-	$playlists[_playlist.guid] = _playlist;
+	console.log([_playlist.podcastGuid]);
+
+	$playlists[_playlist.podcastGuid] = _playlist;
 	playlists.set($playlists);
 	await playlistDB.setItem('playlists', $playlists);
 }

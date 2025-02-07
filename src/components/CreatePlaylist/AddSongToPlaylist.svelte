@@ -18,12 +18,13 @@
 		console.log(song);
 		playlist.remoteSongs.push({
 			id: uuidv4(),
-			'@_feedGuid': song?.album?.podcastGuid,
+			'@_feedGuid': song?.album?.podcastGuid || song?.podcastGuid,
 			'@_itemGuid': song?.guid?.['#text'] || song?.guid
 		});
 
 		successList = playlist.title;
 		await playlistDB.setItem('playlists', $playlists);
+		$playlists = $playlists;
 		setTimeout(() => (successList = ''), 1000);
 	}
 

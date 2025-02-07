@@ -5,7 +5,7 @@
 	import clone from 'just-clone';
 
 	import {
-		posterSwiper,
+		boostSwiper,
 		satsPerSong,
 		senderName,
 		satsPerBoost,
@@ -51,9 +51,9 @@
 			});
 			await saveBoostData();
 			$currentBoostDestinations = null;
-			$posterSwiper.enabled = true;
 			boostagram = '';
-			$showBoostScreen = false;
+			document.getElementById('boost-swiper').style.visibility = 'hidden';
+			$boostSwiper.slideTo(0);
 		} catch (err) {
 			// Tell the user what went wrong
 			alert(

@@ -27,14 +27,13 @@
 		albumSearch,
 		radio,
 		remoteServer,
-		playingAlbum,
-		remotePlaylistPlaying,
-		remotePlaylist,
 		top100,
-		activeScreen
+		activeScreen,
+		masterSongList
 	} from '$/stores';
 
 	let filteredList = [];
+	let filteredSongList = [];
 	let demuList = [];
 	let filterDemu = false;
 	let timeoutId = null;
@@ -119,7 +118,15 @@
 					(v) => v.author.toLowerCase().includes(query) || v.title.toLowerCase().includes(query)
 				)
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
-		} else filteredList = $discoverList;
+
+			filteredSongList = $masterSongList
+				.filter((v) => v.title.toLowerCase().includes(query))
+				.sort((a, b) => a.title.localeCompare(b.title));
+			console.log(filteredSongList);
+		} else {
+			filteredList = $discoverList;
+			filteredSongList = $masterSongList;
+		}
 	}
 
 	$: if (filterDemu) {
@@ -132,7 +139,7 @@
 		<img src="/lnbeats-header.png" alt="ln beats logo" />
 	</header>
 
-	<navbar>		
+	<navbar>
 		<button
 			on:click={() => {
 				$discoverScreen = 'featured';
@@ -160,8 +167,6 @@
 		>
 	</navbar>
 
-
-
 	<featured class:show={$discoverScreen === 'featured'}>
 		<h3>Support These Artist Who Support LNBeats</h3>
 		<VirtualList items={$featuredList} />
@@ -186,7 +191,7 @@
 	<search class:show={$discoverScreen === 'search'}>
 		<search-header>
 			<SearchBar
-				placeholder="search for album"
+				placeholder="search"
 				searchFn={handleSearch}
 				inputFn={handleInput}
 				bind:filterDemu
@@ -280,7 +285,6 @@
 		border-bottom: 1px solid var(--color-text-0);
 	}
 
-	
 	featured,
 	top100,
 	music-shows,

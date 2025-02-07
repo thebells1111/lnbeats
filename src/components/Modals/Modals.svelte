@@ -11,7 +11,11 @@
 </script>
 
 {#if showModal}
-	<blurred-background on:mousedown|self={closeModal} on:touchend|self={closeModal}>
+	<blurred-background
+		on:mousedown|self={closeModal}
+		on:touchend|self={closeModal}
+		class="no-scroll"
+	>
 		<modal>
 			<button class="close" on:click={closeModal}>
 				<Close size="24" />
@@ -69,11 +73,10 @@
 
 	container {
 		display: block;
-		width: calc(100% - 32px - env(safe-area-inset-right) - env(safe-area-inset-left));
+		width: calc(100%);
 		height: calc(100% - 42px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		padding-top: calc(42px + env(safe-area-inset-top));
-		margin: 0 calc(16px + env(safe-area-inset-right)) env(safe-area-inset-bottom)
-			calc(16px + env(safe-area-inset-left));
+		margin: 0 0 env(safe-area-inset-bottom) 0;
 		overflow: hidden;
 	}
 

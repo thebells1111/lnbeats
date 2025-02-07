@@ -2,6 +2,7 @@
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
 	import { slide } from 'svelte/transition';
+	import clone from 'just-clone';
 	import MoreVert from '$icons/MoreVert.svelte';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
@@ -127,7 +128,6 @@
 	function openPoster() {
 		document.getElementById('poster-swiper').style.visibility = 'initial';
 		$posterSwiper.slideTo(1);
-		
 	}
 
 	function handleShowPlaylistControls(type) {
@@ -135,7 +135,7 @@
 		document.getElementById('playlist-controls-swiper').style.visibility = 'initial';
 		$playlistControlsSwiper.slideTo(1);
 		if (type === 'add') {
-			$playlistControls = { type, song: { ...songInfo, album } };
+			$playlistControls = { type, song: { ...songInfo } };
 		} else if (type === 'remove') {
 			$playlistControls = {
 				type,
@@ -177,7 +177,7 @@
 			{#if expandMenu}
 				<menu>
 					<ul transition:slide|global>
-						<li on:click|stopPropagation={handleShowPlaylistControls.bind(this, 'playlist-add')}>
+						<li on:click|stopPropagation={handleShowPlaylistControls.bind(this, 'add')}>
 							Add to Playlist
 						</li>
 						{#if $isPlaylist}

@@ -11,6 +11,7 @@
 		direction="vertical"
 		autoHeight={true}
 		simulateTouch={false}
+		noSwipingClass="no-scroll"
 		on:slideChange={() => {
 			if ($shareSwiper.activeIndex === 0) {
 				setTimeout(

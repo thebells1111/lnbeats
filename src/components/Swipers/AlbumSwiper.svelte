@@ -44,6 +44,7 @@
 		direction="vertical"
 		autoHeight={true}
 		simulateTouch={false}
+		noSwipingClass="no-scroll"
 		on:slideChange={() => {
 			if ($albumSwiper.activeIndex === 0) {
 				setTimeout(
@@ -100,13 +101,12 @@
 
 	album-container {
 		min-width: calc(100% - 16px);
-		height: calc(var(--vh, 1vh) * 100 - 32px);
+		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		flex-direction: column;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		padding: 16px 8px 8px 8px;
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(
 			180deg,
@@ -116,10 +116,13 @@
 	}
 
 	album-header {
-		width: 100%;
+		width: calc(100% - 16px);
+		height: 46px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding: 0 8px;
+		position: relative;
 	}
 
 	album-header > button {
@@ -135,8 +138,8 @@
 	}
 
 	album-container > div {
-		width: calc(100% - 8px);
-		height: calc(100% - 16px);
+		width: calc(100%);
+		height: calc(100%);
 		overflow: auto;
 	}
 
@@ -154,6 +157,8 @@
 		padding: 0;
 		width: 36px;
 		height: 36px;
+		position: relative;
+		top: 4px;
 	}
 	.share p {
 		font-size: 0.8em;

@@ -1,11 +1,22 @@
 <script>
 	import { page } from '$app/stores';
 	import LibraryMusic from '$icons/LibraryMusic.svelte';
-	import HomeIcon from '$icons/Home.svelte';
-	import SearchIcon from '$icons/Search.svelte'
+	import PlayIcon from '$icons/PlayArrow.svelte';
+	import SearchIcon from '$icons/Search.svelte';
 	import Wallet from '$icons/Wallet.svelte';
 
-	import { user, albyClientId, remoteServer, activeScreen, walletSwiper, albumSwiper, selectedAlbum, playingAlbum} from '$/stores';
+	import {
+		user,
+		albyClientId,
+		remoteServer,
+		activeScreen,
+		walletSwiper,
+		albumSwiper,
+		selectedAlbum,
+		playingAlbum,
+		remotePlaylistPlaying,
+		remotePlaylist
+	} from '$/stores';
 
 	function getRedirectUrl() {
 		const redirectUrl =
@@ -18,16 +29,20 @@
 
 <footer>
 	<nav>
-		<button on:click={() => {	
-			if ($playingAlbum?.['podcastGuid']){
-			$selectedAlbum = $playingAlbum
-			}
-			document.getElementById('album-swiper').style.visibility = 'initial';
-		$albumSwiper.slideTo(1);}
-		}> 
-		<LibraryMusic size={27} />
-		Playing
-	</button>
+		<button
+			on:click={() => {
+				if ($playingAlbum?.['podcastGuid']) {
+					$selectedAlbum = $remotePlaylistPlaying ? $remotePlaylist : $playingAlbum;
+				}
+				document.getElementById('album-swiper').style.visibility = 'initial';
+				$albumSwiper.slideTo(1);
+			}}
+		>
+			<play-border>
+				<PlayIcon size={27} />
+			</play-border>
+			Playing
+		</button>
 		<button on:click={() => ($activeScreen = 'library')}> <LibraryMusic size={27} />Library</button>
 		<button on:click={() => ($activeScreen = 'discover')}><SearchIcon size={27} />Discover</button>
 		<!-- <a href="/search"><SearchIcon size={27} />Search</a> -->
@@ -67,7 +82,6 @@
 		padding-bottom: env(safe-area-inset-bottom);
 	}
 
-	a,
 	button {
 		color: var(--color-text-0);
 		display: flex;
@@ -84,5 +98,16 @@
 
 	.inactive {
 		color: hsl(0, 76%, 55%);
+	}
+
+	play-border {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 2px solid var(--color-text-0);
+		border-radius: 5px;
+		width: 24px;
+		height: 24px;
+		margin-bottom: 1px;
 	}
 </style>

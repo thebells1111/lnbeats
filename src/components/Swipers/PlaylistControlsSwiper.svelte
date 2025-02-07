@@ -7,6 +7,8 @@
 	import RemovalConfirmation from '$c/Library/RemovalConfirmation.svelte';
 
 	import { playlistControlsSwiper, playlistControls } from '$/stores';
+
+	$: console.log($playlistControls);
 </script>
 
 <playlist-controls id="playlist-controls-swiper">

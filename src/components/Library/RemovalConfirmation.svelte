@@ -16,9 +16,7 @@
 		} else if (itemType === 'playlist') {
 			deletePlaylist(item);
 		} else if (itemType === 'playlist-song') {
-			console.log(item);
-			console.log(playlist);
-			// deleteSongFromPlaylist(item, playlist);
+			deleteSongFromPlaylist(item?.songInfo, playlist?.album);
 		}
 		$playlistControlsSwiper.slideTo(0);
 		setTimeout(() => {
@@ -28,7 +26,8 @@
 </script>
 
 <h2>
-	Are you sure you want to delete {$playlistControls?.item?.title || $playlistControls?.item}?
+	Are you sure you want to delete {$playlistControls?.item?.title ||
+		$playlistControls?.item?.songInfo?.title}?
 </h2>
 
 <button-container>

@@ -22,7 +22,8 @@
 		webln,
 		remoteServer,
 		discoverList,
-		featuredList
+		featuredList,
+		masterSongList
 	} from '$/stores';
 
 	let albumList = [];
@@ -166,7 +167,6 @@
 					)}`
 			);
 			let data = await res.json();
-			console.log(data);
 			let fetchedFeeds = (data.feeds || [data.feed] || []).filter(
 				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
 			);
@@ -179,18 +179,19 @@
 				albumMap.set(feed.id, feed);
 			});
 
-			$discoverList = sortByPubDate(Array.from(albumMap.values()).concat(fetchedFeeds));
-
-			console.log($discoverList);
+			let _discoverList = sortByPubDate(Array.from(albumMap.values()));
 
 			const generators = new Set();
 
-			$discoverList.forEach((v) => {
+			_discoverList.forEach((v) => {
+				$masterSongList = $masterSongList.concat(v.songs || v.item || []);
+
 				let addFeed = true;
 				if (
 					//this removes 100% Retro Live Feed
-					[5718023].find((w) => v.id === w) ||
-					v.author === 'Gabe Barrett'
+					[5718023, 4222574, 424986].find((w) => v.id === w) ||
+					v.author === 'Gabe Barrett' ||
+					v.author === '小杉毅誉大'
 				) {
 					addFeed = false;
 				}
@@ -228,11 +229,12 @@
 			console.log('Wavlake Feeds: ', wavlake);
 			console.log('RSS Blue Feeds', rssblue);
 			console.log('Other Feeds: ', other);
+			$discoverList = filteredFeeds;
 		}
 	}
 
 	function sortByPubDate(arr) {
-		arr.sort((a, b) => (a.newestItemPubdate || b.newestItemPubdate ? 1 : -1));
+		arr.sort((a, b) => (a.newestItemPubdate < b.newestItemPubdate ? 1 : -1));
 
 		return arr;
 	}
