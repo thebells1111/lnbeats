@@ -6,6 +6,7 @@
 	import extras from './extras.json';
 	import VirtualList from './VirtualList.svelte';
 	import Album from '$c/Album/Album.svelte';
+	import SearchScreen from './SearchScreen.svelte';
 
 	import { parse } from 'fast-xml-parser';
 	import { decode } from 'html-entities';
@@ -126,6 +127,7 @@
 		} else {
 			filteredList = $discoverList;
 			filteredSongList = $masterSongList;
+			console.log(filteredSongList);
 		}
 	}
 
@@ -197,9 +199,7 @@
 				bind:filterDemu
 			/>
 		</search-header>
-		{#if filteredList}
-			<VirtualList items={filterDemu ? demuList : filteredList} fromSearch={true} />
-		{/if}
+		<SearchScreen {filterDemu} {demuList} {filteredList} {filteredSongList} />
 	</search>
 </discover>
 

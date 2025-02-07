@@ -65,6 +65,12 @@
 	}
 
 	onMount(async () => {
+		const originalConsoleError = console.error;
+		console.error = (...args) => {
+			if (!args[0].includes('https://lnbeats.b-cdn.net/images/')) {
+				originalConsoleError(...args);
+			}
+		};
 		getDiscoverList();
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/serviceworker.js');
@@ -184,8 +190,6 @@
 			const generators = new Set();
 
 			_discoverList.forEach((v) => {
-				$masterSongList = $masterSongList.concat(v.songs || v.item || []);
-
 				let addFeed = true;
 				if (
 					//this removes 100% Retro Live Feed
@@ -197,6 +201,7 @@
 				}
 				generators.add(v.generator);
 				if (addFeed) {
+					$masterSongList = $masterSongList.concat(v.songs || v.item || []);
 					filteredFeeds.push(v);
 					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);
