@@ -39,7 +39,6 @@
 
 	// Function to trigger PWA installation
 	function installPWA() {
-		// console.log(deferredPrompt);
 		if (deferredPrompt) {
 			deferredPrompt.prompt();
 			deferredPrompt.userChoice.then((choiceResult) => {
@@ -168,7 +167,7 @@
 			let fetchedFeeds = (data.feeds || [data.feed] || []).filter(
 				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
 			);
-			console.log(fetchedFeeds);
+			console.log('updated feeds: ', fetchedFeeds);
 			fetch('/get_songs', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -181,14 +180,11 @@
 					return response.json(); // Return the JSON promise
 				})
 				.then((data) => {
-					console.log($masterSongList.length);
 					const songMap = new Map(
 						$masterSongList.map((song) => [`${song.podcastGuid}-${song.guid}`, song])
 					);
-					console.log(songMap);
+
 					(data || []).forEach((v) => {
-						// console.log(v.title);
-						// console.log(v);
 						v.songs = v?.songs || v?.item;
 						if (allowFeed(v)) {
 							(v.songs || v.item || []).forEach((song) => {
@@ -200,7 +196,6 @@
 					});
 					$discoverList = sortByPubDate(Array.from($albumMap.values()));
 					$masterSongList = Array.from(songMap.values());
-					console.log($masterSongList.length);
 				})
 				.catch((err) => {
 					// Handles any error that happens

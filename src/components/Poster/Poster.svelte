@@ -37,9 +37,6 @@
 
 	$: isFavorite =
 		$favorites?.remoteSongs?.findIndex((v) => {
-			console.log(v);
-			console.log($playingAlbum.podcastGuid);
-			console.log($playingSong?.guid?.['#text'] || $playingSong?.guid);
 			return (
 				v['@_feedGuid'] === $playingAlbum.podcastGuid &&
 				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingSong?.guid)
