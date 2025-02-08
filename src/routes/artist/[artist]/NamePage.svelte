@@ -1,7 +1,7 @@
 <script>
 	import { discoverList, posterSwiper } from '$/stores';
 	import { browser } from '$app/environment';
-	import AlbumCard from '$routes/discover/AlbumCard.svelte';
+	import AlbumCard from '$c/Discover/AlbumCard.svelte';
 	import toUrlFriendly from '$functions/toUrlFriendly';
 	import { page } from '$app/stores';
 
