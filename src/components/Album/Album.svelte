@@ -22,7 +22,7 @@
 		playingSongList,
 		albumSwiper,
 		playlists,
-		playlistDB,
+		playlistsDB,
 		publishingDisplay,
 		user,
 		library
@@ -120,7 +120,7 @@
 <Modals
 	bind:showModal
 	onClose={async () => {
-		playlistDB.setItem('playlists', $playlists);
+		playlistsDB.setItem('playlists', $playlists);
 	}}
 >
 	<Edit bind:album />

@@ -25,7 +25,7 @@
 		playlistControls,
 		currentPlayingChapter,
 		favorites,
-		playlistDB,
+		playlistsDB,
 		shareInfo,
 		currentSplit,
 		playingTranscript,
@@ -76,7 +76,7 @@
 
 		$favorites = $favorites;
 		$playlists.favorites = $favorites;
-		playlistDB.setItem('playlists', $playlists);
+		playlistsDB.setItem('playlists', $playlists);
 	}
 
 	function handleShare() {

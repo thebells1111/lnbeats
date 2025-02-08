@@ -1,20 +1,20 @@
 <script>
 	import generateValidGuid from '$functions/generateValidGuid';
 
-	import { playlists, playlistDB, createPlaylistSwiper } from '$/stores';
+	import { playlists, playlistsDB, createPlaylistSwiper } from '$/stores';
 	let title = '';
 	let displayText = '';
 
 	async function handleNewPlaylist() {
 		if (!$playlists) {
-			$playlists = (await playlistDB.getItem('playlists')) || {};
+			$playlists = (await playlistsDB.getItem('playlists')) || {};
 		}
 
 		let guid = await generateValidGuid();
 		let playlist = { podcastGuid: guid, artwork: '/playlist60x60.png', title, remoteSongs: [] };
 
 		$playlists[guid] = playlist;
-		await playlistDB.setItem('playlists', $playlists);
+		await playlistsDB.setItem('playlists', $playlists);
 
 		$createPlaylistSwiper.slideTo(0);
 		setTimeout(() => {

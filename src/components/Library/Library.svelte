@@ -7,7 +7,7 @@
 	import CreatePlaylistButton from '$c/CreatePlaylist/CreatePlaylistButton.svelte';
 	import OptionsMenu from './OptionsMenu.svelte';
 
-	import { library, playlists, albumSearch, favorites, playlistDB, activeScreen } from '$/stores';
+	import { library, playlists, albumSearch, favorites, playlistsDB, activeScreen } from '$/stores';
 
 	onMount(async () => {
 		if (!Object.keys($library).length) {
@@ -44,12 +44,12 @@
 		}
 
 		if (!Object.keys($playlists).length) {
-			let _playlists = (await playlistDB.getItem('playlists')) || {};
+			let _playlists = (await playlistsDB.getItem('playlists')) || {};
 
 			if (!_playlists) {
 				localforage
 					.dropInstance({
-						name: 'playlistDB'
+						name: 'playlistsDB'
 					})
 					.then(() => {
 						console.log('database reset');
@@ -77,7 +77,7 @@
 				remoteSongs: []
 			};
 
-			playlistDB.setItem('playlists', $playlists);
+			playlistsDB.setItem('playlists', $playlists);
 			$favorites = $playlists?.favorites;
 		}
 	});

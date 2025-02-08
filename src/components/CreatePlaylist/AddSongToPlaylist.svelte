@@ -1,14 +1,14 @@
 <script>
 	import { v4 as uuidv4 } from 'uuid';
 	import QueueMusic from '$icons/QueueMusic.svelte';
-	import { playlists, playlistDB, playlistControls } from '$/stores';
+	import { playlists, playlistsDB, playlistControls } from '$/stores';
 	import CreatePlaylistButton from './CreatePlaylistButton.svelte';
 	import { onMount } from 'svelte';
 	let successList = '';
 
 	onMount(async () => {
 		if (!Object.keys($playlists).length) {
-			$playlists = await playlistDB.getItem('playlists');
+			$playlists = await playlistsDB.getItem('playlists');
 		}
 	});
 
@@ -23,7 +23,7 @@
 		});
 
 		successList = playlist.title;
-		await playlistDB.setItem('playlists', $playlists);
+		await playlistsDB.setItem('playlists', $playlists);
 		$playlists = $playlists;
 		setTimeout(() => (successList = ''), 1000);
 	}
