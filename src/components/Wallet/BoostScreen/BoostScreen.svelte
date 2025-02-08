@@ -3,6 +3,7 @@
 	import throwConfetti from '$functions/throwConfetti';
 	import sendBoost from '$functions/sendBoost';
 	import clone from 'just-clone';
+	import InfoModal from '$c/Modals/InfoModal.svelte';
 
 	import {
 		boostSwiper,
@@ -11,18 +12,17 @@
 		satsPerBoost,
 		user,
 		webln,
-		showBoostScreen,
 		currentBoostDestinations,
 		playingAlbum,
 		playingSong
 	} from '$/stores';
-	import Close from '$icons/CancelFilled.svelte';
 	import RocketLaunch from '$icons/RocketLaunch.svelte';
 
 	let showAppSupport = false;
 
 	let boostagram = '';
 	let satAmount = $satsPerBoost;
+	let showSaved = false;
 
 	$: console.log('appSupport: ', showAppSupport);
 	$: console.log($currentBoostDestinations);
@@ -70,6 +70,10 @@
 		boostDB.setItem('senderName', $senderName);
 		boostDB.setItem('satsPerBoost', $satsPerBoost);
 		boostDB.setItem('satsPerSong', $satsPerSong);
+		showSaved = true;
+		setTimeout(() => {
+			showSaved = false;
+		}, 500);
 	}
 </script>
 
@@ -121,7 +125,6 @@
 				class="save"
 				on:click={async () => {
 					await saveBoostData();
-					$showBoostScreen = false;
 				}}>Save</button
 			>
 		</sats-per-song>
@@ -129,6 +132,12 @@
 		<p class="support">Send us your praise, complaints, and suggestions.</p>
 	{/if}
 </card>
+
+{#if showSaved}
+	<InfoModal>
+		<h2 class="saved">Saved</h2>
+	</InfoModal>
+{/if}
 
 <style>
 	card {
@@ -155,6 +164,10 @@
 		text-align: center;
 		margin: 0 0 8px 0;
 		font-size: 1.8em;
+	}
+
+	.saved {
+		padding: 16px 32px;
 	}
 
 	.support {

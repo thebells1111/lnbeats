@@ -35,11 +35,14 @@
 						<Close size={24} />
 					</button>
 				</header>
-				{#if $showBoostScreen}
-					<BoostScreen />
-				{:else if $showInstructionScreen}
-					<InstructionScreen />
-				{/if}
+
+				<div>
+					{#if $showBoostScreen}
+						<BoostScreen />
+					{:else if $showInstructionScreen}
+						<InstructionScreen />
+					{/if}
+				</div>
 			</container>
 		</SwiperSlide>
 	</Swiper>
@@ -62,15 +65,12 @@
 	}
 
 	container {
-		min-width: calc(100% - 16px);
-		height: calc(var(--vh, 1vh) * 100 - 32px);
+		width: 100%;
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		display: flex;
 		align-items: center;
-		justify-content: center;
-		padding: 16px 8px 8px 8px;
 		background-color: var(--color-poster-bg-0);
 		background-image: linear-gradient(
 			180deg,
@@ -81,6 +81,7 @@
 
 	header {
 		width: 100%;
+		height: 36px;
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
@@ -90,8 +91,7 @@
 		align-self: flex-end;
 		margin: 0;
 		position: relative;
-		bottom: 8px;
-		padding-right: 8px;
+		padding-right: 16px;
 		font-weight: 700;
 		color: var(--color-text-0);
 		background-color: transparent;
@@ -100,7 +100,11 @@
 
 	container > div {
 		width: calc(100% - 8px);
-		height: calc(100% - 16px);
-		overflow: auto;
+		height: calc(100% - 32px);
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+	}
+	@media screen and (max-width: 992px) {
 	}
 </style>

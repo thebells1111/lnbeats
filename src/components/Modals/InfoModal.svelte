@@ -42,34 +42,4 @@
 		background-color: var(--color-poster-bg-0);
 		box-shadow: 0px 3px 10px 3px rgba(0, 0, 0, 1);
 	}
-
-	.close {
-		position: absolute;
-		top: 0;
-		right: 0;
-		background-color: transparent;
-		padding: 8px;
-		color: rgba(255, 255, 255, 0.75);
-		z-index: 33;
-	}
-
-	container {
-		display: block;
-
-		width: calc(100% - 32px);
-		height: calc(100% - 42px);
-		margin: 42px;
-		overflow: hidden;
-	}
-
-	@media screen and (max-width: 992px) {
-		modal {
-			position: relative;
-			width: 100%;
-			height: calc(100%);
-			overflow-y: auto;
-			overflow-x: hidden;
-			border-radius: 8px;
-		}
-	}
 </style>
