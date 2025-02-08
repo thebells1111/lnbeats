@@ -16,6 +16,7 @@ export const playlistDB = localforage.createInstance({
 export const indexSearchResults = writable([]);
 export const albumSearch = writable('');
 export const library = writable({});
+export const albumMap = writable(new Map());
 export const discoverList = writable([]);
 export const masterSongList = writable([]);
 export const featuredList = writable([]);

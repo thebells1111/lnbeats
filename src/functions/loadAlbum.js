@@ -14,15 +14,24 @@ const parserOptions = {
 };
 
 async function loadAlbum(albumId, album) {
+	let feed;
+	let albumData;
+	let feedPromise;
 	if (album?.songs || album?.remoteSongs) {
+		feedPromise = fetch(remoteServer + `api/proxy?url=${album.url}`)
+			.then((res) => res.text())
+			.then((data) => {
+				let xml2Json = parse(data, parserOptions);
+				feed = xml2Json.rss.channel;
+				return feed;
+			});
+
+		album.promise = feedPromise;
+
 		return album;
 	}
 
 	try {
-		let feed;
-		let albumData;
-		let feedPromise;
-
 		if (!(album?.item?.length || album?.remoteItem?.length)) {
 			let albumUrl =
 				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;

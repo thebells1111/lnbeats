@@ -1,8 +1,10 @@
 <script>
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import AlbumCard from './AlbumCard.svelte';
+	import SongCard from './SongCard.svelte';
 	export let items = [];
 	export let fromSearch = false;
+	export let isSongs = false;
 
 	let gridHeight;
 	let gridWidth;
@@ -33,7 +35,11 @@
 				<div class="row" style="--grid-columns: {rowColumns};">
 					{#each Array(rowColumns) as _, i}
 						{#if items[index * rowColumns + i]}
-							<AlbumCard album={items[index * rowColumns + i]} {fromSearch} />
+							{#if isSongs}
+								<SongCard song={items[index * rowColumns + i]} />
+							{:else}
+								<AlbumCard album={items[index * rowColumns + i]} {fromSearch} />
+							{/if}
 						{/if}
 					{/each}
 				</div>

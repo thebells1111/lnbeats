@@ -1,73 +1,65 @@
 <script>
-	export let album;
-	export let fromSearch = false;
-	import loadAlbum from '$functions/loadAlbum';
+	export let song;
 	import loadValueBlocks from '$functions/loadValueBlocks';
+	import loadAlbum from '$functions/loadAlbum';
+	import loadSong from '$functions/loadSong';
 	import CryptoJS from 'crypto-js';
 
-	import { albumSwiper, selectedAlbum, albumMap } from '$/stores';
-	let imageUrl = album.artwork || album.image;
+	import {
+		albumSwiper,
+		selectedAlbum,
+		albumMap,
+		posterSwiper,
+		playingSong,
+		playingAlbum,
+		playingSongList,
+		playingIndex
+	} from '$/stores';
+	let imageUrl = song.artwork || song.image;
 
 	async function openAlbum() {
 		document.getElementById('album-swiper').style.visibility = 'initial';
 		$albumSwiper.slideTo(1);
 
-		$selectedAlbum = album;
-
-		setTimeout(async () => {
-			$selectedAlbum = await loadAlbum($selectedAlbum.podcastGuid, $selectedAlbum);
-
-			loadValueBlocks($selectedAlbum);
-		}, 1);
+		let _album = $albumMap.get(song.podcastGuid);
+		document.getElementById('poster-swiper').style.visibility = 'initial';
+		$posterSwiper.slideTo(1);
+		$playingSong = song;
+		$selectedAlbum = await loadAlbum(_album.id, _album);
+		$playingSongList = $selectedAlbum.songs || $selectedAlbum.item;
+		$playingIndex = $playingSongList.findIndex((v) => v.guid === song.guid);
+		$playingAlbum = $selectedAlbum;
+		loadValueBlocks($selectedAlbum);
+		loadSong($playingSong);
 	}
 	function hashUrl(url) {
 		const hash = CryptoJS.SHA1(url).toString(CryptoJS.enc.Hex);
 		return `https://lnbeats.b-cdn.net/images/${hash}.webp`;
 	}
 
-	$: handleImage(album);
+	$: handleImage(song);
 
-	function handleImage(album) {
-		if (album.hasOwnProperty('imageHash')) {
-			imageUrl = album.imageHash;
+	function handleImage(song) {
+		if (song.hasOwnProperty('imageHash')) {
+			imageUrl = song.imageHash;
 		} else {
-			album.imageHash = hashUrl(album.artwork || album.image);
-			imageUrl = album.imageHash;
+			song.imageHash = hashUrl(song.artwork || song.image);
+			imageUrl = song.imageHash;
 		}
 	}
 
 	function handleError(err) {
-		album.imageHash = album.artwork || album.image;
-		imageUrl = album.imageHash;
+		song.imageHash = song.artwork || song.image;
+		imageUrl = song.imageHash;
 	}
 </script>
 
-{#if album}
+{#if song}
 	<button on:click={openAlbum}>
 		<card>
 			<img src={imageUrl} on:error={handleError} loading="lazy" width="115" height="115" />
-			<album-title>{album.title}</album-title>
-			<album-author>{album.author || ''}</album-author>
-
-			{#if fromSearch}
-				{#if album.generator.includes('Wavlake')}
-					<div class="gen-icon">
-						<img src="/wavlake-small.webp" />
-					</div>
-				{:else if album.generator.includes('Music Side Project')}
-					<div class="gen-icon msp">
-						<img src="/msp-icon-32.png" />
-					</div>
-				{:else if album.generator.includes('RSS Blue')}
-					<div class="gen-icon rss-blue">
-						<img src="/rssblue-small.webp" />
-					</div>
-				{:else if album.generator.includes('Sovereign Feeds')}
-					<div class="gen-icon sf">
-						<img src="/SF32.png" />
-					</div>
-				{/if}
-			{/if}
+			<song-title>{song.title}</song-title>
+			<song-author>{song.author || ''}</song-author>
 		</card>
 	</button>
 {/if}
@@ -140,8 +132,8 @@
 		position: relative;
 	}
 
-	album-title,
-	album-author {
+	song-title,
+	song-author {
 		width: 100%;
 		white-space: nowrap;
 		overflow: hidden;
@@ -152,11 +144,11 @@
 		justify-content: flex-start;
 	}
 
-	album-title {
+	song-title {
 		margin-top: 4px;
 	}
 
-	album-author {
+	song-author {
 		padding-left: 6px;
 		font-style: italic;
 		font-size: 0.9em;

@@ -8,8 +8,6 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import localforage from 'localforage';
-	import SmallModal from '$c/Modals/SmallModal.svelte';
-	import Share from '$c/Share/Share.svelte';
 	import Discover from '$c/Discover/Discover.svelte';
 	import Library from '$c/Library/Library.svelte';
 	import SwiperContainer from '$c/Swipers/SwiperContainer.svelte';
@@ -23,10 +21,10 @@
 		remoteServer,
 		discoverList,
 		featuredList,
-		masterSongList
+		masterSongList,
+		albumMap
 	} from '$/stores';
 
-	let albumList = [];
 	let wavlake = [];
 	let rssblue = [];
 	let msp = [];
@@ -65,12 +63,6 @@
 	}
 
 	onMount(async () => {
-		const originalConsoleError = console.error;
-		console.error = (...args) => {
-			if (!args[0].includes('https://lnbeats.b-cdn.net/images/')) {
-				originalConsoleError(...args);
-			}
-		};
 		getDiscoverList();
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('/serviceworker.js');
@@ -176,32 +168,79 @@
 			let fetchedFeeds = (data.feeds || [data.feed] || []).filter(
 				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
 			);
+			console.log(fetchedFeeds);
+			fetch('/get_songs', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(fetchedFeeds)
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Error: ${response.status}`);
+					}
+					return response.json(); // Return the JSON promise
+				})
+				.then((data) => {
+					console.log($masterSongList.length);
+					const songMap = new Map(
+						$masterSongList.map((song) => [`${song.podcastGuid}-${song.guid}`, song])
+					);
+					console.log(songMap);
+					(data || []).forEach((v) => {
+						// console.log(v.title);
+						// console.log(v);
+						v.songs = v?.songs || v?.item;
+						if (allowFeed(v)) {
+							(v.songs || v.item || []).forEach((song) => {
+								song.podcastGuid = v.podcastGuid;
+								songMap.set(`${v.podcastGuid}-${song.guid}`, song);
+							});
+							$albumMap.set(v.podcastGuid, v);
+						}
+					});
+					$discoverList = sortByPubDate(Array.from($albumMap.values()));
+					$masterSongList = Array.from(songMap.values());
+					console.log($masterSongList.length);
+				})
+				.catch((err) => {
+					// Handles any error that happens
+					console.log(err);
+				});
+
 			let filteredFeeds = [];
 			let _featuredList = [];
 
-			console.log('new feeds: ', fetchedFeeds);
-			const albumMap = new Map(dbAlbums.albums.map((album) => [album.id, album]));
-			fetchedFeeds.forEach((feed) => {
-				albumMap.set(feed.id, feed);
+			$albumMap = new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]));
+			fetchedFeeds.forEach((v) => {
+				$albumMap.set(v.podcastGuid, v);
 			});
 
-			let _discoverList = sortByPubDate(Array.from(albumMap.values()));
+			let _discoverList = sortByPubDate(Array.from($albumMap.values()));
 
 			const generators = new Set();
 
-			_discoverList.forEach((v) => {
-				let addFeed = true;
+			function allowFeed(album) {
 				if (
 					//this removes 100% Retro Live Feed
-					[5718023, 4222574, 424986].find((w) => v.id === w) ||
-					v.author === 'Gabe Barrett' ||
-					v.author === '小杉毅誉大'
+					[5718023, 4222574, 424986].find((v) => album.id === v) ||
+					album.author === 'Gabe Barrett' ||
+					album.author === '小杉毅誉大'
 				) {
-					addFeed = false;
+					return false;
 				}
+				return true;
+			}
+
+			_discoverList.forEach((v) => {
 				generators.add(v.generator);
-				if (addFeed) {
-					$masterSongList = $masterSongList.concat(v.songs || v.item || []);
+				if (allowFeed(v)) {
+					$masterSongList = $masterSongList.concat(
+						(v.songs || v.item || []).map((w) => {
+							w.podcastGuid = v.podcastGuid;
+							return w;
+						})
+					);
+					v.songs = v?.songs || v?.item;
 					filteredFeeds.push(v);
 					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);

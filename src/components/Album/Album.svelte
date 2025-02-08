@@ -34,6 +34,7 @@
 	let showModal = false;
 
 	$: console.log($playlists);
+	$: console.log(album);
 	$: if ($playlists && album.id !== 6612768) {
 		album.remoteSongs = album.remoteSongs;
 	}

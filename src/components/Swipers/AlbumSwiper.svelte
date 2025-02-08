@@ -27,15 +27,17 @@
 
 	let showShare;
 	function checkGuid(guid) {
-		let albumUrl =
-			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${guid}`)}`;
+		if (guid) {
+			let albumUrl =
+				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${guid}`)}`;
 
-		fetch(albumUrl)
-			.then((response) => response.json())
-			.then((albumData) => {
-				showShare = albumData?.feed?.id;
-			})
-			.catch((error) => console.error('Error fetching data:', error));
+			fetch(albumUrl)
+				.then((response) => response.json())
+				.then((albumData) => {
+					showShare = albumData?.feed?.id;
+				})
+				.catch((error) => console.error('Error fetching data:', error));
+		}
 	}
 </script>
 

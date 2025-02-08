@@ -15,7 +15,7 @@
 		bind:value={searchQuery}
 		on:input={inputFn}
 		on:focus={() => {
-			searchInput.select();
+			// searchInput.select();
 		}}
 		{placeholder}
 	/>

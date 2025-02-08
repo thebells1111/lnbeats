@@ -123,11 +123,9 @@
 			filteredSongList = $masterSongList
 				.filter((v) => v.title.toLowerCase().includes(query))
 				.sort((a, b) => a.title.localeCompare(b.title));
-			console.log(filteredSongList);
 		} else {
 			filteredList = $discoverList;
 			filteredSongList = $masterSongList;
-			console.log(filteredSongList);
 		}
 	}
 
