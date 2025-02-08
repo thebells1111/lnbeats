@@ -37,6 +37,9 @@
 
 	$: isFavorite =
 		$favorites?.remoteSongs?.findIndex((v) => {
+			console.log(v);
+			console.log($playingAlbum.podcastGuid);
+			console.log($playingSong?.guid?.['#text'] || $playingSong?.guid);
 			return (
 				v['@_feedGuid'] === $playingAlbum.podcastGuid &&
 				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingSong?.guid)
@@ -58,9 +61,11 @@
 		let albumIndex = $favorites.remoteSongs.findIndex((v) => {
 			return (
 				v['@_feedGuid'] === $playingAlbum.podcastGuid &&
-				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingAlbum?.guid)
+				v['@_itemGuid'] === ($playingSong?.guid?.['#text'] || $playingSong?.guid)
 			);
 		});
+
+		console.log(albumIndex);
 
 		if (albumIndex > -1) {
 			$favorites.remoteSongs.splice(albumIndex, 1);
@@ -68,7 +73,7 @@
 		} else {
 			$favorites.remoteSongs.push({
 				'@_feedGuid': $playingAlbum.podcastGuid,
-				'@_itemGuid': $playingSong?.guid?.['#text'] || $playingAlbum?.guid
+				'@_itemGuid': $playingSong?.guid?.['#text'] || $playingSong?.guid
 			});
 		}
 
@@ -180,13 +185,13 @@
 
 				<band-name>
 					{#if byline}
-						by
-						<a
+						by {byline}
+						<!-- <a
 							href={`/artist/${toUrlFriendly(byline)}
 					`}
 						>
 							{byline}
-						</a>
+						</a> -->
 					{/if}
 				</band-name>
 			</album-info>

@@ -5,10 +5,6 @@ import localforage from 'localforage';
 export const remoteServer = dev ? 'http://localhost:8000/' : 'https://api.lnbeats.com/';
 export const albyClientId = dev ? '32dVOIuGiA' : '9QX2jPuEiu';
 
-export const favoritesDB = localforage.createInstance({
-	name: 'favoritesDB'
-});
-
 export const playlistDB = localforage.createInstance({
 	name: 'playlistDB'
 });
