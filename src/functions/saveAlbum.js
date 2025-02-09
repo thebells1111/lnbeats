@@ -2,12 +2,12 @@ import localforage from 'localforage';
 import { library } from '$/stores';
 
 export async function saveAlbum(album) {
-	const libraryDB = localforage.createInstance({
-		name: 'libraryDB'
+	const libDB = localforage.createInstance({
+		name: 'libDB'
 	});
 	const podcastGuid = album.podcastGuid.toString();
 
-	let _library = (await libraryDB.getItem('library')) || {};
+	let _library = (await libDB.getItem('library')) || {};
 
 	_library[podcastGuid] = {
 		title: album?.title || '',
@@ -21,5 +21,5 @@ export async function saveAlbum(album) {
 	};
 
 	library.set(_library);
-	libraryDB.setItem('library', _library);
+	libDB.setItem('library', _library);
 }

@@ -53,6 +53,8 @@ async function getSongs(album, index) {
 
 		if (response?.data?.items) {
 			album.item = [].concat(response.data.items);
+		} else {
+			album.item = [];
 		}
 		return album;
 	} catch (err) {
@@ -75,7 +77,8 @@ export default async function getSongsFromIndex(albums) {
 		for (let index = 0; index < length; index++) {
 			console.log(`${index} of ${length}`);
 			if (!albums?.item?.length) {
-				albumsWithSongs.push(await getSongs(albums[index], index, length));
+				let album = await getSongs(albums[index], index, length);
+				albumsWithSongs.push(album);
 			}
 		}
 

@@ -12,11 +12,11 @@
 	onMount(async () => {
 		if (!Object.keys($library).length) {
 			$albumSearch = '';
-			const libraryDB = localforage.createInstance({
-				name: 'libraryDB'
+			const libDB = localforage.createInstance({
+				name: 'libDB'
 			});
 
-			const _library = (await libraryDB.getItem('library')) || {};
+			const _library = (await libDB.getItem('library')) || {};
 			$library = {};
 
 			const lib = await Promise.all(
@@ -40,7 +40,7 @@
 				}
 			});
 
-			libraryDB.setItem('library', $library);
+			libDB.setItem('library', $library);
 		}
 
 		if (!Object.keys($playlists).length) {

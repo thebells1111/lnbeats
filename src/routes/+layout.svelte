@@ -164,9 +164,24 @@
 					)}`
 			);
 			let data = await res.json();
-			let fetchedFeeds = (data.feeds || [data.feed] || []).filter(
-				(v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime
+			let fetchedFeeds = data.feeds || [data.feed] || [];
+			console.log(fetchedFeeds);
+
+			console.log(
+				Array.from(new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]))).length
 			);
+			console.log(
+				Array.from(new Map(fetchedFeeds.map((album) => [album.podcastGuid, album]))).length
+			);
+
+			fetchedFeeds = fetchedFeeds.filter((v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime);
+			fetch(remoteServer + `api/queryindex?q=${encodeURIComponent('episodes/byfeedid?id=7072339')}`)
+				.then((res) => res.json()) // Return the parsed JSON
+				.then((_playlists) => {
+					console.log(_playlists);
+				})
+				.catch((err) => console.error('Fetch error:', err)); // Add error handling
+
 			console.log('updated feeds: ', fetchedFeeds);
 			fetch('/get_songs', {
 				method: 'POST',
@@ -211,6 +226,8 @@
 			});
 
 			let _discoverList = sortByPubDate(Array.from($albumMap.values()));
+
+			console.log(_discoverList);
 
 			const generators = new Set();
 
