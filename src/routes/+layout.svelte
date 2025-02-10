@@ -157,6 +157,19 @@
 
 	async function getDiscoverList() {
 		if (!$discoverList.length) {
+			let filteredFeeds = [];
+			let _featuredList = [];
+
+			dbAlbums.albums.forEach((v) => {
+				if (v.generator.includes('Music Side Project')) {
+					_featuredList = _featuredList.concat(v);
+				} else if (v.generator.includes('Sovereign Feeds')) {
+					_featuredList = _featuredList.concat(v);
+				}
+			});
+
+			$featuredList = shuffleArray(_featuredList);
+
 			const res = await fetch(
 				remoteServer +
 					`api/queryindex?q=${encodeURIComponent(
@@ -175,12 +188,6 @@
 			);
 
 			fetchedFeeds = fetchedFeeds.filter((v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime);
-			fetch(remoteServer + `api/queryindex?q=${encodeURIComponent('episodes/byfeedid?id=7072339')}`)
-				.then((res) => res.json()) // Return the parsed JSON
-				.then((_playlists) => {
-					console.log(_playlists);
-				})
-				.catch((err) => console.error('Fetch error:', err)); // Add error handling
 
 			console.log('updated feeds: ', fetchedFeeds);
 			fetch('/get_songs', {
@@ -217,17 +224,12 @@
 					console.log(err);
 				});
 
-			let filteredFeeds = [];
-			let _featuredList = [];
-
 			$albumMap = new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]));
 			fetchedFeeds.forEach((v) => {
 				$albumMap.set(v.podcastGuid, v);
 			});
 
 			let _discoverList = sortByPubDate(Array.from($albumMap.values()));
-
-			console.log(_discoverList);
 
 			const generators = new Set();
 
@@ -257,10 +259,8 @@
 					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);
 					} else if (v.generator.includes('Music Side Project')) {
-						_featuredList = _featuredList.concat(v);
 						msp.push(v);
 					} else if (v.generator.includes('Sovereign Feeds')) {
-						_featuredList = _featuredList.concat(v);
 						sf.push(v);
 					} else if (v.generator.includes('RSS Blue')) {
 						rssblue.push(v);
@@ -269,8 +269,6 @@
 					}
 				}
 			});
-
-			$featuredList = shuffleArray(_featuredList);
 
 			wavlake.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author

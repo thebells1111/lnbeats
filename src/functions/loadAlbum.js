@@ -17,7 +17,14 @@ async function loadAlbum(albumId, album) {
 	let feed;
 	let albumData;
 	let feedPromise;
-	if (album?.songs || album?.remoteSongs) {
+	if (!(album?.item?.length || album?.songs?.length)) {
+		album.medium = 'musicL';
+	}
+
+	if (
+		(album?.songs && album?.medium !== 'musicL') ||
+		(album?.remoteSongs && album?.medium === 'musicL')
+	) {
 		feedPromise = fetch(remoteServer + `api/proxy?url=${album.url}`)
 			.then((res) => res.text())
 			.then((data) => {
@@ -32,6 +39,7 @@ async function loadAlbum(albumId, album) {
 	}
 
 	try {
+		console.log(album);
 		if (!(album?.item?.length || album?.remoteItem?.length)) {
 			let albumUrl =
 				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
