@@ -3,9 +3,10 @@
 	export let fromSearch = false;
 	import loadAlbum from '$functions/loadAlbum';
 	import loadValueBlocks from '$functions/loadValueBlocks';
+	import AlbumContextMenu from './AlbumContextMenu.svelte';
 	import CryptoJS from 'crypto-js';
 
-	import { albumSwiper, selectedAlbum, albumMap } from '$/stores';
+	import { albumSwiper, selectedAlbum, albumContextMenu } from '$/stores';
 	let imageUrl = album.artwork || album.image;
 
 	async function openAlbum() {
@@ -40,10 +41,34 @@
 		album.imageHash = album.artwork || album.image;
 		imageUrl = album.imageHash;
 	}
+
+	function openContextMenu(event, album) {
+		console.log(album);
+		event.preventDefault();
+
+		const menuWidth = 160;
+		const menuHeight = 80;
+		const viewportWidth = window.innerWidth;
+		const viewportHeight = window.innerHeight;
+
+		let x = event.clientX;
+		let y = event.clientY;
+
+		if (x + menuWidth > viewportWidth) x = viewportWidth - menuWidth;
+		if (y + menuHeight > viewportHeight) y = viewportHeight - menuHeight;
+
+		albumContextMenu.set({
+			visible: true,
+			x,
+			y,
+			link: 'https://tradingeconomics.com/commodity/copper',
+			id: album.podcastGuid
+		});
+	}
 </script>
 
 {#if album}
-	<button on:click={openAlbum}>
+	<button on:click={openAlbum} on:contextmenu={(e) => openContextMenu(e, album)}>
 		<card>
 			<img src={imageUrl} on:error={handleError} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
@@ -71,6 +96,8 @@
 		</card>
 	</button>
 {/if}
+
+<AlbumContextMenu />
 
 <style>
 	card {

@@ -86,3 +86,11 @@ export const createPlaylistSwiper = writable();
 export const walletSwiper = writable();
 export const boostSwiper = writable();
 export const shareSwiper = writable();
+
+export const albumContextMenu = writable({
+	visible: false,
+	x: 0,
+	y: 0,
+	link: '',
+	id: null // Unique identifier for the clicked item
+});
