@@ -68,8 +68,11 @@
 </script>
 
 {#if album}
-	<button on:click={openAlbum} on:contextmenu={(e) => openContextMenu(e, album)}>
+	<button on:click={openAlbum}>
 		<card>
+			{#if album.author.includes('ovvrdos')}
+				<censored>Censored</censored>
+			{/if}
 			<img src={imageUrl} on:error={handleError} loading="lazy" width="115" height="115" />
 			<album-title>{album.title}</album-title>
 			<album-author>{album.author || ''}</album-author>
@@ -191,5 +194,17 @@
 
 	button {
 		background-color: transparent;
+	}
+
+	censored {
+		display: flex;
+		background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+		width: 100%;
+		height: calc(100% - 48px);
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		backdrop-filter: blur(5px); /* Blurs everything behind it */
+		-webkit-backdrop-filter: blur(5px); /* For Safari support */
 	}
 </style>

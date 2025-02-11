@@ -137,6 +137,9 @@
 				<p>Playlist</p>
 			</button>
 		</top-buttons>
+		{#if $playingAlbum?.author?.includes('ovvrdos')}
+			<censored>Censored</censored>
+		{/if}
 		<img
 			id="poster-image"
 			src={$currentPlayingChapter?.img ||
@@ -215,6 +218,19 @@
 </poster-container>
 
 <style>
+	censored {
+		display: flex;
+		background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+		border-radius: 8px;
+		width: 362px;
+		height: 362px;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		backdrop-filter: blur(50px); /* Blurs everything behind it */
+		-webkit-backdrop-filter: blur(50px); /* For Safari support */
+		top: 105px;
+	}
 	poster-container {
 		width: 100%;
 		height: calc(100vh);

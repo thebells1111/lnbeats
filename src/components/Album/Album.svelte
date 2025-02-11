@@ -55,6 +55,9 @@
 {#if album}
 	<container>
 		<header>
+			{#if album.author.includes('ovvrdos')}
+				<censored>Censored</censored>
+			{/if}
 			<img src={album.image || album.artwork} />
 
 			<h2>{album.title}</h2>
@@ -252,5 +255,19 @@
 		color: var(--color-theme-yellow-light);
 		font-size: 1.1em;
 		font-weight: 600;
+	}
+
+	censored {
+		display: flex;
+		background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+		width: 100px;
+		height: 100px;
+		border-radius: 8px;
+		margin: 0 8px;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		backdrop-filter: blur(5px); /* Blurs everything behind it */
+		-webkit-backdrop-filter: blur(5px); /* For Safari support */
 	}
 </style>

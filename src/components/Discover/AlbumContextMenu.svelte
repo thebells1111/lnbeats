@@ -16,7 +16,7 @@
 	}
 
 	function closeMenu() {
-		$: albumContextMenu = { visible: false, x: 0, y: 0, link: '', id: null };
+		$albumContextMenu = { visible: false, x: 0, y: 0, link: '', id: null };
 	}
 
 	function handleClickOutside(event) {
