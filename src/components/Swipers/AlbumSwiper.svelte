@@ -59,28 +59,30 @@
 	>
 		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 		<SwiperSlide>
-			<album-container>
-				<album-header>
-					{#if showShare}
-						<button class="share" on:click={handleShare}>
-							<ShareIcon size="24" />
-							<p>Share</p>
+			<container>
+				<safe-area>
+					<header>
+						{#if showShare}
+							<button class="share" on:click={handleShare}>
+								<ShareIcon size="24" />
+								<p>Share</p>
+							</button>
+						{:else}
+							<spacer />
+						{/if}
+						<button
+							on:click={() => {
+								$albumSwiper.slideTo(0);
+							}}
+						>
+							<Close size={24} />
 						</button>
-					{:else}
-						<spacer />
-					{/if}
-					<button
-						on:click={() => {
-							$albumSwiper.slideTo(0);
-						}}
-					>
-						<Close size={24} />
-					</button>
-				</album-header>
-				<div>
-					<Album album={$selectedAlbum} />
-				</div>
-			</album-container>
+					</header>
+					<div>
+						<Album album={$selectedAlbum} />
+					</div>
+				</safe-area>
+			</container>
 		</SwiperSlide>
 	</Swiper>
 </album>
@@ -101,7 +103,7 @@
 		height: 100vh;
 	}
 
-	album-container {
+	container {
 		min-width: calc(100% - 16px);
 		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
@@ -117,17 +119,35 @@
 		);
 	}
 
-	album-header {
+	safe-area {
 		width: calc(100% - 16px);
+		height: calc(100%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: calc(16px + env(safe-area-inset-top));
+		padding-left: calc(8px + env(safe-area-inset-left));
+		padding-bottom: calc(8px + env(safe-area-inset-bottom));
+		padding-right: calc(8px + env(safe-area-inset-right));
+
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
+	}
+
+	header {
+		width: calc(100%);
 		height: 46px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0 8px;
 		position: relative;
 	}
 
-	album-header > button {
+	header > button {
 		align-self: flex-end;
 		margin: 0;
 		position: relative;
@@ -139,7 +159,7 @@
 		border: none;
 	}
 
-	album-container > div {
+	safe-area > div {
 		width: calc(100%);
 		height: calc(100%);
 		overflow: auto;
