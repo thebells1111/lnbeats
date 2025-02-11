@@ -18,7 +18,9 @@ async function loadAlbum(albumId, album) {
 	let albumData;
 	let feedPromise;
 	if (!(album?.item?.length || album?.songs?.length)) {
-		album.medium = 'musicL';
+		if (album) {
+			album.medium = 'musicL';
+		}
 	}
 
 	if (

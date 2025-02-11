@@ -2,21 +2,20 @@
 	import { albumContextMenu } from '$/stores';
 	import { onMount, onDestroy } from 'svelte';
 
-	let contextMenuState;
-	$: contextMenuState = $albumContextMenu;
+	export let album;
 
 	function copyLink() {
-		navigator.clipboard.writeText(contextMenuState.link);
+		navigator.clipboard.writeText($albumContextMenu.link);
 		closeMenu();
 	}
 
 	function openInNewTab() {
-		window.open(contextMenuState.link, '_blank');
+		window.open($albumContextMenu.link, '_blank');
 		closeMenu();
 	}
 
 	function closeMenu() {
-		$albumContextMenu = { visible: false, x: 0, y: 0, link: '', id: null };
+		$albumContextMenu = { visible: false, link: '', id: null };
 	}
 
 	function handleClickOutside(event) {
@@ -34,33 +33,46 @@
 	});
 </script>
 
-{#if contextMenuState.visible && contextMenuState.id === contextMenuState.id}
-	<div class="context-menu" style="top: {contextMenuState.y}px; left: {contextMenuState.x}px">
-		{contextMenuState.id}
-		<div class="menu-item" on:click={copyLink}>Copy Link</div>
-		<div class="menu-item" on:click={openInNewTab}>Open in New Tab</div>
+{#if $albumContextMenu.visible && album.id === $albumContextMenu.id}
+	<div class="context-menu">
+		<div class="menu-item" on:click|stopPropagation={copyLink}>Copy Link</div>
+		<div class="menu-item" on:click|stopPropagation={openInNewTab}>Open in New Tab</div>
 	</div>
 {/if}
 
 <style>
 	.context-menu {
 		position: absolute;
-		background: #fff;
-		border: 1px solid #ccc;
-		box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 15%,
+			var(--color-poster-bg-1) 66%
+		);
+		box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.75);
 		z-index: 1000;
-		width: 150px;
+		width: 125px;
 		border-radius: 5px;
-		color: black;
+		color: var(--color-text-0);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 
 	.menu-item {
-		padding: 8px 12px;
+		padding: 8px 8px;
 		cursor: pointer;
 		font-size: 14px;
+		width: calc(100% - 16px);
+		text-align: left;
 	}
 
 	.menu-item:hover {
-		background: #f0f0f0;
+		background-color: var(--color-bg-context-menu-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-bg-context-menu-0) 15%,
+			var(--color-bg-context-menu-1) 66%
+		);
 	}
 </style>

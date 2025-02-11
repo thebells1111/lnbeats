@@ -5,6 +5,7 @@
 	import loadValueBlocks from '$functions/loadValueBlocks';
 	import AlbumContextMenu from './AlbumContextMenu.svelte';
 	import CryptoJS from 'crypto-js';
+	import { page } from '$app/stores';
 
 	import { albumSwiper, selectedAlbum, albumContextMenu } from '$/stores';
 	let imageUrl = album.artwork || album.image;
@@ -46,29 +47,16 @@
 		console.log(album);
 		event.preventDefault();
 
-		const menuWidth = 160;
-		const menuHeight = 80;
-		const viewportWidth = window.innerWidth;
-		const viewportHeight = window.innerHeight;
-
-		let x = event.clientX;
-		let y = event.clientY;
-
-		if (x + menuWidth > viewportWidth) x = viewportWidth - menuWidth;
-		if (y + menuHeight > viewportHeight) y = viewportHeight - menuHeight;
-
-		albumContextMenu.set({
-			visible: true,
-			x,
-			y,
-			link: 'https://tradingeconomics.com/commodity/copper',
-			id: album.podcastGuid
-		});
+		$albumContextMenu = {
+			visible: album.id === $albumContextMenu.id ? !$albumContextMenu.visible : true,
+			link: $page.url.origin + '/album/' + album['podcastGuid'],
+			id: album.id
+		};
 	}
 </script>
 
 {#if album}
-	<button on:click={openAlbum}>
+	<button on:click={openAlbum} on:contextmenu={(e) => openContextMenu(e, album)}>
 		<card>
 			{#if album.author.includes('ovvrdos')}
 				<censored>Censored</censored>
@@ -96,11 +84,10 @@
 					</div>
 				{/if}
 			{/if}
+			<AlbumContextMenu {album} />
 		</card>
 	</button>
 {/if}
-
-<AlbumContextMenu />
 
 <style>
 	card {
@@ -115,6 +102,7 @@
 		background-color: rgba(0, 0, 0, 0.5);
 		border-radius: 8px;
 		color: var(--color-text-0);
+		position: relative;
 	}
 
 	img {

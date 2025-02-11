@@ -3,28 +3,13 @@ import CryptoJS from 'crypto-js';
 import cleanAlbums from './cleanAlbums.js';
 import { PI_API_KEY, PI_API_SECRET } from '$env/static/private';
 
-// ======== Hash Function for Authorization Token ========
-function generateAuthHeaders() {
-	const apiHeaderTime = Math.floor(Date.now() / 1000);
-	const data4Hash = PI_API_KEY + PI_API_SECRET + apiHeaderTime;
-	const hash4Header = CryptoJS.SHA1(data4Hash).toString(CryptoJS.enc.Hex);
-
-	return {
-		'X-Auth-Date': apiHeaderTime.toString(),
-		'X-Auth-Key': PI_API_KEY,
-		Authorization: hash4Header,
-		'User-Agent': 'CurioHoster'
-	};
-}
+import { remoteServer } from '$/stores';
 
 // ======== Fetch Songs for an Album ========
 async function getSongs(album) {
-	let attempts = 0;
-	const headers = generateAuthHeaders();
-
 	try {
-		const url = `https://api.podcastindex.org/api/1.0/episodes/byfeedid?id=${album.id}`;
-		const response = await axios.get(url, { headers });
+		const url = remoteServer + `api/queryindex?q=episodes/byfeedid?id=${album.id}`;
+		const response = await axios.get(url);
 
 		if (response?.data?.items) {
 			album.item = response.data.items;
@@ -34,7 +19,7 @@ async function getSongs(album) {
 		console.log(err);
 	}
 
-	console.error(`Max attempts reached for album ID ${album.id}`);
+	console.error(err);
 	return null;
 }
 
