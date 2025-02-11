@@ -55,7 +55,7 @@
 {#if album}
 	<container>
 		<header>
-			{#if album.author.includes('ovvrdos')}
+			{#if album?.author?.includes('ovvrdos')}
 				<censored>Censored</censored>
 			{/if}
 			<img src={album.image || album.artwork} />
