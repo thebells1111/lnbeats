@@ -24,18 +24,20 @@
 		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 		<SwiperSlide>
 			<container>
-				<header>
-					<button
-						on:click={() => {
-							$walletSwiper.slideTo(0);
-						}}
-					>
-						<Close size={24} />
-					</button>
-				</header>
-				<div>
-					<WalletInfo />
-				</div>
+				<safe-area>
+					<header>
+						<button
+							on:click={() => {
+								$walletSwiper.slideTo(0);
+							}}
+						>
+							<Close size={24} />
+						</button>
+					</header>
+					<div>
+						<WalletInfo />
+					</div>
+				</safe-area>
 			</container>
 		</SwiperSlide>
 	</Swiper>
@@ -74,6 +76,25 @@
 		);
 	}
 
+	safe-area {
+		width: calc(100% - 16px);
+		height: calc(100%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: calc(16px + env(safe-area-inset-top));
+		padding-left: calc(8px + env(safe-area-inset-left));
+		padding-bottom: calc(8px + env(safe-area-inset-bottom));
+		padding-right: calc(8px + env(safe-area-inset-right));
+
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
+	}
+
 	header {
 		width: 100%;
 		display: flex;
@@ -93,7 +114,7 @@
 		border: none;
 	}
 
-	container > div {
+	safe-area > div {
 		width: calc(100% - 8px);
 		height: calc(100% - 16px);
 		overflow: auto;

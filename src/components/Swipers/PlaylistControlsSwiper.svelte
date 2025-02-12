@@ -26,21 +26,22 @@
 	>
 		<SwiperSlide><div class="hidden-slide" /></SwiperSlide>
 		<SwiperSlide>
-			<playlist-controls-container>
-				<button
-					on:click={() => {
-						$playlistControlsSwiper.slideTo(0);
-					}}
-				>
-					<Close size={24} />
-				</button>
-
-				{#if $playlistControls.type === 'add'}
-					<AddSongToPlaylist />
-				{:else if $playlistControls.type === 'remove'}
-					<RemovalConfirmation />
-				{/if}
-			</playlist-controls-container>
+			<container>
+				<safe-area>
+					<button
+						on:click={() => {
+							$playlistControlsSwiper.slideTo(0);
+						}}
+					>
+						<Close size={24} />
+					</button>
+					{#if $playlistControls.type === 'add'}
+						<AddSongToPlaylist />
+					{:else if $playlistControls.type === 'remove'}
+						<RemovalConfirmation />
+					{/if}
+				</safe-area>
+			</container>
 		</SwiperSlide>
 	</Swiper>
 </playlist-controls>
@@ -53,10 +54,6 @@
 		height: 100vh;
 		overflow: hidden;
 		visibility: hidden;
-		z-index: 97;
-	}
-
-	playlist-controls {
 		z-index: 99;
 	}
 
@@ -65,7 +62,7 @@
 		height: 100vh;
 	}
 
-	playlist-controls-container {
+	container {
 		min-width: calc(100% - 16px);
 		height: calc(var(--vh, 1vh) * 100 - 32px);
 		display: flex;
@@ -81,8 +78,25 @@
 			var(--color-poster-bg-1) 66%
 		);
 	}
+	safe-area {
+		width: calc(100% - 16px);
+		height: calc(100%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: calc(16px + env(safe-area-inset-top));
+		padding-left: calc(8px + env(safe-area-inset-left));
+		padding-bottom: calc(8px + env(safe-area-inset-bottom));
+		padding-right: calc(8px + env(safe-area-inset-right));
 
-	playlist-controls-container > button {
+		background-color: var(--color-poster-bg-0);
+		background-image: linear-gradient(
+			180deg,
+			var(--color-poster-bg-0) 33%,
+			var(--color-poster-bg-1) 66%
+		);
+	}
+	safe-area > button {
 		align-self: flex-end;
 		margin: 0;
 		position: relative;
