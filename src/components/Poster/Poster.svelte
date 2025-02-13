@@ -32,7 +32,10 @@
 		playingTranscriptText,
 		currentTranscriptIndex,
 		playlists,
-		shareSwiper
+		shareSwiper,
+		selectedArtist,
+		artistList,
+		artistSwiper
 	} from '$/stores';
 
 	$: isFavorite =
@@ -181,9 +184,17 @@
 						: $playingSong.title}
 				</song-title>
 
-				<band-name>
+				<band-name
+					on:click={() => {
+						if (byline) {
+							$selectedArtist = $artistList[byline];
+							document.getElementById('artist-swiper').style.visibility = 'initial';
+							$artistSwiper.slideTo(1);
+						}
+					}}
+				>
 					{#if byline}
-						by {byline}
+						by <byline>{byline}</byline>
 						<!-- <a
 							href={`/artist/${toUrlFriendly(byline)}
 					`}
@@ -369,6 +380,11 @@
 	button.close {
 		align-self: flex-end;
 		padding-right: 8px;
+	}
+
+	byline {
+		text-decoration: underline;
+		cursor: pointer;
 	}
 
 	@media (min-width: 722px) {

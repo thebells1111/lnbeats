@@ -6,6 +6,7 @@
 	import WalletSwiper from '$c/Swipers/WalletSwiper.svelte';
 	import BoostSwiper from '$c/Swipers/BoostSwiper.svelte';
 	import ShareSwiper from '$c/Swipers/ShareSwiper.svelte';
+	import ArtistSwiper from '$c/Swipers/ArtistSwiper.svelte';
 </script>
 
 <PosterSwiper />
@@ -15,3 +16,4 @@
 <WalletSwiper />
 <BoostSwiper />
 <ShareSwiper />
+<ArtistSwiper />

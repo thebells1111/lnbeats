@@ -45,6 +45,9 @@ export const user = writable({
 	preferences: { wallet: 'albyApi' }
 });
 
+export const artistList = writable({});
+export const selectedArtist = writable([]);
+
 export const valueTimeSplitBlock = writable([]);
 export const displayChapters = writable([]);
 export const playingChapters = writable([]);
@@ -86,6 +89,7 @@ export const createPlaylistSwiper = writable();
 export const walletSwiper = writable();
 export const boostSwiper = writable();
 export const shareSwiper = writable();
+export const artistSwiper = writable();
 
 export const albumContextMenu = writable({
 	visible: false,

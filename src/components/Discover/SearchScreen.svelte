@@ -1,6 +1,6 @@
 <script>
 	import VirtualList from './VirtualList.svelte';
-	import { albumSearch } from '$/stores';
+	import { albumSearch, artistList, artistSwiper, selectedArtist } from '$/stores';
 
 	export let filteredSongList;
 	export let filteredList;
@@ -21,8 +21,15 @@
 			screen = 'albums';
 		}}>Albums</button
 	>
+	<!-- <button
+		class:active={screen === 'artists'}
+		on:click={() => {
+			screen = 'artists';
+		}}>Artists</button
+	> -->
 	<button
 		class:active={screen === 'songs'}
+		class:hidden={!$albumSearch}
 		on:click={() => {
 			screen = 'songs';
 		}}>Songs</button
@@ -34,6 +41,18 @@
 		{#if filteredList}
 			<VirtualList items={filterDemu ? demuList : filteredList} fromSearch={true} />
 		{/if}
+	{:else if screen === 'artists'}
+		{#each Object.entries($artistList).map(([key, value]) => ({ key, value })) as { key, value }}
+			<h1
+				on:click={() => {
+					$selectedArtist = value;
+					document.getElementById('artist-swiper').style.visibility = 'initial';
+					$artistSwiper.slideTo(1);
+				}}
+			>
+				{key}
+			</h1>
+		{/each}
 	{:else if screen === 'songs'}
 		{#if filteredSongList}
 			<VirtualList items={filteredSongList} isSongs={true} />

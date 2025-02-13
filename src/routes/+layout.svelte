@@ -22,7 +22,8 @@
 		discoverList,
 		featuredList,
 		masterSongList,
-		albumMap
+		albumMap,
+		artistList
 	} from '$/stores';
 
 	let wavlake = [];
@@ -255,6 +256,8 @@
 						})
 					);
 					v.songs = v?.songs || v?.item;
+					$artistList[v.author] = $artistList[v.author] || [];
+					$artistList[v.author].push(v);
 					filteredFeeds.push(v);
 					if (v.generator.includes('Wavlake')) {
 						wavlake.push(v);
@@ -269,6 +272,8 @@
 					}
 				}
 			});
+
+			console.log($artistList);
 
 			wavlake.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author
