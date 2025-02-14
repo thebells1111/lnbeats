@@ -37,9 +37,12 @@
 		album.remoteSongs = album.remoteSongs;
 	}
 
-	if ($albumSwiper?.activeIndex === 0) {
-		$selectedAlbum = album;
-	}
+	console.log(album);
+	$: console.log(album);
+
+	// if ($albumSwiper?.activeIndex === 0) {
+	// 	$selectedAlbum = album;
+	// }
 
 	async function removeAlbum() {
 		const album = { guid: $page.params.albumId };
@@ -50,6 +53,10 @@
 	function isOverflowingHorizontally(element) {
 		return element?.scrollHeight > element?.clientHeight;
 	}
+
+	$: console.log(album.songs);
+	$: console.log($playingSongList);
+	$: console.log($playingAlbum);
 </script>
 
 {#if album}
@@ -78,6 +85,8 @@
 
 			{#if album?.songs?.length}
 				<ul class="no-scroll">
+					{$playingAlbum.id === album.id}
+
 					{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
 						<SongCard {album} {song} {index} />
 					{/each}

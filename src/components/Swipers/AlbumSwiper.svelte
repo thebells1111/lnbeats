@@ -49,10 +49,10 @@
 		noSwipingClass="no-scroll"
 		on:slideChange={() => {
 			if ($albumSwiper.activeIndex === 0) {
-				setTimeout(
-					() => (document.getElementById('album-swiper').style.visibility = 'hidden'),
-					333
-				);
+				setTimeout(() => {
+					document.getElementById('album-swiper').style.visibility = 'hidden';
+					document.getElementById('album-swiper').style.removeProperty('z-index');
+				}, 333);
 			}
 		}}
 		on:swiper={(e) => ($albumSwiper = e.detail[0])}

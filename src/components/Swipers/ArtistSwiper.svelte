@@ -3,7 +3,7 @@
 	import AlbumCard from '$c/Discover/AlbumCard.svelte';
 	import Close from '$icons/Close.svelte';
 
-	import { artistSwiper, selectedArtist } from '$/stores';
+	import { artistSwiper, selectedArtist, albumSwiper } from '$/stores';
 </script>
 
 <swiper-container id="artist-swiper">
@@ -13,10 +13,9 @@
 		simulateTouch={false}
 		on:slideChange={() => {
 			if ($artistSwiper.activeIndex === 0) {
-				setTimeout(
-					() => (document.getElementById('artist-swiper').style.visibility = 'hidden'),
-					333
-				);
+				setTimeout(() => {
+					document.getElementById('artist-swiper').style.visibility = 'hidden';
+				}, 333);
 			}
 		}}
 		on:swiper={(e) => ($artistSwiper = e.detail[0])}

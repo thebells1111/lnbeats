@@ -67,7 +67,6 @@
 		if (index === $playingIndex && JSON.stringify($playingSong) === JSON.stringify(song)) {
 			document.getElementById('poster-swiper').style.visibility = 'initial';
 			$posterSwiper.slideTo(1);
-		
 		}
 	}
 

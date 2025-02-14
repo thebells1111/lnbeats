@@ -1,4 +1,4 @@
-async function loadValueBlocks(album) {
+async function loadValueBlockPromise(album) {
 	if (album.promise) {
 		let feed = await album.promise;
 		delete album.promise;
@@ -15,4 +15,4 @@ async function loadValueBlocks(album) {
 	}
 }
 
-export default loadValueBlocks;
+export default loadValueBlockPromise;

@@ -35,7 +35,8 @@
 		shareSwiper,
 		selectedArtist,
 		artistList,
-		artistSwiper
+		artistSwiper,
+		albumSwiper
 	} from '$/stores';
 
 	$: isFavorite =
@@ -190,6 +191,7 @@
 							$selectedArtist = $artistList[byline];
 							document.getElementById('artist-swiper').style.visibility = 'initial';
 							$artistSwiper.slideTo(1);
+							$albumSwiper.slideTo(0);
 						}
 					}}
 				>

@@ -2,16 +2,20 @@
 	export let album;
 	export let fromSearch = false;
 	import loadAlbum from '$functions/loadAlbum';
-	import loadValueBlocks from '$functions/loadValueBlocks';
+	import loadValueBlockPromise from '$functions/loadValueBlockPromise';
 	import AlbumContextMenu from './AlbumContextMenu.svelte';
 	import CryptoJS from 'crypto-js';
 	import { page } from '$app/stores';
 
-	import { albumSwiper, selectedAlbum, albumContextMenu } from '$/stores';
+	import { albumSwiper, selectedAlbum, albumContextMenu, artistSwiper } from '$/stores';
 	let imageUrl = album.artwork || album.image;
 
 	async function openAlbum() {
+		if ($artistSwiper.activeIndex === 1) {
+			document.getElementById('album-swiper').style.zIndex = '101';
+		}
 		document.getElementById('album-swiper').style.visibility = 'initial';
+
 		$albumSwiper.slideTo(1);
 
 		$selectedAlbum = album;
@@ -19,7 +23,7 @@
 		setTimeout(async () => {
 			$selectedAlbum = await loadAlbum($selectedAlbum.podcastGuid, $selectedAlbum);
 
-			loadValueBlocks($selectedAlbum);
+			loadValueBlockPromise($selectedAlbum);
 		}, 1);
 	}
 	function hashUrl(url) {

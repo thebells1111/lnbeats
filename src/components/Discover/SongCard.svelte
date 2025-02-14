@@ -1,6 +1,6 @@
 <script>
 	export let song;
-	import loadValueBlocks from '$functions/loadValueBlocks';
+	import loadValueBlockPromise from '$functions/loadValueBlockPromise';
 	import loadAlbum from '$functions/loadAlbum';
 	import loadSong from '$functions/loadSong';
 	import CryptoJS from 'crypto-js';
@@ -29,7 +29,7 @@
 		$playingSongList = $selectedAlbum.songs || $selectedAlbum.item;
 		$playingIndex = $playingSongList.findIndex((v) => v.guid === song.guid);
 		$playingAlbum = $selectedAlbum;
-		loadValueBlocks($selectedAlbum);
+		loadValueBlockPromise($selectedAlbum);
 		loadSong($playingSong);
 	}
 	function hashUrl(url) {
