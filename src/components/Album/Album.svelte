@@ -20,7 +20,7 @@
 		selectedAlbum,
 		playingAlbum,
 		playingSongList,
-		albumSwiper,
+		artistSwiper,
 		playlists,
 		playlistsDB,
 		publishingDisplay,
@@ -85,9 +85,7 @@
 
 			{#if album?.songs?.length}
 				<ul class="no-scroll">
-					{$playingAlbum.id === album.id}
-
-					{#each $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
+					{#each $artistSwiper.activeIndex === 1 ? album.songs : $playingAlbum.id === album.id ? $playingSongList : album.songs as song, index}
 						<SongCard {album} {song} {index} />
 					{/each}
 				</ul>
