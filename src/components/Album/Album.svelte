@@ -37,9 +37,6 @@
 		album.remoteSongs = album.remoteSongs;
 	}
 
-	console.log(album);
-	$: console.log(album);
-
 	// if ($albumSwiper?.activeIndex === 0) {
 	// 	$selectedAlbum = album;
 	// }
@@ -53,10 +50,6 @@
 	function isOverflowingHorizontally(element) {
 		return element?.scrollHeight > element?.clientHeight;
 	}
-
-	$: console.log(album.songs);
-	$: console.log($playingSongList);
-	$: console.log($playingAlbum);
 </script>
 
 {#if album}

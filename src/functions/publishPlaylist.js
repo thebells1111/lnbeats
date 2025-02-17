@@ -146,7 +146,7 @@ async function uploadFile(xmlFile, guid, indexFeed) {
 }
 
 async function checkPodcastIndex(guid) {
-	const url = remoteServer + `api/queryindex?q=podcasts/byguid?guid=${guid}`;
+	const url = remoteServer + `api/lnb/queryindex?q=podcasts/byguid?guid=${guid}`;
 	const res = await fetch(url);
 	const indexFeed = await res.json();
 	return indexFeed;
@@ -173,7 +173,8 @@ async function podping(feedUrl) {
 
 async function addFeed(feedUrl) {
 	try {
-		let feed = remoteServer + `api/queryindex?q=add/byfeedurl?url=${encodeURIComponent(feedUrl)}`;
+		let feed =
+			remoteServer + `api/lnb/queryindex?q=add/byfeedurl?url=${encodeURIComponent(feedUrl)}`;
 
 		const res = await fetch(feed);
 		const data = await res.json();

@@ -17,7 +17,7 @@ export async function load({ params, fetch }) {
 	try {
 		let albumUrl =
 			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${params.albumId}`)}`;
+			`api/lnb/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${params.albumId}`)}`;
 
 		const albumRes = await fetch(albumUrl);
 		let albumData = await albumRes.json();

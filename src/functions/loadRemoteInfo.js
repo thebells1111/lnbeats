@@ -28,7 +28,7 @@ export default async function loadRemoteInfo(remoteSong) {
 async function fetchRemoteItem(feedGuid, itemGuid) {
 	const itemsUrl =
 		remoteServer +
-		`api/queryindex?q=${encodeURIComponent(
+		`api/lnb/queryindex?q=${encodeURIComponent(
 			`episodes/byguid?podcastguid=${feedGuid}&guid=${itemGuid}`
 		)}`;
 	const res = await fetch(itemsUrl);
@@ -37,7 +37,7 @@ async function fetchRemoteItem(feedGuid, itemGuid) {
 
 async function fetchRemoteFeed(feedGuid) {
 	const itemsUrl =
-		remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+		remoteServer + `api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 	const res = await fetch(itemsUrl);
 	return await res.json();
 }

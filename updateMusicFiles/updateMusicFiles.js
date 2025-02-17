@@ -7,27 +7,22 @@ let addMissing = true;
 let updateFile = false;
 
 export default async function updateMusicFiles() {
-	let indexAlbums = await getAlbumsFromIndex();
-
-	console.log(indexAlbums.albums.length);
-
 	const dbAlbums = JSON.parse(fs.readFileSync('../src/routes/dbAlbums.json', 'utf8'));
 	let updatedAlbums = clone(dbAlbums);
+	let indexAlbums = await getAlbumsFromIndex();
 
+	const albumMap = new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]));
 	if (indexAlbums.lastUpdateTime > dbAlbums.lastUpdateTime) {
 		const newAlbums = indexAlbums.albums.filter((v) => v.lastUpdateTime > dbAlbums.lastUpdateTime);
 		const newCleanedAlbums = await getSongsFromIndex(newAlbums);
-		const brandNewAlbums = newCleanedAlbums.filter((v) => {
-			let oldAlbum = dbAlbums.albums.find((w) => v.id === w.id);
-			if (oldAlbum) {
-				oldAlbum = v;
-				return false;
-			}
-			return true;
+
+		newCleanedAlbums.forEach((v) => {
+			albumMap.set(v.podcastGuid, v);
 		});
+
 		updatedAlbums = {
 			lastUpdateTime: indexAlbums.lastUpdateTime,
-			albums: [...brandNewAlbums, ...dbAlbums.albums]
+			albums: Array.from(albumMap.values())
 		};
 
 		updateFile = true;
@@ -48,7 +43,7 @@ export default async function updateMusicFiles() {
 		updatedAlbums.albums = [...brandNewAlbums, ...dbAlbums.albums];
 		updateFile = true;
 	}
-	const albumMap = new Map();
+
 	const duplicateMap = new Map(); // Store all duplicate [title, id, generator] for each podcastGuid
 
 	updatedAlbums.albums.forEach((album) => {

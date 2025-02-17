@@ -24,9 +24,6 @@
 	let satAmount = $satsPerBoost;
 	let showSaved = false;
 
-	$: console.log('appSupport: ', showAppSupport);
-	$: console.log($currentBoostDestinations);
-
 	let appDestination = [
 		{
 			'@_address': '035ad2c954e264004986da2d9499e1732e5175e1dcef2453c921c6cdcc3536e9d8',
@@ -39,7 +36,6 @@
 	async function handleBoost() {
 		try {
 			throwConfetti();
-			console.log(showAppSupport ? appDestination : $currentBoostDestinations);
 			sendBoost({
 				webln: $webln,
 				destinations: showAppSupport ? appDestination : $currentBoostDestinations,

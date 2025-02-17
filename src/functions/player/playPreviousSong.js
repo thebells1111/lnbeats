@@ -38,7 +38,7 @@ async function playPreviousSong() {
 				let feedGuid = _nextSong['@_feedGuid'];
 				let feedUrl =
 					remoteServer +
-					`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
+					`api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${feedGuid}`)}`;
 
 				try {
 					const albumRes = await fetch(feedUrl);

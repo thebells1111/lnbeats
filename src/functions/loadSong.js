@@ -70,10 +70,10 @@ export default async function loadSong(song) {
 			const remotePercentage = split?.['@_remotePercentage'];
 			const feedGuidUrl =
 				remoteServer +
-				`api/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${feedGuid}`)}`;
+				`api/lnb/queryindex?q=${encodeURIComponent(`/podcasts/byguid?guid=${feedGuid}`)}`;
 			const itemsUrl =
 				remoteServer +
-				`api/queryindex?q=${encodeURIComponent(`/episodes/bypodcastguid?guid=${feedGuid}`)}`;
+				`api/lnb/queryindex?q=${encodeURIComponent(`/episodes/bypodcastguid?guid=${feedGuid}`)}`;
 
 			let splitInfo = {};
 			let valueBlock = { feed: null, item: null };

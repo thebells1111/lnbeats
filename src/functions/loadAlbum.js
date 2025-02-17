@@ -44,7 +44,8 @@ async function loadAlbum(albumId, album) {
 		console.log(album);
 		if (!(album?.item?.length || album?.remoteItem?.length)) {
 			let albumUrl =
-				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
+				remoteServer +
+				`api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${albumId}`)}`;
 			let albumRes = await fetch(albumUrl);
 			albumData = await albumRes.json();
 

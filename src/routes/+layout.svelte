@@ -173,23 +173,18 @@
 
 			const res = await fetch(
 				remoteServer +
-					`api/queryindex?q=${encodeURIComponent(
+					`api/lnb/queryindex?q=${encodeURIComponent(
 						'podcasts/bymedium?medium=music&val=lightning&max=10000'
 					)}`
 			);
 			let data = await res.json();
 			let fetchedFeeds = data.feeds || [data.feed] || [];
-			console.log(fetchedFeeds);
-
-			console.log(
-				Array.from(new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]))).length
-			);
-			console.log(
-				Array.from(new Map(fetchedFeeds.map((album) => [album.podcastGuid, album]))).length
-			);
+			console.log(fetchedFeeds.find((v) => v.id === 6642704));
 
 			fetchedFeeds = fetchedFeeds.filter((v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime);
-
+			console.log(fetchedFeeds);
+			console.log(dbAlbums.lastUpdateTime);
+			console.log();
 			console.log('updated feeds: ', fetchedFeeds);
 			fetch('/get_songs', {
 				method: 'POST',
@@ -272,8 +267,6 @@
 					}
 				}
 			});
-
-			console.log($artistList);
 
 			wavlake.sort((a, b) => {
 				return a.title.localeCompare(b.title); // Sort by author

@@ -8,7 +8,7 @@ import { remoteServer } from '$/stores';
 // ======== Fetch Songs for an Album ========
 async function getSongs(album) {
 	try {
-		const url = remoteServer + `api/queryindex?q=episodes/byfeedid?id=${album.id}`;
+		const url = remoteServer + `api/lnb/queryindex?q=episodes/byfeedid?id=${album.id}`;
 		const response = await axios.get(url);
 
 		if (response?.data?.items) {

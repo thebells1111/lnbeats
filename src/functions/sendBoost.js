@@ -25,8 +25,6 @@ export default async function sendBoost({
 		destinations = [destinations];
 	}
 
-	console.log(destinations);
-
 	let hasPI = destinations.find(
 		(v) => v['@_address'] === '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a'
 	);
@@ -79,6 +77,7 @@ export default async function sendBoost({
 				let record = {
 					destination: dest['@_address'],
 					amount: amount,
+					type: dest['@_type'],
 					customRecords: customRecords
 				};
 				if (wallet === 'albyApi') {
@@ -107,6 +106,7 @@ export default async function sendBoost({
 				let record = {
 					destination: dest['@_address'],
 					amount: amount,
+					type: dest['@_type'],
 					customRecords: customRecords
 				};
 
@@ -124,16 +124,28 @@ export default async function sendBoost({
 	console.log(payments);
 
 	if (wallet === 'albyApi') {
-		let res = await fetch(remoteServer + 'api/alby/boost', {
+		let response = await fetch(remoteServer + 'api/alby/handlePayments', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify([].concat(payments))
+			body: JSON.stringify(payments)
 		});
 
-		let data = await res.json();
+		let data = await response.json();
+
+		// let res = await fetch(remoteServer + 'api/alby/boost', {
+		// 	method: 'POST',
+		// 	credentials: 'include',
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	},
+		// 	body: JSON.stringify([].concat(payments))
+		// });
+
+		// let data = await res.json();
+
 		console.log(data);
 		return data;
 	}

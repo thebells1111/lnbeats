@@ -79,7 +79,7 @@
 
 		const feedUrl =
 			remoteServer +
-			`api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${podcastGuid}`)}`;
+			`api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${podcastGuid}`)}`;
 
 		try {
 			const albumRes = await fetch(feedUrl);

@@ -6,7 +6,7 @@ export default async function generateValidGuid() {
 	const inputString = uuidv4();
 	const uniqueId = uuidv5(inputString, namespace);
 	let url =
-		remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${uniqueId}`)}`;
+		remoteServer + `api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${uniqueId}`)}`;
 
 	const res = await fetch(url);
 	const data = await res.json();

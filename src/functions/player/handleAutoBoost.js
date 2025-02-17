@@ -15,7 +15,7 @@ async function handleAutoBoost(destinations) {
 				wallet: $user.preferences.wallet
 			});
 		} catch (err) {
-			satsPerSong.set(0);
+			
 		}
 	}
 }

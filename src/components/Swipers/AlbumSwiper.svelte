@@ -29,7 +29,7 @@
 	function checkGuid(guid) {
 		if (guid) {
 			let albumUrl =
-				remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${guid}`)}`;
+				remoteServer + `api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byguid?guid=${guid}`)}`;
 
 			fetch(albumUrl)
 				.then((response) => response.json())

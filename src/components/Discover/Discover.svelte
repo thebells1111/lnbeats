@@ -47,7 +47,7 @@
 				$radio.map(async (v) => {
 					const feedGuidUrl =
 						remoteServer +
-						`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${v.id}`)}`;
+						`api/lnb/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${v.id}`)}`;
 
 					const res = await fetch(feedGuidUrl);
 					const data = await res.json();
@@ -69,7 +69,7 @@
 
 	async function fetchTop100() {
 		const albumUrl =
-			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=6612768`)}`;
+			remoteServer + `api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=6612768`)}`;
 		const albumRes = await fetch(albumUrl);
 		const albumData = await albumRes.json();
 
