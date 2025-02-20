@@ -13,6 +13,11 @@ async function getSongs(album) {
 
 		if (response?.data?.items) {
 			album.item = response.data.items;
+			if (album.item?.[0]?.['podcast:episode']) {
+				album.item.sort((a, b) => (a['podcast:episode'] > b['podcast:episode'] ? 1 : -1));
+			} else if (album.item?.[0]?.['itunes:episode']) {
+				album.item.sort((a, b) => (a['itunes:episode'] > b['itunes:episode'] ? 1 : -1));
+			}
 		}
 		return album;
 	} catch (err) {

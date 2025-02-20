@@ -149,7 +149,7 @@
 		margin: 8px 0;
 	}
 	ul {
-		margin: 0;
+		margin: 0 0 60px 0;
 		padding: 0;
 	}
 
