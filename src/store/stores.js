@@ -34,6 +34,7 @@ export const playerTime = writable(0);
 export const playerDuration = writable(0);
 export const playerSaveTime = writable(0);
 export const mediaSession = writable();
+export const hls = writable();
 
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);

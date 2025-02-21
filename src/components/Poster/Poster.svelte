@@ -4,6 +4,7 @@
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
 	import toUrlFriendly from '$functions/toUrlFriendly';
+	import Player from '$c/Player/Player.svelte';
 
 	import AudioProgressBar from './AudioProgressBar.svelte';
 	import Controls from './Controls.svelte';
@@ -138,16 +139,8 @@
 			</button>
 		</top-buttons>
 
-		<img
-			id="poster-image"
-			src={$currentPlayingChapter?.img ||
-				$playingSong.image ||
-				$playingSong.artwork ||
-				$playingSong?.['itunes:image']?.['@_href'] ||
-				$playingAlbum.image ||
-				$playingAlbum.artwork ||
-				$playingAlbum?.['itunes:image']?.['@_href']}
-		/>
+		<Player />
+
 		{#if $playingTranscript?.[$currentTranscriptIndex]}
 			<div class="cc-container">
 				<div class="cc">

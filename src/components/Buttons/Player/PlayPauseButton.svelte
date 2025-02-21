@@ -1,5 +1,5 @@
 <script>
-	import { player, playingSong } from '$/stores';
+	import { player, playingSong, hls } from '$/stores';
 	import Play from '$icons/PlayArrow.svelte';
 	import Pause from '$icons/Pause.svelte';
 	export let size = 30;
@@ -17,7 +17,7 @@
 
 {#if $player}
 	<button on:click={handlePlayButton} aria-label="Play Pause" {style}>
-		{#if $player.src !== $playingSong?.enclosure?.['@_url']}
+		{#if $player.src !== $playingSong?.enclosure?.['@_url'] && $hls?.url !== $playingSong?.enclosure?.['@_url']}
 			<Play {size} />
 		{:else if $player.paused}
 			<Play {size} />
