@@ -70,7 +70,7 @@ async function getSongs(album, index) {
 	}
 }
 
-export default async function getSongsFromIndex(albums) {
+export default async function getSongsFromFeeds(albums) {
 	try {
 		let length = albums.length;
 		let albumsWithSongs = [];

@@ -1,65 +1,51 @@
 const requiredChannelTags = [
-  "id",
-  "title",
-  "url",
-  "image",
-  "description",
-  "author",
-  "lastUpdateTime",
-  "newestItemPubdate",
-  "generator",
-  "podcastGuid",
-  "explicit",
-  "medium",
-  "item",
-];
-
-const requiredItemTags = [
-  "id",
-  "title",
-  "description",
-  "guid",
-  "datePublished",
-  "enclosureUrl",
-  "enclosureType",
-  "duration",
-  "explicit",
-  "image",
+	'id',
+	'title',
+	'url',
+	'image',
+	'description',
+	'author',
+	'lastUpdateTime',
+	'newestItemPubdate',
+	'generator',
+	'podcastGuid',
+	'explicit',
+	'medium',
+	'item'
 ];
 
 export default function cleanAlbums(albums) {
-  const filteredAlbums = albums.map((v) => {
-    return requiredChannelTags.reduce((acc, tag) => {
-      acc[tag] = v.hasOwnProperty(tag) ? v[tag] : null;
-      if (tag === "item") {
-        acc.item = acc.item || [];
-        acc.item = acc.item.map((v) => {
-          let i = requiredItemTags.reduce((acc, tag) => {
-            acc[tag] = v.hasOwnProperty(tag) ? v[tag] : null;
-            return acc;
-          }, {});
-          if (i.enclosureUrl) {
-            i.enclosure = {
-              "@_url": i.enclosureUrl,
-              "@_type": i.enclosureType,
-            };
-          }
-          return i;
-        });
-      }
+	return albums.map((v) => {
+		return requiredChannelTags.reduce((acc, tag) => {
+			// Use "in" to check if property exists, and default to null if not.
+			acc[tag] = tag in v ? v[tag] : null;
 
-      if (tag === "image") {
-        acc.image = v.image = v.artwork || v.image || "";
-      }
-      return acc;
-    }, {});
-  });
+			if (tag === 'item') {
+				acc.item = Array.isArray(acc.item) ? acc.item : [];
+				acc.item = acc.item.map((w) => {
+					const mappedItem = {
+						title: w?.title,
+						description: w?.description,
+						guid: w?.guid?.['#text'] || w?.guid,
+						datePublished: w?.pubDate,
+						duration: w?.['itunes:duration'],
+						enclosure: w?.enclosure,
+						explicit: w?.['itunes:explicit'],
+						image: w?.['itunes:image']?.['@_href'] || w?.image?.['@_url'] || null,
+						'podcast:season': w?.['podcast:season'],
+						'podcast:episode': w?.['podcast:episode']
+					};
+					return Object.fromEntries(
+						Object.entries(mappedItem).filter(([key, value]) => value != null)
+					);
+				});
+			}
 
-  return filteredAlbums;
+			if (tag === 'image') {
+				acc.image = v.artwork || v.image || '';
+			}
+
+			return acc;
+		}, {});
+	});
 }
-
-// fs.writeFileSync(
-//   "cleaned_albums_with_songs.json",
-//   JSON.stringify(filteredAlbums, null, 2),
-//   "utf-8"
-// );

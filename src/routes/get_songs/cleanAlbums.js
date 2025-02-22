@@ -14,19 +14,6 @@ const requiredChannelTags = [
 	'item'
 ];
 
-const requiredItemTags = [
-	'id',
-	'title',
-	'description',
-	'guid',
-	'datePublished',
-	'enclosureUrl',
-	'enclosureType',
-	'duration',
-	'explicit',
-	'image'
-];
-
 export default function cleanAlbums(albums) {
 	const filteredAlbums = albums.map((v) => {
 		return requiredChannelTags.reduce((acc, tag) => {
@@ -34,16 +21,17 @@ export default function cleanAlbums(albums) {
 			if (tag === 'item') {
 				acc.item = acc.item || [];
 				acc.item = acc.item.map((v) => {
-					let i = requiredItemTags.reduce((acc, tag) => {
-						acc[tag] = v.hasOwnProperty(tag) ? v[tag] : null;
-						return acc;
-					}, {});
-					if (i.enclosureUrl) {
-						i.enclosure = {
-							'@_url': i.enclosureUrl,
-							'@_type': i.enclosureType
-						};
-					}
+					let i = {};
+					i.title = v?.title;
+					i.description = v?.description;
+					i.guid = v?.guid?.['#text'] || v?.guid;
+					i.datePublished = v?.pubDate;
+					i.duration = v?.['itunes:duration'];
+					i.explicit = v?.['itunes:explicit'];
+					i.image = v?.['itunes:image']?.['@_href'] || v?.image['@_url'];
+					i['podcast:season'] = v?.['podcast:season'];
+					i['podcast:episode'] = v?.['podcast:episode'];
+
 					return i;
 				});
 			}
