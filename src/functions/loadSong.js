@@ -1,7 +1,10 @@
+import Hls from "hls.js";
+
 import {
 	playingSong,
 	playingAlbum,
 	player,
+	hls,
 	remoteServer,
 	playingChapters,
 	currentPlayingChapter,
@@ -12,11 +15,12 @@ import {
 } from '$/stores';
 import { get } from 'svelte/store';
 const $valueTimeSplitBlock = get(valueTimeSplitBlock);
+
 export default async function loadSong(song) {
 	let _player = get(player);
 	_player.pause();
 	playingSong.set(song);
-	_player.src = song.enclosure['@_url'];
+	setPlayerSource(song.enclosure['@_url']);
 	playingChapters.set([]);
 	currentPlayingChapter.set(null);
 	currentSplitDestinations.set(null);
@@ -59,6 +63,46 @@ export default async function loadSong(song) {
 		let split = splits[i];
 		$valueTimeSplitBlock[i] = await handleSplit(split);
 		valueTimeSplitBlock.set($valueTimeSplitBlock);
+	}
+
+	function setPlayerSource(src) {
+		let _hls = null;
+
+		if (!_player || !src) { // missing params
+			console.error("No player or nothing to play!");
+		}
+		else if (
+			!src.includes(".m3u8") || _player.canPlayType("application/vnd.apple.mpegurl")
+		) {
+			// native player
+			_player.src = src;
+			hls.set(null);
+		}
+		else if (Hls.isSupported()) {
+			// hls player
+			_hls = new Hls();
+
+			// bind them together
+			_hls.attachMedia(_player);
+
+			// MEDIA_ATTACHED event is fired by hls object once MediaSource is ready
+			_hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+				// console.log("video and hls.js are now bound together !");
+				_hls.loadSource(src);
+				_hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+					console.log(
+						"manifest loaded, found " +
+						data.levels.length +
+						" quality level"
+					);
+				});
+			});
+		}
+		else {
+			console.error("Unable to play video");
+		}
+
+		hls.set(_hls);
 	}
 
 	async function handleSplit(split) {

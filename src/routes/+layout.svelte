@@ -3,7 +3,7 @@
 	import 'swiper/css';
 	import dbAlbums from './dbAlbums.json';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
-	import Player from '$c/Player/Player.svelte';
+	import PlayBar from '$c/Player/PlayBar.svelte';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -333,7 +333,7 @@
 	</main>
 
 	<SwiperContainer />
-	<Player />
+	<PlayBar />
 	<NavFooter />
 
 	<div class="header-background" />
