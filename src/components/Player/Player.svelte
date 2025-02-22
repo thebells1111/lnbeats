@@ -17,8 +17,13 @@
 		mediaSession
 	} from '$/stores';
 
-	import PlayBar from './PlayBar.svelte';
 	import { onMount } from 'svelte';
+
+	let isVideo = false;
+
+	$: {
+		isVideo = $playingSong?.enclosure?.['@_url']?.includes(".m3u8") || $playingSong?.enclosure?.['@_type']?.includes("video/");
+	};
 
 	function setupPlayer() {
 		$player.ontimeupdate = () => {
@@ -152,9 +157,33 @@
 	{/if}
 </svelte:head>
 
-<audio playsinline preload="metadata" bind:this={$player} />
-
-<PlayBar />
+<video
+	disableRemotePlayback
+	playsinline
+	preload="metadata"
+	bind:this={$player}
+	controls={isVideo}
+	poster={
+		$currentPlayingChapter?.img ||
+		$playingSong.image ||
+		$playingSong.artwork ||
+		$playingSong?.['itunes:image']?.['@_href'] ||
+		$playingAlbum.image ||
+		$playingAlbum.artwork ||
+		$playingAlbum?.['itunes:image']?.['@_href']
+	}
+/>
 
 <style>
+
+video {
+	width: calc(100% - 16px);
+	max-width: 360px;
+}
+
+video[controls] {
+	/* video content */
+	max-width: none;
+}
+
 </style>
