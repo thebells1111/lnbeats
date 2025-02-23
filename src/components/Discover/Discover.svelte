@@ -72,6 +72,7 @@
 			remoteServer + `api/lnb/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=6612768`)}`;
 		const albumRes = await fetch(albumUrl);
 		const albumData = await albumRes.json();
+		console.log(albumData);
 
 		const res = await fetch(remoteServer + `api/proxy?url=${albumData.feed.url}`);
 		let data = await res.text();
@@ -121,7 +122,7 @@
 				.sort((a, b) => a.author.localeCompare(b.author) || a.title.localeCompare(b.title));
 
 			filteredSongList = $masterSongList
-				.filter((v) => v.title.toLowerCase().includes(query))
+				.filter((v) => v?.title.toString().toLowerCase().includes(query))
 				.sort((a, b) => a.title.localeCompare(b.title));
 		} else {
 			filteredList = $discoverList;

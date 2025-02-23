@@ -12,6 +12,9 @@ export default async function getAlbumsFromIndex() {
 		return;
 	}
 
+	console.log(PI_API_KEY);
+	console.log(PI_API_SECRET);
+
 	try {
 		const apiHeaderTime = Math.floor(Date.now() / 1000);
 		const data4Hash = PI_API_KEY + PI_API_SECRET + apiHeaderTime;

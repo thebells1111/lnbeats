@@ -1,3 +1,4 @@
+import fs from 'fs';
 import cleanAlbums from './cleanAlbums.js';
 import { parse } from 'fast-xml-parser';
 import { decode } from 'html-entities';
@@ -12,7 +13,7 @@ const parserOptions = {
 	tagValueProcessor: (val, tagName) => decode(val) //default is a=>a
 };
 
-export default async function getSongsFromFeeds(albums, remoteServer) {
+export default async function getSongsFromFeeds(albums, remoteServer, notFound) {
 	try {
 		let length = albums.length;
 		let albumsWithSongs = [];
@@ -21,6 +22,7 @@ export default async function getSongsFromFeeds(albums, remoteServer) {
 			if (!albums?.item?.length) {
 				let album = await getSongs(albums[index], remoteServer);
 				albumsWithSongs.push(album);
+				await delay(0);
 			}
 		}
 
@@ -32,10 +34,20 @@ export default async function getSongsFromFeeds(albums, remoteServer) {
 	}
 }
 
-async function getSongs(album, remoteServer) {
+async function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function getSongs(album, remoteServer, notFound) {
 	try {
 		let url = remoteServer ? remoteServer + `api/proxy?url=${album.url}` : album.url;
 		const res = await fetch(url);
+
+		if (res.status === 404 && notFound) {
+			console.log('404 feed: ' + url);
+			notFound.add(url);
+			return false;
+		}
 		const data = await res.text();
 		const xml2Json = parse(data, parserOptions);
 		const feed = xml2Json.rss.channel;
@@ -44,7 +56,7 @@ async function getSongs(album, remoteServer) {
 		console.log(album.url);
 		console.log(error);
 
-		album.item = [];
+		return false;
 	}
 
 	return album;

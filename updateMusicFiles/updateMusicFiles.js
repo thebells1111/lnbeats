@@ -8,6 +8,9 @@ let updateFile = false;
 
 export default async function updateMusicFiles() {
 	const dbAlbums = JSON.parse(fs.readFileSync('../src/routes/dbAlbums.json', 'utf8'));
+	const notFound = JSON.parse(fs.readFileSync('../src/routes/404.json', 'utf8'));
+	console.log(notFound);
+	const notFoundSet = new Set(notFound);
 	let updatedAlbums = clone(dbAlbums);
 	let indexAlbums = await getAlbumsFromIndex();
 
@@ -15,13 +18,12 @@ export default async function updateMusicFiles() {
 	if (indexAlbums.lastUpdateTime > dbAlbums.lastUpdateTime) {
 		const newAlbums = indexAlbums.albums.filter((v) => v.lastUpdateTime > dbAlbums.lastUpdateTime);
 
-		const newCleanedAlbums = await getSongsFromFeeds(newAlbums);
+		const newCleanedAlbums = await getSongsFromFeeds(newAlbums, null, notFoundSet);
 		console.log(newCleanedAlbums.length);
 		newCleanedAlbums.forEach((v) => {
 			albumMap.set(v.podcastGuid, v);
 		});
 
-		console.log(albumMap);
 		updatedAlbums = {
 			lastUpdateTime: indexAlbums.lastUpdateTime,
 			albums: Array.from(albumMap.values())
@@ -32,7 +34,7 @@ export default async function updateMusicFiles() {
 
 	if (addMissing) {
 		const newAlbums = getUniqueObjects(indexAlbums.albums, dbAlbums.albums);
-		const newCleanedAlbums = await getSongsFromFeeds(newAlbums);
+		const newCleanedAlbums = await getSongsFromFeeds(newAlbums, null, notFoundSet);
 		const brandNewAlbums = newCleanedAlbums.filter((v) => {
 			let oldAlbum = dbAlbums.albums.find((w) => v.id === w.id);
 			if (oldAlbum) {
@@ -93,8 +95,7 @@ export default async function updateMusicFiles() {
 	fs.writeFileSync('dupes.json', JSON.stringify(duplicateIds).replace(/\r\n|\r/g, '\n'), 'utf-8');
 
 	console.log(updatedAlbums.albums.length);
-	updatedAlbums.lastUpdateTime = 1740240180;
-
+	console.log([...notFoundSet]);
 	if (updateFile) {
 		fs.writeFileSync(
 			'../src/routes/dbAlbums.json',
