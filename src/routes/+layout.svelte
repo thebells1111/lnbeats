@@ -4,7 +4,7 @@
 	import dbAlbums from './dbAlbums.json';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import PlayBar from '$c/Player/PlayBar.svelte';
-	import getSongsFromFeeds from '$functions/getSongsfromFeeds.js';
+	import getSongsFromFeeds from '$functions/getSongsFromFeeds';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
