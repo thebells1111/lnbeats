@@ -4,6 +4,7 @@
 	import dbAlbums from './dbAlbums.json';
 	import NavFooter from '$c/Nav/NavFooter/NavFooter.svelte';
 	import PlayBar from '$c/Player/PlayBar.svelte';
+	import getSongsFromFeeds from '$functions/getSongsfromFeeds.js';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -158,10 +159,20 @@
 
 	async function getDiscoverList() {
 		if (!$discoverList.length) {
+			const SESSION_KEY = 'lastVisitTime';
+			const lastVisit = sessionStorage.getItem(SESSION_KEY);
+			const now = Date.now();
+
+			const localDbAlbums = localforage.createInstance({
+				name: 'localDbAlbums'
+			});
+			let localAlbums = await localDbAlbums.getItem('albums');
 			let filteredFeeds = [];
 			let _featuredList = [];
 
-			dbAlbums.albums.forEach((v) => {
+			let storedAlbums = localAlbums || dbAlbums;
+
+			storedAlbums.albums.forEach((v) => {
 				if (v.generator.includes('Music Side Project')) {
 					_featuredList = _featuredList.concat(v);
 				} else if (v.generator.includes('Sovereign Feeds')) {
@@ -170,60 +181,59 @@
 			});
 
 			$featuredList = shuffleArray(_featuredList);
+			$albumMap = new Map(storedAlbums.albums.map((album) => [album.podcastGuid, album]));
 
-			const res = await fetch(
-				remoteServer +
-					`api/lnb/queryindex?q=${encodeURIComponent(
-						'podcasts/bymedium?medium=music&val=lightning&max=10000'
-					)}`
-			);
-			let data = await res.json();
-			let fetchedFeeds = data.feeds || [data.feed] || [];
-			console.log(fetchedFeeds.find((v) => v.id === 6642704));
+			if (!lastVisit || now - parseInt(lastVisit, 10) > 10 * 60 * 1000) {
+				sessionStorage.setItem(SESSION_KEY, now.toString());
 
-			fetchedFeeds = fetchedFeeds.filter((v) => v.lastUpdateTime >= dbAlbums.lastUpdateTime);
-			console.log(fetchedFeeds);
-			console.log(dbAlbums.lastUpdateTime);
-			console.log();
-			console.log('updated feeds: ', fetchedFeeds);
-			fetch('/get_songs', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(fetchedFeeds)
-			})
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error(`Error: ${response.status}`);
+				const res = await fetch(
+					remoteServer +
+						`api/lnb/queryindex?q=${encodeURIComponent(
+							'podcasts/bymedium?medium=music&val=lightning&max=10000'
+						)}`
+				);
+				let data = await res.json();
+
+				let fetchedFeeds = data.feeds || [data.feed] || [];
+				let lastUpdateTime = 0;
+
+				fetchedFeeds = fetchedFeeds.filter((v) => {
+					if (v.lastUpdateTime > lastUpdateTime) {
+						lastUpdateTime = v.lastUpdateTime;
 					}
-					return response.json(); // Return the JSON promise
-				})
-				.then((data) => {
-					const songMap = new Map(
-						$masterSongList.map((song) => [`${song.podcastGuid}-${song.guid}`, song])
-					);
-
-					(data || []).forEach((v) => {
-						v.songs = v?.songs || v?.item;
-						if (allowFeed(v)) {
-							(v.songs || v.item || []).forEach((song) => {
-								song.podcastGuid = v.podcastGuid;
-								songMap.set(`${v.podcastGuid}-${song.guid}`, song);
-							});
-							$albumMap.set(v.podcastGuid, v);
-						}
-					});
-					$discoverList = sortByPubDate(Array.from($albumMap.values()));
-					$masterSongList = Array.from(songMap.values());
-				})
-				.catch((err) => {
-					// Handles any error that happens
-					console.log(err);
+					return v.lastUpdateTime >= storedAlbums.lastUpdateTime;
 				});
 
-			$albumMap = new Map(dbAlbums.albums.map((album) => [album.podcastGuid, album]));
-			fetchedFeeds.forEach((v) => {
-				$albumMap.set(v.podcastGuid, v);
-			});
+				fetchedFeeds.forEach((v) => {
+					$albumMap.set(v.podcastGuid, v);
+				});
+
+				getSongsFromFeeds(fetchedFeeds)
+					.then((data) => {
+						console.log(data);
+						const songMap = new Map(
+							$masterSongList.map((song) => [`${song.podcastGuid}-${song.guid}`, song])
+						);
+
+						(data || []).forEach((v) => {
+							v.songs = v?.songs || v?.item;
+							if (allowFeed(v)) {
+								(v.songs || v.item || []).forEach((song) => {
+									song.podcastGuid = v.podcastGuid;
+									songMap.set(`${v.podcastGuid}-${song.guid}`, song);
+								});
+								$albumMap.set(v.podcastGuid, v);
+							}
+						});
+						$discoverList = sortByPubDate(Array.from($albumMap.values()));
+						$masterSongList = Array.from(songMap.values());
+						localDbAlbums.setItem('albums', { lastUpdateTime, albums: $discoverList });
+					})
+					.catch((err) => {
+						// Handles any error that happens
+						console.log(err);
+					});
+			}
 
 			let _discoverList = sortByPubDate(Array.from($albumMap.values()));
 
