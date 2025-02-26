@@ -43,7 +43,12 @@
 		if (song.hasOwnProperty('imageHash')) {
 			imageUrl = song.imageHash;
 		} else {
-			song.imageHash = hashUrl(song.artwork || song.image);
+			song.imageHash = hashUrl(
+				song.artwork ||
+					song.image ||
+					$albumMap.get(song.podcastGuid).artwork ||
+					$albumMap.get(song.podcastGuid).image
+			);
 			imageUrl = song.imageHash;
 		}
 	}
