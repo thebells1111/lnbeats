@@ -15,6 +15,8 @@
 
 	import Shuffle from '$icons/Shuffle.svelte';
 	import Laps from '$icons/Laps.svelte';
+	import VolumeControls from './VolumeControls.svelte';
+
 	import { page } from '$app/stores';
 
 	function openPoster() {
@@ -85,6 +87,11 @@
 			<album-title>{$playingAlbum.title}</album-title>
 		</song-info>
 	</playbar-controls>
+
+	<volume-controls>
+		<VolumeControls size={120}/>
+	</volume-controls>
+
 	<button class:shuffled={$shuffleSongs} on:click|stopPropagation={handleShuffle} class="random">
 		<Shuffle size="30" />
 	</button>
@@ -146,6 +153,11 @@
 		margin: 0 4px;
 	}
 
+	volume-controls {
+		position: absolute;
+		right: 96px;
+	}
+
 	button.random,
 	button.loop {
 		background-color: transparent;
@@ -180,4 +192,11 @@
 	button.looped {
 		background-color: var(--color-theme-yellow-light);
 	}
+
+	@media (max-width: 480px) {
+		volume-controls {
+			display: none;
+		}
+	}
+
 </style>

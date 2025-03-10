@@ -14,7 +14,9 @@
 		currentPlayingChapter,
 		currentChapterIndex,
 		chapterBoostBypass,
-		mediaSession
+		mediaSession,
+		playerVolume,
+		playerMuted
 	} from '$/stores';
 
 	import { onMount } from 'svelte';
@@ -24,6 +26,15 @@
 	$: {
 		isVideo = $playingSong?.enclosure?.['@_url']?.includes(".m3u8") || $playingSong?.enclosure?.['@_type']?.includes("video/");
 	};
+
+	// Update player volume when volume state changes
+	$: setVolume($playerMuted ? 0 : $playerVolume);
+
+	function setVolume(volume) {
+		if ($player) {
+			$player.volume = volume;
+		}
+	}
 
 	function setupPlayer() {
 		$player.ontimeupdate = () => {

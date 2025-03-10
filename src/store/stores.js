@@ -36,6 +36,11 @@ export const playerSaveTime = writable(0);
 export const mediaSession = writable();
 export const hls = writable();
 
+// Volume control stores
+export const playerVolume = writable(1);
+export const playerMuted = writable(false);
+export const previousVolume = writable(1);
+
 export const satsPerSong = writable(0);
 export const satsPerBoost = writable(1000);
 export const senderName = writable('');
