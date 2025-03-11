@@ -139,72 +139,82 @@
 			</button>
 		</top-buttons>
 
-		<Player />
+		<player-card>
+			<Player />
 
-		{#if $playingTranscript?.[$currentTranscriptIndex]}
-			<div class="cc-container">
-				<div class="cc">
-					{@html $playingTranscript?.[$currentTranscriptIndex]?.text || ''}
+			{#if $playingTranscript?.[$currentTranscriptIndex]}
+				<div class="cc-container">
+					<div class="cc">
+						{@html $playingTranscript?.[$currentTranscriptIndex]?.text || ''}
+					</div>
 				</div>
-			</div>
-		{/if}
+			{/if}
 
-		<below-poster-container>
-			<button on:click={toggleFavorite} class="favorite-container">
-				{#if isFavorite}
-					<filled-container
-						style={`${isFavorite ? 'display:initial' : 'display:none'}`}
-						class:filled={isFavorite}
-						transition:scale|global
-					>
-						<FavoriteFilled size="40" />
-					</filled-container>
-				{:else}
-					<unfilled-container style={`${isFavorite ? 'display:none' : 'display:initial'}`}>
-						<Favorite size="40" />
-					</unfilled-container>
-				{/if}
-			</button>
-			<album-info>
-				<song-title>
-					{$currentPlayingChapter
-						? $currentPlayingChapter?.toc === false
-							? $currentSplit?.song || ''
-							: $currentPlayingChapter.title
-						: $playingSong.title}
-				</song-title>
+			<player-stack>
 
-				<band-name>
-					{#if byline}
-						by {byline}
-						<!-- <a
-							href={`/artist/${toUrlFriendly(byline)}
-					`}
-						>
-							{byline}
-						</a> -->
+				<player-title>
+					<button on:click={toggleFavorite} class="favorite-container">
+						{#if isFavorite}
+							<filled-container
+								style={`${isFavorite ? 'display:initial' : 'display:none'}`}
+								class:filled={isFavorite}
+								transition:scale|global
+							>
+								<FavoriteFilled size="40" />
+							</filled-container>
+						{:else}
+							<unfilled-container style={`${isFavorite ? 'display:none' : 'display:initial'}`}>
+								<Favorite size="40" />
+							</unfilled-container>
+						{/if}
+					</button>
+
+					<album-info>
+						<song-title>
+							{$currentPlayingChapter
+								? $currentPlayingChapter?.toc === false
+									? $currentSplit?.song || ''
+									: $currentPlayingChapter.title
+								: $playingSong.title}
+						</song-title>
+
+						<band-name>
+							{#if byline}
+								by {byline}
+								<!-- <a
+									href={`/artist/${toUrlFriendly(byline)}
+							`}
+								>
+									{byline}
+								</a> -->
+							{/if}
+						</band-name>
+					</album-info>
+
+					<BoostButton />
+				</player-title>
+
+				<player-progress>
+					{#if $player?.src}
+						<audio-progress>
+							<time-display>
+								{#if $player?.duration}
+									<p>{convertTime($player.currentTime, $player.duration)}</p>
+									<p>{convertTime($player.duration)}</p>
+								{/if}
+							</time-display>
+							<AudioProgressBar
+								handleColor={'var(--color-progressbar-0)'}
+								elapsedColor={'var(--color-progressbar-0)'}
+								trackerColor={'var(--color-progressbar-1)'}
+							/>
+						</audio-progress>
+						<Controls />
 					{/if}
-				</band-name>
-			</album-info>
+				</player-progress>
+			</player-stack>
+		</player-card>
 
-			<BoostButton />
-		</below-poster-container>
-		{#if $player?.src}
-			<audio-progress>
-				<time-display>
-					{#if $player?.duration}
-						<p>{convertTime($player.currentTime, $player.duration)}</p>
-						<p>{convertTime($player.duration)}</p>
-					{/if}
-				</time-display>
-				<AudioProgressBar
-					handleColor={'var(--color-progressbar-0)'}
-					elapsedColor={'var(--color-progressbar-0)'}
-					trackerColor={'var(--color-progressbar-1)'}
-				/>
-			</audio-progress>
-			<Controls />
-		{/if}
 	</poster>
 </poster-container>
 
@@ -314,16 +324,15 @@
 		margin: 0 8px;
 	}
 
+
 	button {
-		align-self: flex-start;
-		margin: 0;
-		position: relative;
-		bottom: 8px;
 		font-weight: 700;
 		color: var(--color-text-0);
 		background-color: transparent;
-		border: none;
-		padding: 0;
+	}
+
+	button.close {
+		margin-left: auto;
 	}
 
 	button.favorite-container {
@@ -339,11 +348,13 @@
 	.filled {
 		color: rgb(249, 24, 128);
 	}
+
 	top-buttons {
 		width: 100%;
 		max-width: 360px;
 		display: flex;
 		justify-content: space-between;
+		margin-bottom: 8px;
 	}
 
 	.share {
@@ -359,9 +370,52 @@
 		bottom: 0;
 	}
 
-	button.close {
-		align-self: flex-end;
-		padding-right: 8px;
+	player-card {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		align-items: center;
+		width: 100%;
+		gap: 8px;
+	}
+
+	player-stack {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		width: 100%;
+	}
+
+	player-title {
+		display: flex;
+		flex-direction: row;
+	}
+
+	player-progress {
+		margin-top: auto;
+	}
+
+	@media (max-height: 333px) {
+		album-title,
+		top-buttons,
+		button.close {
+			display: none;
+		}
+	}
+
+	@media (max-height: 636px) {
+		player-card {
+			display: flex;
+			flex-direction: row;
+			flex-grow: 1;
+			align-items: start;
+			align-items: center;
+			width: 100%;
+		}
+
+		.cc-container {
+			top: 8px;
+		}
 	}
 
 	@media (min-width: 722px) {

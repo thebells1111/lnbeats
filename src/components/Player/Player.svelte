@@ -197,4 +197,13 @@ video[controls] {
 	max-width: none;
 }
 
+
+@media (max-height: 636px) {
+	video {
+		max-width: 33%;
+		width: auto;
+	}
+}
+
+
 </style>
