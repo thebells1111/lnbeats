@@ -10,12 +10,21 @@
 		shuffleSongs,
 		remotePlaylistPlaying,
 		top100,
-		loopSongs
+		loopSongs,
+		player,
+		playingChapters,
+		currentPlayingChapter,
+		currentChapterIndex,
+		chapterBoostBypass
 	} from '$/stores';
 
 	import Shuffle from '$icons/Shuffle.svelte';
 	import Laps from '$icons/Laps.svelte';
+	import Play from '$icons/PlayArrow.svelte';
+	import Pause from '$icons/Pause.svelte';
+	import SkipNext from '$icons/SkipNext.svelte';
 	import VolumeControls from './VolumeControls.svelte';
+	import playNextSong from '$functions/player/playNextSong';
 
 	import { page } from '$app/stores';
 
@@ -23,6 +32,35 @@
 		document.getElementById('poster-swiper').style.visibility = 'initial';
 		$posterSwiper.slideTo(1);
 		// setTimeout(() => $posterSwiper.slideTo(1), 1000);
+	}
+
+	function handlePlayPause(event) {
+		event.stopPropagation(); // Prevent opening the poster
+		if ($player && $player.paused) {
+			$player.play();
+		} else if ($player && $player.src) {
+			$player.pause();
+		}
+		$player.paused = $player.paused;
+	}
+
+	async function gotoNextSong() {
+		if ($currentChapterIndex < $playingChapters?.length - 1) {
+			$currentChapterIndex++;
+			$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+			while ($currentPlayingChapter.hasOwnProperty('toc') && $currentPlayingChapter.toc !== true) {
+				if ($currentChapterIndex < $playingChapters?.length - 1) {
+					$currentChapterIndex++;
+					$currentPlayingChapter = $playingChapters[$currentChapterIndex];
+				}
+			}
+
+			console.log($currentPlayingChapter);
+			$player.currentTime = $currentPlayingChapter.startTime;
+			$chapterBoostBypass = true;
+		} else {
+			await playNextSong();
+		}
 	}
 
 	function handleShuffle() {
@@ -92,6 +130,23 @@
 		<VolumeControls size={120}/>
 	</volume-controls>
 
+
+	<button on:click|stopPropagation={handlePlayPause} class="play">
+		{#if $player && $player.src}
+			{#if $player.paused}
+				<Play size="24" />
+			{:else}
+				<Pause size="24" />
+			{/if}
+		{:else}
+			<Play size="24" />
+		{/if}
+	</button>
+
+	<button on:click|stopPropagation={gotoNextSong} class="next">
+		<SkipNext size="30" />
+	</button>
+
 	<button class:shuffled={$shuffleSongs} on:click|stopPropagation={handleShuffle} class="random">
 		<Shuffle size="30" />
 	</button>
@@ -155,9 +210,12 @@
 
 	volume-controls {
 		position: absolute;
-		right: 96px;
+		right: 192px;
+		gap: 4px;
 	}
 
+	button.play,
+	button.next,
 	button.random,
 	button.loop {
 		background-color: transparent;
@@ -179,6 +237,14 @@
 		height: 36px;
 		padding: 0;
 		border-radius: 48px;
+	}
+
+	button.play {
+		right: 144px;
+	}
+
+	button.next {
+		right: 96px;
 	}
 
 	button.random {
