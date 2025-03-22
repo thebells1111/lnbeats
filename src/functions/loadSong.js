@@ -27,11 +27,16 @@ export default async function loadSong(song) {
 	currentChapterIndex.set(0);
 
 	if (song?.['podcast:chapters']) {
-		let res = await fetch(
-			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`
-		);
-		let data = await res.json();
-		playingChapters.set(data?.chapters);
+		try {
+			let res = await fetch(
+				remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:chapters']['@_url'])}`
+			);
+			let data = await res.json();
+			playingChapters.set(data?.chapters);
+		} catch (err) {
+			console.error("Unable to load chapters:", err);
+			playingChapters.set(null);
+		}
 	}
 
 	if (
@@ -40,12 +45,17 @@ export default async function loadSong(song) {
 			song?.['podcast:transcript']['@_type'] === 'application/x-rip' ||
 			song?.['podcast:transcript']['@_type'] === 'text/vtt')
 	) {
-		let res = await fetch(
-			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
-		);
-		let data = res.ok ? await res.text() : '';
-		playingTranscriptText.set(data);
-		// playingChapters.set(data?.chapters);
+		try {
+			let res = await fetch(
+				remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`
+			);
+			let data = res.ok ? await res.text() : '';
+			playingTranscriptText.set(data);
+			// playingChapters.set(data?.chapters);
+		} catch (err) {
+			console.error("Unable to load transcript:", err);
+			playingTranscriptText.set('');
+		}
 	} else {
 		playingTranscriptText.set('');
 	}
