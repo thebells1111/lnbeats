@@ -37,7 +37,8 @@ export default async function loadSong(song) {
 	if (
 		song?.['podcast:transcript'] &&
 		(song?.['podcast:transcript']['@_type'] === 'application/srt' ||
-			song?.['podcast:transcript']['@_type'] === 'application/x-rip')
+			song?.['podcast:transcript']['@_type'] === 'application/x-rip' ||
+			song?.['podcast:transcript']['@_type'] === 'text/vtt')
 	) {
 		let res = await fetch(
 			remoteServer + `api/proxy?url=${encodeURIComponent(song['podcast:transcript']['@_url'])}`

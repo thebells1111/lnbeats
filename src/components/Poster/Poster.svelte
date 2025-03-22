@@ -1,5 +1,5 @@
 <script>
-	import parseSRT from 'parse-srt';
+	import { parse as parseTranscript } from '@plussub/srt-vtt-parser';
 	import { scale } from 'svelte/transition';
 	import clone from 'just-clone';
 	import { page } from '$app/stores';
@@ -44,7 +44,9 @@
 			);
 		}) > -1;
 	$: if ($playingTranscriptText) {
-		$playingTranscript = parseSRT($playingTranscriptText);
+		const transcript = parseTranscript($playingTranscriptText);
+		$playingTranscript = transcript.entries;
+
 		let t = $playingTranscript
 			.map((v) => v.text)
 			.join(' ')
