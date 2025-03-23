@@ -12,11 +12,11 @@ function findCurrentTranscript(currentTime) {
 			currentTranscriptIndex.set($currentTranscriptIndex || 0);
 		}
 
-		while (currentTime >= $playingTranscript?.[$currentTranscriptIndex + 1]?.start) {
+		while (currentTime >= ($playingTranscript?.[$currentTranscriptIndex + 1]?.from / 1000)) {
 			$currentTranscriptIndex++;
 		}
 
-		while (currentTime < $playingTranscript?.[$currentTranscriptIndex]?.start) {
+		while (currentTime < ($playingTranscript?.[$currentTranscriptIndex]?.from / 1000)) {
 			$currentTranscriptIndex--;
 		}
 
