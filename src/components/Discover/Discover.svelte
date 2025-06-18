@@ -38,27 +38,12 @@
 	let demuList = [];
 	let filterDemu = false;
 	let timeoutId = null;
+	let top100Loading = false;
+	let top100Loaded = false;
+	let radioLoading = false;
+	let radioLoaded = false;
 
 	onMount(async () => {
-		fetchTop100();
-		if (!$radio.length) {
-			$radio = shuffleArray(extras);
-			$radio = await Promise.all(
-				$radio.map(async (v) => {
-					const feedGuidUrl =
-						remoteServer +
-						`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${v.id}`)}`;
-
-					const res = await fetch(feedGuidUrl);
-					const data = await res.json();
-					if (data.status === 'true') {
-						return data.feed;
-					}
-					return v;
-				})
-			);
-		}
-
 		if ($albumSearch) {
 			handleInput({ target: { value: $albumSearch } });
 		} else {
@@ -68,6 +53,8 @@
 	});
 
 	async function fetchTop100() {
+		top100Loading = true;
+
 		const albumUrl =
 			remoteServer + `api/queryindex?q=${encodeURIComponent(`podcasts/byfeedid?id=6612768`)}`;
 		const albumRes = await fetch(albumUrl);
@@ -90,6 +77,32 @@
 		albumData.feed.songs = [];
 
 		$top100 = albumData.feed;
+
+		top100Loading = false;
+		top100Loaded = true;
+	}
+
+	async function fetchRadio() {
+		radioLoading = true;
+
+		$radio = shuffleArray(extras);
+		$radio = await Promise.all(
+			$radio.map(async (v) => {
+				const feedGuidUrl =
+					remoteServer +
+					`api/queryindex?q=${encodeURIComponent(`/podcasts/byfeedid?id=${v.id}`)}`;
+
+				const res = await fetch(feedGuidUrl);
+				const data = await res.json();
+				if (data.status === 'true') {
+					return data.feed;
+				}
+				return v;
+			})
+		);
+
+		radioLoading = false;
+		radioLoaded = true;
 	}
 
 	function showFilteredList() {
@@ -127,6 +140,15 @@
 			filteredList = $discoverList;
 			filteredSongList = $masterSongList;
 		}
+	}
+
+	// Load the top 100 and radio feed lists only when needed
+	$: if ($discoverScreen === 'top100' && !top100Loaded && !top100Loading) {
+		fetchTop100();
+	}
+
+	$: if ($discoverScreen === 'radio' && !radioLoaded && !radioLoading) {
+		fetchRadio();
 	}
 
 	$: if (filterDemu) {
