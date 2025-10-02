@@ -79,6 +79,10 @@
 					<div class="gen-icon sf">
 						<img src="/SF32.png" />
 					</div>
+				{:else if album.generator.includes('Fountain')}
+					<div class="gen-icon fountain">
+						<img src="/fountain-small.webp" />
+					</div>
 				{/if}
 			{/if}
 			<AlbumContextMenu {album} />
