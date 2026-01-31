@@ -77,6 +77,7 @@ export default async function sendBoost({
 
 			try {
 				let record = {
+					type: dest['@_type'],
 					destination: dest['@_address'],
 					amount: amount,
 					customRecords: customRecords
@@ -105,6 +106,7 @@ export default async function sendBoost({
 
 			try {
 				let record = {
+					type: dest['@_type'],
 					destination: dest['@_address'],
 					amount: amount,
 					customRecords: customRecords
@@ -124,7 +126,7 @@ export default async function sendBoost({
 	console.log(payments);
 
 	if (wallet === 'albyApi') {
-		let res = await fetch(remoteServer + 'api/alby/boost', {
+		let res = await fetch(remoteServer + 'api/alby/handlePayments', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
