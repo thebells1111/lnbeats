@@ -67,6 +67,10 @@
 					<div class="gen-icon">
 						<img src="/wavlake-small.webp" />
 					</div>
+				{:else if album.generator.includes('MSP 2.0')}
+					<div class="gen-icon msp2">
+						<img src="/msp2-small.webp" />
+					</div>
 				{:else if album.generator.includes('Music Side Project')}
 					<div class="gen-icon msp">
 						<img src="/msp-icon-32.png" />
@@ -157,6 +161,12 @@
 		height: 100%;
 		border-radius: 50%;
 		position: relative;
+	}
+
+	.msp2 > img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
 	}
 
 	album-title,
