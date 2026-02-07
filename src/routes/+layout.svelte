@@ -37,6 +37,8 @@
 	let dontShowAgain = false;
 	let bannerVisible = false;
 
+	$: isDefaultHead = !['/album/[albumId]', '/album/[albumId]/[songId]'].includes($page.route.id);
+
 	// Function to trigger PWA installation
 	function installPWA() {
 		if (deferredPrompt) {
@@ -295,8 +297,7 @@
 </script>
 
 <svelte:head>
-	{#if ['/album/[albumId]', '/album/[albumId]/[songId]'].findIndex((v) => v === $page.route.id) === -1}
-		<!-- Primary Meta Tags -->
+	{#if isDefaultHead}
 		<title>LN Beats</title>
 		<meta name="title" content="LN Beats" />
 		<meta
